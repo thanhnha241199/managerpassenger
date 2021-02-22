@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
   bool _isLoading = false;
+
   signIn(String email, String pass) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {

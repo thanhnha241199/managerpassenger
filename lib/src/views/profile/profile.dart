@@ -227,13 +227,15 @@ class _ProfileState extends State<Profile> {
                               GestureDetector(
                                   child: ListTile(
                                     contentPadding: EdgeInsets.all(8),
-                                    title: Text("Vua xem"),
+                                    title: Text("Banned Driver"),
                                     leading: Icon(
                                       EvaIcons.loaderOutline,
                                     ),
                                     trailing: Icon(Icons.keyboard_arrow_right),
                                   ),
-                                  onTap: () {}),
+                                  onTap: () {
+                                    Navigator.pushNamed(context, "/banned");
+                                  }),
                               Divider(),
                             ])),
                         Container(
@@ -242,13 +244,15 @@ class _ProfileState extends State<Profile> {
                               GestureDetector(
                                   child: ListTile(
                                     contentPadding: EdgeInsets.all(8),
-                                    title: Text("Vi airpay"),
+                                    title: Text("Save location"),
                                     leading: Icon(
                                       EvaIcons.toggleRightOutline,
                                     ),
                                     trailing: Icon(Icons.keyboard_arrow_right),
                                   ),
-                                  onTap: () {}),
+                                  onTap: () {
+                                    Navigator.pushNamed(context, "/location");
+                                  }),
                               Divider(),
                             ])),
                         Container(
@@ -257,13 +261,15 @@ class _ProfileState extends State<Profile> {
                               GestureDetector(
                                   child: ListTile(
                                     contentPadding: EdgeInsets.all(8),
-                                    title: Text("Change Password"),
+                                    title: Text("Change password"),
                                     leading: Icon(
                                       EvaIcons.toggleLeftOutline,
                                     ),
                                     trailing: Icon(Icons.keyboard_arrow_right),
                                   ),
-                                  onTap: () {}),
+                                  onTap: () {
+                                    Navigator.pushNamed(context, "/changepass");
+                                  }),
                               Divider(),
                             ])),
                         check == null

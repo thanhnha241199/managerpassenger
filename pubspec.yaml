@@ -43,6 +43,7 @@ dependencies:
   emoji_picker: ^0.1.0
   image_picker: ^0.6.7+22
   google_fonts: ^1.1.2
+  flutter_switch: ^0.2.1
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ flutter:
     - assets/images/small_icon/
     - assets/images/small_icon/notification.png
     - assets/images/small_icon/success.png
+    - assets/images/small_icon/banned.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

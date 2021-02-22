@@ -23,8 +23,8 @@ class _HomeState extends State<Home> {
           physics: BouncingScrollPhysics(),
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                  top: 45.0, left: 10.0, bottom: 25.0),
+              padding:
+                  const EdgeInsets.only(top: 45.0, left: 10.0, bottom: 25.0),
               child: Text(
                 "Chào buổi sáng, thanhnha241199",
                 style: TextStyle(
@@ -34,481 +34,480 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25.0),
-                      topRight: Radius.circular(25.0))),
-              child: Column(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height / 2.5,
-                    child: GridView.count(
-                      physics: ScrollPhysics(),
-                      shrinkWrap: true,
-                      primary: true,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, "/licence");
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25.0),
+                        topRight: Radius.circular(25.0))),
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height / 2.5,
+                      child: GridView.count(
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        primary: true,
+                        padding: EdgeInsets.only(top: 10.0),
+                        crossAxisCount: 3,
+                        childAspectRatio: 1.1,
+                        children: [
+                          IconMenu(Colors.red, EvaIcons.carOutline,
+                              "Mua Vé Phương Trang", '/ticket', context),
+                          IconMenu(Colors.blueAccent, EvaIcons.attach2,
+                              "Gọi TAXI", '/home', context),
+                          IconMenu(Colors.grey, EvaIcons.carOutline, "Gọi Ô TÔ",
+                              '/home', context),
+                          IconMenu(Colors.green, EvaIcons.carOutline,
+                              "Xe Hợp Đồng", '/home', context),
+                          IconMenu(Colors.yellow, EvaIcons.carOutline,
+                              "Gọi Xe 2 Bánh", '/home', context),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                      child: Container(
+                        color: Color(0xFFf5f6f7),
+                      ),
+                    ),
+                    Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                      crossAxisCount: 3,
-                      childAspectRatio: 1.1,
-                      children: [
-                        IconMenu(Colors.red, EvaIcons.carOutline,
-                            "Mua Vé Phương Trang"),
-                        IconMenu(Colors.blueAccent, EvaIcons.attach2,
-                            "Gọi TAXI"),
-                        IconMenu(
-                            Colors.grey, EvaIcons.carOutline, "Gọi Ô TÔ"),
-                        IconMenu(Colors.green, EvaIcons.carOutline,
-                            "Xe Hợp Đồng"),
-                        IconMenu(Colors.yellow, EvaIcons.carOutline,
-                            "Gọi Xe 2 Bánh"),
-                      ],
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 50,
+                        decoration: BoxDecoration(
+                            color: Colors.lightGreen,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(8.0),
+                                  topLeft: Radius.circular(8.0)),
+                              child: Image.network(
+                                "https://worldcourier.vn/wp-content/uploads/2020/12/gui-qua-tang-tet-co-truyen-cho-nguoi-than.png",
+                                height: 190,
+                                width: double.infinity,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Text(
+                                "Mua vé Tết 2021",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, bottom: 4.0),
+                              child:
+                                  Text("Các lưu ý về quy định mua vé Tết 2021"),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                    child: Container(
-                      color: Color(0xFFf5f6f7),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 50,
+                        decoration: BoxDecoration(
+                            color: Colors.lightGreen,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(8.0),
+                                  topLeft: Radius.circular(8.0)),
+                              child: Image.network(
+                                "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
+                                height: 190,
+                                width: double.infinity,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Text(
+                                "Thanh toán dịch vụ thuận tiện",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, bottom: 4.0),
+                              child: Text(
+                                  "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 50,
-                      decoration: BoxDecoration(
-                          color: Colors.lightGreen,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 25.0, right: 25.0, top: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(8.0),
-                                topLeft: Radius.circular(8.0)),
-                            child: Image.network(
-                              "https://worldcourier.vn/wp-content/uploads/2020/12/gui-qua-tang-tet-co-truyen-cho-nguoi-than.png",
-                              height: 190,
-                              width: double.infinity,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              "Mua vé Tết 2021",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, bottom: 4.0),
-                            child: Text(
-                                "Các lưu ý về quy định mua vé Tết 2021"),
-                          )
+                          GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                "Các tuyến xe phổ biến",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              )),
+                          GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                "Xem thêm",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              )),
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 50,
-                      decoration: BoxDecoration(
-                          color: Colors.lightGreen,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Container(
+                      height: MediaQuery.of(context).size.height / 2.6,
+                      // width: double.infinity,
+                      child: GridView.count(
+                        scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        primary: true,
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        crossAxisCount: 1,
+                        childAspectRatio: 0.85,
+                        mainAxisSpacing: 8.0,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(8.0),
-                                topLeft: Radius.circular(8.0)),
-                            child: Image.network(
-                              "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
-                              height: 190,
-                              width: double.infinity,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.lightGreen,
+                                  borderRadius: BorderRadius.circular(8.0)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(8.0),
+                                        topLeft: Radius.circular(8.0)),
+                                    child: Image.network(
+                                      "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
+                                      height: 177,
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      "Thanh toán dịch vụ thuận tiện",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0, bottom: 4.0),
+                                    child: Text(
+                                        "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              "Thanh toán dịch vụ thuận tiện",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.lightGreen,
+                                  borderRadius: BorderRadius.circular(8.0)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(8.0),
+                                        topLeft: Radius.circular(8.0)),
+                                    child: Image.network(
+                                      "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
+                                      height: 177,
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      "Thanh toán dịch vụ thuận tiện",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0, bottom: 4.0),
+                                    child: Text(
+                                        "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, bottom: 4.0),
-                            child: Text(
-                                "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
-                          )
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.lightGreen,
+                                  borderRadius: BorderRadius.circular(8.0)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(8.0),
+                                        topLeft: Radius.circular(8.0)),
+                                    child: Image.network(
+                                      "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
+                                      height: 177,
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      "Thanh toán dịch vụ thuận tiện",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0, bottom: 4.0),
+                                    child: Text(
+                                        "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.lightGreen,
+                                  borderRadius: BorderRadius.circular(8.0)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(8.0),
+                                        topLeft: Radius.circular(8.0)),
+                                    child: Image.network(
+                                      "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
+                                      height: 177,
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      "Thanh toán dịch vụ thuận tiện",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0, bottom: 4.0),
+                                    child: Text(
+                                        "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.lightGreen,
+                                  borderRadius: BorderRadius.circular(8.0)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(8.0),
+                                        topLeft: Radius.circular(8.0)),
+                                    child: Image.network(
+                                      "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
+                                      height: 177,
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      "Thanh toán dịch vụ thuận tiện",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0, bottom: 4.0),
+                                    child: Text(
+                                        "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.lightGreen,
+                                  borderRadius: BorderRadius.circular(8.0)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(8.0),
+                                        topLeft: Radius.circular(8.0)),
+                                    child: Image.network(
+                                      "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
+                                      height: 177,
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      "Thanh toán dịch vụ thuận tiện",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0, bottom: 4.0),
+                                    child: Text(
+                                        "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 25.0, right: 25.0, top: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                            onTap: () {},
-                            child: Text(
-                              "Các tuyến xe phổ biến",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                        GestureDetector(
-                            onTap: () {},
-                            child: Text(
-                              "Xem thêm",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 2.6,
-                    // width: double.infinity,
-                    child: GridView.count(
-                      scrollDirection: Axis.horizontal,
-                      physics: BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      primary: true,
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      crossAxisCount: 1,
-                      childAspectRatio: 0.85,
-                      mainAxisSpacing: 8.0,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.lightGreen,
-                                borderRadius: BorderRadius.circular(8.0)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(8.0),
-                                      topLeft: Radius.circular(8.0)),
-                                  child: Image.network(
-                                    "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
-                                    height: 177,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    "Thanh toán dịch vụ thuận tiện",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, bottom: 4.0),
-                                  child: Text(
-                                      "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
-                                )
-                              ],
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 50,
+                        decoration: BoxDecoration(
+                            color: Colors.lightGreen,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(8.0),
+                                  topLeft: Radius.circular(8.0)),
+                              child: Image.network(
+                                "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
+                                height: 190,
+                                width: double.infinity,
+                              ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Text(
+                                "Thanh toán dịch vụ thuận tiện",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, bottom: 4.0),
+                              child: Text(
+                                  "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
+                            )
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.lightGreen,
-                                borderRadius: BorderRadius.circular(8.0)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(8.0),
-                                      topLeft: Radius.circular(8.0)),
-                                  child: Image.network(
-                                    "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
-                                    height: 177,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    "Thanh toán dịch vụ thuận tiện",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, bottom: 4.0),
-                                  child: Text(
-                                      "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.lightGreen,
-                                borderRadius: BorderRadius.circular(8.0)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(8.0),
-                                      topLeft: Radius.circular(8.0)),
-                                  child: Image.network(
-                                    "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
-                                    height: 177,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    "Thanh toán dịch vụ thuận tiện",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, bottom: 4.0),
-                                  child: Text(
-                                      "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.lightGreen,
-                                borderRadius: BorderRadius.circular(8.0)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(8.0),
-                                      topLeft: Radius.circular(8.0)),
-                                  child: Image.network(
-                                    "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
-                                    height: 177,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    "Thanh toán dịch vụ thuận tiện",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, bottom: 4.0),
-                                  child: Text(
-                                      "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.lightGreen,
-                                borderRadius: BorderRadius.circular(8.0)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(8.0),
-                                      topLeft: Radius.circular(8.0)),
-                                  child: Image.network(
-                                    "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
-                                    height: 177,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    "Thanh toán dịch vụ thuận tiện",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, bottom: 4.0),
-                                  child: Text(
-                                      "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.lightGreen,
-                                borderRadius: BorderRadius.circular(8.0)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(8.0),
-                                      topLeft: Radius.circular(8.0)),
-                                  child: Image.network(
-                                    "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
-                                    height: 177,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    "Thanh toán dịch vụ thuận tiện",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, bottom: 4.0),
-                                  child: Text(
-                                      "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 50,
-                      decoration: BoxDecoration(
-                          color: Colors.lightGreen,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(8.0),
-                                topLeft: Radius.circular(8.0)),
-                            child: Image.network(
-                              "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
-                              height: 190,
-                              width: double.infinity,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              "Thanh toán dịch vụ thuận tiện",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, bottom: 4.0),
-                            child: Text(
-                                "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
-                          )
-                        ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 50,
-                      decoration: BoxDecoration(
-                          color: Colors.lightGreen,
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(8.0),
-                                topLeft: Radius.circular(8.0)),
-                            child: Image.network(
-                              "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
-                              height: 190,
-                              width: double.infinity,
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 50,
+                        decoration: BoxDecoration(
+                            color: Colors.lightGreen,
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(8.0),
+                                  topLeft: Radius.circular(8.0)),
+                              child: Image.network(
+                                "https://img.idesign.vn/1920x-/2019/06/08/ides_chinese_01.jpg",
+                                height: 190,
+                                width: double.infinity,
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              "Thanh toán dịch vụ thuận tiện",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Text(
+                                "Thanh toán dịch vụ thuận tiện",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, bottom: 4.0),
-                            child: Text(
-                                "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
-                          )
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, bottom: 4.0),
+                              child: Text(
+                                  "Thanh toán dịch vụ FUTA tiện lợi bằng ví....."),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -524,4 +523,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-

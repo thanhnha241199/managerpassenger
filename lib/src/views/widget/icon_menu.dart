@@ -1,22 +1,27 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
-Widget IconMenu(Color color, IconData icon, String title){
+Widget IconMenu(Color color, IconData icon, String title, String navigation, BuildContext context){
   return  Column(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      Container(
-        height: 70.0,
-        width: 70.0,
-        padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
-        decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(100)
-        ),
-        child: IconButton(
-          icon: Icon(icon),
-          iconSize: 45,
+      GestureDetector(
+        onTap: (){
+          Navigator.pushNamed(context, navigation);
+        },
+        child: Container(
+          height: 70.0,
+          width: 70.0,
+          padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+          decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(100)
+          ),
+          child: IconButton(
+            icon: Icon(icon),
+            iconSize: 45,
+          ),
         ),
       ),
       Padding(

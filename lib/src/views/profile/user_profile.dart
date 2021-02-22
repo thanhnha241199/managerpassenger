@@ -1,8 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:managepassengercar/src/views/signin/authenticate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 
 class ProfilePage extends StatefulWidget {
@@ -14,12 +20,86 @@ class MapScreenState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
-
+  var check;
+  void checkUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var status = prefs.getString('token');
+    setState(() {
+      check = status;
+    });
+  }
+  bool _isLoading = false;
+  updateInfo(String id,String name, String phone) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map data = {
+      "_id": id,
+      'name': name,
+      'phone': phone
+    };
+    var jsonResponse = null;
+    var response = await http.post("https://managerpassenger.herokuapp.com/updateinfor", body: data);
+    if(response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+      if(jsonResponse != null) {
+        setState(() {
+          _isLoading = false;
+        });
+        Fluttertoast.showToast(
+            msg: 'Successful',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16
+        );
+        setState(() {
+          _status = true;
+          //   FocusScope.of(context).requestFocus(new FocusNode());
+        });
+      }
+    }
+    else {
+      setState(() {
+        _isLoading = false;
+      });
+      print(response.body);
+      Fluttertoast.showToast(
+          msg: 'Failed',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16
+      );
+    }
+  }
+  Dio dio = new Dio();
+  getinfo() async {
+    dio.options.headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IjYwMzMxNWNmN2M5YmE1MTNlNDdkM2UyOCI.FxKI6eWjP8Ew3cyjkwKRd2WlfaV5zQhW8WvOl00EuFc';
+    return await dio.get('https://managerpassenger.herokuapp.com/getinfo');
+  }
+  var _id;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    nameController.text = "Aaaa";
+   // checkUser();
+    AuthSevice().getinfo(check).then((val){
+      _id=val.data['_id'];
+      nameController.text= val.data['name'];
+      emailController.text= val.data['email'];
+      idController.text= val.data['_id'];
+      phoneController.text= val.data['phone'];
+      quocgiaController.text= 'Viet Nam';
+      Fluttertoast.showToast(
+          msg: val.data['msg'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16
+      );
+    });
   }
 
   String name;
@@ -89,7 +169,10 @@ class MapScreenState extends State<ProfilePage>
   }
 
   TextEditingController nameController = TextEditingController();
-
+  TextEditingController emailController = TextEditingController();
+  TextEditingController idController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController quocgiaController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     //Stream<DocumentSnapshot> snapshot =  FirebaseFirestore.instance.collection("Users").doc(_firebaseServices.getUserId()).snapshots();
@@ -155,43 +238,43 @@ class MapScreenState extends State<ProfilePage>
                             Padding(
                               padding: EdgeInsets.only(top: 60.0, right: 80.0),
                               // child: GestureDetector(
-                              //   onTap: (){
-                              //     _showPicker(context);
-                              //     setState(() async {
-                              //       String fileName = basename(_imageFile.path);
-                              //       Reference firebaseStorageRef = FirebaseStorage.instance
-                              //           .ref()
-                              //           .child('images/$fileName');
-                              //       UploadTask uploadTask =
-                              //       firebaseStorageRef.putFile(_imageFile);
-                              //       TaskSnapshot taskSnapshot = await uploadTask;
-                              //       taskSnapshot.ref.getDownloadURL().then((value) {
-                              //         _firebaseServices.usersRef
-                              //             .doc(_firebaseServices.getUserId())
-                              //             .update({
-                              //           "avatar": value,
-                              //         });
-                              //       });
-                              //       taskSnapshot.ref.getDownloadURL().whenComplete(() {
-                              //         Navigator.pop(context);
-                              //       });
-                              //     });
-                              //   },
-                              //   child: new Row(
-                              //     mainAxisAlignment: MainAxisAlignment.center,
-                              //     children: <Widget>[
-                              //       new CircleAvatar(
-                              //         backgroundColor: Colors.red,
-                              //         radius: 25.0,
-                              //         child: new Icon(
-                              //           Icons.camera_alt,
-                              //           size: 18,
-                              //           color: Colors.white,
-                              //         ),
-                              //       )
-                              //     ],
-                              //   ),
-                              // )),
+                              //                               //   onTap: (){
+                              //                               //     _showPicker(context);
+                              //                               //     setState(() async {
+                              //                               //       String fileName = basename(_imageFile.path);
+                              //                               //       Reference firebaseStorageRef = FirebaseStorage.instance
+                              //                               //           .ref()
+                              //                               //           .child('images/$fileName');
+                              //                               //       UploadTask uploadTask =
+                              //                               //       firebaseStorageRef.putFile(_imageFile);
+                              //                               //       TaskSnapshot taskSnapshot = await uploadTask;
+                              //                               //       taskSnapshot.ref.getDownloadURL().then((value) {
+                              //                               //         _firebaseServices.usersRef
+                              //                               //             .doc(_firebaseServices.getUserId())
+                              //                               //             .update({
+                              //                               //           "avatar": value,
+                              //                               //         });
+                              //                               //       });
+                              //                               //       taskSnapshot.ref.getDownloadURL().whenComplete(() {
+                              //                               //         Navigator.pop(context);
+                              //                               //       });
+                              //                               //     });
+                              //                               //   },
+                              //                               //   child: new Row(
+                              //                               //     mainAxisAlignment: MainAxisAlignment.center,
+                              //                               //     children: <Widget>[
+                              //                               //       new CircleAvatar(
+                              //                               //         backgroundColor: Colors.red,
+                              //                               //         radius: 25.0,
+                              //                               //         child: new Icon(
+                              //                               //           Icons.camera_alt,
+                              //                               //           size: 18,
+                              //                               //           color: Colors.white,
+                              //                               //         ),
+                              //                               //       )
+                              //                               //     ],
+                              //                               //   ),
+                              //                               // )),
                             )
                           ]),
                         )
@@ -306,6 +389,7 @@ class MapScreenState extends State<ProfilePage>
                                 children: <Widget>[
                                   new Flexible(
                                     child: new TextField(
+                                      controller: emailController,
                                       decoration:
                                           InputDecoration(hintText: "AAA"),
                                       enabled: !_status,
@@ -341,6 +425,7 @@ class MapScreenState extends State<ProfilePage>
                                 children: <Widget>[
                                   new Flexible(
                                     child: new TextField(
+                                      controller: idController,
                                       decoration:
                                           InputDecoration(hintText: "uid"),
                                       enabled: !_status,
@@ -390,11 +475,11 @@ class MapScreenState extends State<ProfilePage>
                                     child: Padding(
                                       padding: EdgeInsets.only(right: 10.0),
                                       child: new TextField(
+                                        controller: phoneController,
                                         onChanged: (value) {
                                           phone = value;
                                         },
-                                        decoration: InputDecoration(
-                                            hintText: "1234567888"),
+                                        decoration: InputDecoration(),
                                         enabled: !_status,
                                       ),
                                     ),
@@ -402,6 +487,7 @@ class MapScreenState extends State<ProfilePage>
                                   ),
                                   Flexible(
                                     child: new TextField(
+                                      controller: quocgiaController,
                                       onChanged: (value) {
                                         quoctich = value;
                                       },
@@ -447,7 +533,12 @@ class MapScreenState extends State<ProfilePage>
                 child: new Text("Save"),
                 textColor: Colors.white,
                 color: Colors.green,
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    _isLoading= true;
+                  });
+                  updateInfo(_id,nameController.text, phoneController.text);
+                },
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),
               )),
