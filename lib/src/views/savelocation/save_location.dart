@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:managepassengercar/src/views/widget/default_btn.dart';
+import 'package:http/http.dart' as http;
+import 'package:managepassengercar/src/models/address.dart';
+import 'package:managepassengercar/src/views/savelocation/form_location.dart';
 
 class SaveLocation extends StatefulWidget {
   @override
@@ -8,6 +12,44 @@ class SaveLocation extends StatefulWidget {
 }
 
 class _SaveLocationState extends State<SaveLocation> {
+  var loading = false;
+  List<Address> listModel = [];
+
+  Future<Address> fetchAddress() async {
+    setState(() {
+      loading = true;
+    });
+    Map data = {
+      'uid': '603315cf7c9ba513e47d3e28',
+    };
+    final response = await http
+        .post('https://managerpassenger.herokuapp.com/getaddress', body: data);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print(data);
+      setState(() {
+        for (Map i in data) {
+          listModel.add(Address.fromJson(i));
+        }
+        loading = false;
+      });
+      return Address.fromJson(jsonDecode(response.body)[0]);
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<Address> futureAddress;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    futureAddress = fetchAddress();
+    print(futureAddress);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,62 +75,56 @@ class _SaveLocationState extends State<SaveLocation> {
         ),
         actions: [
           IconButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.pushNamed(context, "/addlocation");
             },
             icon: Icon(EvaIcons.arrowheadDown),
           )
         ],
       ),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Location favorite"),
-            Container(
-              color: Colors.red,
-              child: ListTile(
-                title: Text("Home"),
-                subtitle: Text("45/6 hem 6 mau thanh, XK- NK- TPCT"),
-                leading: Icon(
-                    EvaIcons.homeOutline
-                ),
-                trailing: GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context, "/addlocation");
-                    print("AAA");
-                  },
-                  child: Column(
-                    children: [
-                      Icon(EvaIcons.edit2Outline),
-                      Text("Edit")
-                    ],
-                  ),
-                ),
-              ),
+      body: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              child: Text("Location favorite")),
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Container(
+              child: loading
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: listModel.length,
+                      itemBuilder: (context, i) {
+                        final nDataList = listModel[i];
+                        return AddressContainer(nDataList.title, nDataList.address,nDataList.id);
+                      }),
             ),
-            Container(
-              color: Colors.red,
-              child: ListTile(
-                title: Text("Office"),
-               // subtitle: Text("45/6 hem 6 mau thanh, XK- NK- TPCT"),
-                leading: Icon(
-                    EvaIcons.homeOutline
-                ),
-                trailing: GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context, "/addlocation");
-                  },
-                  child: Column(
-                    children: [
-                      Icon(EvaIcons.edit2Outline, ),
-                      Text("Edit")
-                    ],
-                  ),
-                ),
-              ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget AddressContainer(String title,String subtitle, String id) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2),
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+          borderRadius: BorderRadius.circular(12)
+        ),
+        child: ListTile(
+          title: Text(title),
+          subtitle: Text(subtitle),
+          leading: Icon(EvaIcons.homeOutline),
+          trailing: GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => FormLocation(title: title,address: subtitle,uid: '603315cf7c9ba513e47d3e28',id: id,)));
+            },
+            child: Column(
+              children: [Icon(EvaIcons.edit2Outline), Text("Edit")],
             ),
-          ],
+          ),
         ),
       ),
     );

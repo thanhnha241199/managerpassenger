@@ -3,6 +3,7 @@ import 'package:managepassengercar/src/views/banned/banned_driver.dart';
 import 'package:managepassengercar/src/views/buy_ticket.dart';
 import 'package:managepassengercar/src/views/changepassword.dart';
 import 'package:managepassengercar/src/views/chedules.dart';
+import 'package:managepassengercar/src/views/history/order_buy.dart';
 import 'package:managepassengercar/src/views/home/bottombar.dart';
 import 'package:managepassengercar/src/views/infor/licence.dart';
 import 'package:managepassengercar/src/views/introduction/introdure_page.dart';
@@ -32,4 +33,5 @@ Object appRoutes = {
   '/licence': (context) => Licence(),
   '/ticket': (context) => Ticket(),
   '/schedules': (context) => Chedules(),
+  '/orderbuy': (context) => OrderBuy(),
 };
