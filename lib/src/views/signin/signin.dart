@@ -1,18 +1,25 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:managepassengercar/src/views/home/bottombar.dart';
-import 'file:///D:/Flutter/managepassengercar/lib/src/utils/constants.dart';
-import 'package:managepassengercar/src/views/signin/authenticate.dart';
 import 'package:http/http.dart' as http;
-import 'package:get/get.dart';
+import 'package:managepassengercar/common/widgets/stateless/custom_btn.dart';
+import 'package:managepassengercar/common/widgets/stateless/custom_input.dart';
+import 'package:managepassengercar/repository/user_repository.dart';
+import 'package:managepassengercar/src/utils/constants.dart';
+import 'package:managepassengercar/src/views/home/bottombar.dart';
+import 'package:managepassengercar/src/views/signin/authenticate.dart';
 import 'package:managepassengercar/src/views/widget/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
+  final UserRepository userRepository;
+
+  LoginPage({Key key, @required this.userRepository})
+      : assert(userRepository != null),
+        super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -24,15 +31,14 @@ class _LoginPageState extends State<LoginPage> {
 
   signIn(String email, String pass) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    Map data = {
-      'email': email,
-      'password': pass
-    };
+    Map data = {'email': email, 'password': pass};
     var jsonResponse = null;
-    var response = await http.post("https://managerpassenger.herokuapp.com/authenticate", body: data);
-    if(response.statusCode == 200) {
+    var response = await http.post(
+        "https://managerpassenger.herokuapp.com/authenticate",
+        body: data);
+    if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
-      if(jsonResponse != null) {
+      if (jsonResponse != null) {
         setState(() {
           _isLoading = false;
           sharedPreferences.setString("token", jsonResponse['token']);
@@ -43,12 +49,12 @@ class _LoginPageState extends State<LoginPage> {
             gravity: ToastGravity.BOTTOM,
             backgroundColor: Colors.green,
             textColor: Colors.white,
-            fontSize: 16
-        );
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => HomePage(user: email,)), (Route<dynamic> route) => false);
+            fontSize: 16);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+            (Route<dynamic> route) => false);
       }
-    }
-    else {
+    } else {
       setState(() {
         _isLoading = false;
       });
@@ -59,11 +65,9 @@ class _LoginPageState extends State<LoginPage> {
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.green,
           textColor: Colors.white,
-          fontSize: 16
-      );
+          fontSize: 16);
     }
   }
-
 
   Future<void> _alertDialogBuilder(String error) async {
     return showDialog(
@@ -108,12 +112,12 @@ class _LoginPageState extends State<LoginPage> {
                   new Expanded(
                     child: Center(
                         child: Text(
-                          error,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                          ),
-                        )),
+                      error,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18.0,
+                      ),
+                    )),
                     flex: 2,
                   ),
                   new Expanded(
@@ -144,9 +148,6 @@ class _LoginPageState extends State<LoginPage> {
         });
   }
 
-  // Default Form Loading State
-  bool _loginFormLoading = false;
-
   // Form Input Field Values
   var name, password, token;
 
@@ -164,6 +165,7 @@ class _LoginPageState extends State<LoginPage> {
     _passwordFocusNode.dispose();
     super.dispose();
   }
+
   Future<String> _loginAccount() async {
     AuthSevice().login(name, password).then((value) {
       if (value.data['success']) {
@@ -174,257 +176,132 @@ class _LoginPageState extends State<LoginPage> {
             gravity: ToastGravity.BOTTOM,
             backgroundColor: Colors.green,
             textColor: Colors.white,
-            fontSize: 16
-        );
+            fontSize: 16);
       }
     });
   }
-  void _submitForm() async {
-    setState(() {
-      _loginFormLoading = true;
-    });
-    String _loginFeedback = await _loginAccount();
-    if (_loginFeedback != null) {
-      _alertDialogBuilder(_loginFeedback);
-      setState(() {
-        _loginFormLoading = false;
-      });
-    }else{
-      Get.offAllNamed("/");
-    }
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: _isLoading ? Loading() : SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(
-                      top: 50.0,
-                      bottom: 10
-                  ),
-                  child: Text(
-                    "Welcome User,\nLogin to your account",
-                    textAlign: TextAlign.center,
-                   style: Constants.boldHeading,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 30),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0, -15),
-                        blurRadius: 20,
-                        color: Color(0xFFDADADA).withOpacity(0.15),
-                      )
-                    ],
-                  ),
+      body: _isLoading
+          ? Loading()
+          : SafeArea(
+              child: SingleChildScrollView(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        children: [
-                          CustomInput(
-                            controller: emailController,
-                            hintText: "Email...",
-                            onChanged: (value) {
-                              name = value;
-                            },
-                            onSubmitted: (value) {
-                              _passwordFocusNode.requestFocus();
-                            },
-                            textInputAction: TextInputAction.next,
-                          ),
-                          CustomInput(
-                            controller: passwordController,
-                            hintText: "Password...",
-                            onChanged: (value) {
-                              password = value;
-                            },
-                            focusNode: _passwordFocusNode,
-                            isPasswordField: true,
-                            onSubmitted: (value) {
-                            },
-                          ),
-                          CustomBtn(
-                            text: "Login",
-                            onPressed: emailController.text == "" || passwordController.text == "" ? null : () {
-                              setState(() {
-                                _isLoading = true;
-                              });
-                              signIn(emailController.text, passwordController.text);
-                            })],
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/forget");
-                        },
-                        child: Text("Forget password?"),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 8,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 10.0,
-                        ),
-                        child: CustomBtn(
-                          text: "Create New Account",
-                           onPressed: () {
-                            Navigator.pushNamed(context, "/signup");
-                          },
-                          outlineBtn: true,
+                      Container(
+                        padding: EdgeInsets.only(top: 50.0, bottom: 10),
+                        child: Text(
+                          "Welcome User,\nLogin to your account",
+                          textAlign: TextAlign.center,
+                          style: Constants.boldHeading,
                         ),
                       ),
-                      Text("Or"),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          FlatButton(
-                            onPressed: () {},
-                            child: Text("Google"),
+                      Container(
+                        padding: EdgeInsets.only(top: 30),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            topRight: Radius.circular(40),
                           ),
-                          FlatButton(
-                            onPressed: () {
-                            },
-                            child: Text("Facebook"),
-                          ),
-                        ],
-                      )
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0, -15),
+                              blurRadius: 20,
+                              color: Color(0xFFDADADA).withOpacity(0.15),
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                                CustomInput(
+                                  controller: emailController,
+                                  hintText: "Email...",
+                                  onChanged: (value) {
+                                    name = value;
+                                  },
+                                  onSubmitted: (value) {
+                                    _passwordFocusNode.requestFocus();
+                                  },
+                                  textInputAction: TextInputAction.next,
+                                ),
+                                CustomInput(
+                                  controller: passwordController,
+                                  hintText: "Password...",
+                                  onChanged: (value) {
+                                    password = value;
+                                  },
+                                  focusNode: _passwordFocusNode,
+                                  isPasswordField: true,
+                                  onSubmitted: (value) {},
+                                ),
+                                CustomBtn(
+                                    text: "Login",
+                                    onPressed: emailController.text == "" ||
+                                            passwordController.text == ""
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              _isLoading = true;
+                                            });
+                                            signIn(emailController.text,
+                                                passwordController.text);
+                                          })
+                              ],
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, "/forget");
+                              },
+                              child: Text("Forget password?"),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height / 8,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 10.0,
+                              ),
+                              child: CustomBtn(
+                                text: "Create New Account",
+                                onPressed: () {
+                                  Navigator.pushNamed(context, "/signup");
+                                },
+                                outlineBtn: true,
+                              ),
+                            ),
+                            Text("Or"),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                FlatButton(
+                                  onPressed: () {},
+                                  child: Text("Google"),
+                                ),
+                                FlatButton(
+                                  onPressed: () {},
+                                  child: Text("Facebook"),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomInput extends StatelessWidget {
-  final String hintText;
-  final Function(String) onChanged;
-  final Function(String) onSubmitted;
-  final FocusNode focusNode;
-  final TextInputAction textInputAction;
-  final bool isPasswordField;
-  final TextInputType textInputType;
-  TextEditingController controller = TextEditingController();
-  CustomInput({this.hintText, this.onChanged, this.onSubmitted, this.focusNode, this.textInputAction, this.isPasswordField, this.textInputType, this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    bool _isPasswordField = isPasswordField ?? false;
-
-    return Container(
-      height: MediaQuery.of(context).size.height / 12,
-      width: MediaQuery.of(context).size.width / 1.2,
-      margin: EdgeInsets.symmetric(
-        vertical: 8.0,
-        horizontal: 24.0,
-      ),
-      decoration: BoxDecoration(
-          color: Color(0xFFF2F2F2),
-          borderRadius: BorderRadius.circular(12.0)
-      ),
-      child: TextField(
-        controller: controller,
-        keyboardType: textInputType,
-        obscureText: _isPasswordField,
-        focusNode: focusNode,
-        onChanged: onChanged,
-        onSubmitted: onSubmitted,
-        textInputAction: textInputAction,
-        decoration: InputDecoration(
-            hintMaxLines: 10,
-            border: InputBorder.none,
-            hintText: hintText ?? "Hint Text...",
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 24.0,
-              vertical: 20.0,
-            )
-        ),
-        style: Constants.regularDarkText,
-      ),
-    );
-  }
-}
-class CustomBtn extends StatelessWidget {
-  final String text;
-  final Function onPressed;
-  final bool outlineBtn;
-  final bool isLoading;
-  CustomBtn({this.text, this.onPressed, this.outlineBtn, this.isLoading});
-
-  @override
-  Widget build(BuildContext context) {
-    bool _outlineBtn = outlineBtn ?? false;
-    bool _isLoading = isLoading ?? false;
-
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: MediaQuery.of(context).size.width / 1.5,
-        height: MediaQuery.of(context).size.height / 12,
-        decoration: BoxDecoration(
-          color: _outlineBtn ? Colors.transparent : Colors.black,
-          border: Border.all(
-            color: Colors.black,
-            width: 2.0,
-          ),
-          borderRadius: BorderRadius.circular(
-            12.0,
-          ),
-        ),
-        margin: EdgeInsets.symmetric(
-          horizontal: 24.0,
-          vertical: 8.0,
-        ),
-        child: Stack(
-          children: [
-            Visibility(
-              visible: _isLoading ? false : true,
-              child: Center(
-                child: Text(
-                  text ?? "Text",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: _outlineBtn ? Colors.black : Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
               ),
             ),
-            Visibility(
-              visible: _isLoading,
-              child: Center(
-                child: SizedBox(
-                  height: 30.0,
-                  width: 30.0,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
-
-

@@ -1,36 +1,12 @@
-import 'dart:async';
-
-import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:managepassengercar/src/views/home/bottombar.dart';
-import 'package:managepassengercar/src/views/introduction/introdure_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreenPage extends StatefulWidget {
   @override
   _SplashScreenPageState createState() => _SplashScreenPageState();
 }
 
-class _SplashScreenPageState extends State<SplashScreenPage>
-    with AfterLayoutMixin<SplashScreenPage> {
-  Future checkFirstSeen() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seen') ?? false);
-
-    if (_seen) {
-      Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
-    } else {
-      await prefs.setBool('seen', true);
-      Navigator.pushNamedAndRemoveUntil(context, "/intro", (route) => false);
-    }
-  }
-
-  @override
-  void afterFirstLayout(BuildContext context) {
-    Timer(Duration(milliseconds: 3000), () => checkFirstSeen());
-  }
-
+class _SplashScreenPageState extends State<SplashScreenPage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(

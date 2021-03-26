@@ -1,21 +1,33 @@
-class User {
-  int id;
-  String name;
+import 'dart:convert';
+
+UserChat userFromJson(String str) => UserChat.fromJson(json.decode(str));
+
+String userToJson(UserChat data) => json.encode(data.toJson());
+
+class UserChat {
+  UserChat({
+    this.id,
+    this.email,
+    this.name,
+    this.image,
+  });
+
+  String id;
   String email;
+  String name;
+  String image;
 
-  User({this.id, this.name, this.email});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json["id"] as int,
-      name: json["name"] as String,
-      email: json["email"] as String,
-    );
-  }
+  factory UserChat.fromJson(Map<String, dynamic> json) => UserChat(
+    id: json["_id"],
+    email: json["email"],
+    name: json["name"],
+    image: json["image"],
+  );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'email': email,
+    "_id": id,
+    "email": email,
+    "name": name,
+    "image": image,
   };
 }

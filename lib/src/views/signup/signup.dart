@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:managepassengercar/common/widgets/stateless/custom_btn.dart';
+import 'package:managepassengercar/common/widgets/stateless/custom_input.dart';
 import 'package:managepassengercar/src/views/otp/otp_page.dart';
 import 'package:managepassengercar/src/views/signin/signin.dart';
 import 'package:managepassengercar/src/views/widget/loading.dart';
@@ -36,7 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
       jsonResponse = json.decode(response.body);
       print(jsonResponse);
       if(jsonResponse != null) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => OTPPage(email: email,password: pass,name: name,phone: phone,otp: jsonResponse['otp'].toString(),)));
+        // Navigator.push(context, MaterialPageRoute(builder: (context) => OTPPage(email: email,password: pass,name: name,phone: phone,otp: jsonResponse['otp'].toString(),)));
       }
     }
     else {
@@ -137,10 +139,6 @@ class _RegisterPageState extends State<RegisterPage> {
         }
     );
   }
-
-  // Default Form Loading State
-  bool _registerFormLoading = false;
-
   // Form Input Field Values
   String _registerEmail = "";
   String _registerPassword = "";

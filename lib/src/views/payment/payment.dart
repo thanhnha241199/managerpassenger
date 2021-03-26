@@ -111,6 +111,7 @@ class _PaymentState extends State<Payment> {
                       fontSize: 14,
                     ),),
                     RadioListTile(
+                      groupValue: "Agree to the terms",
                       title: Text("Agree to the terms",
                         style: TextStyle(
                           fontSize: 16,

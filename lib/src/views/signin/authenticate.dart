@@ -6,7 +6,7 @@ class AuthSevice{
   Dio dio = new Dio();
   login(name, password) async{
     try {
-      return await dio.post("https://test9862.herokuapp.com/authenticate",
+      return await dio.post("https://managerpassenger.herokuapp.com/authenticate",
       data: {
         "name": name,
         "password": password

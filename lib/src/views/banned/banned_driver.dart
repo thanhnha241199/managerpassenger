@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class BannedDriver extends StatefulWidget {
@@ -25,17 +26,31 @@ class _BannedDriverState extends State<BannedDriver> {
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
-            setState(() {});
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
       ),
       body: Center(
         child: Container(
-          child: Column(children: [
-            Image.asset("assets/images/small_icon/banned.png"),
-            Text("AAAAAAAAAAAAAA")
-          ],),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/images/small_icon/banned.png",
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.width * 0.8,
+              ),
+              SizedBox(height: 20,),
+              Text(
+                tr("Banned car"),
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                ),
+              )
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -50,9 +65,9 @@ class _BannedDriverState extends State<BannedDriver> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     color: Colors.red, borderRadius: BorderRadius.circular(30)),
-                child: Text("Banned",
+                child: Text(tr("banned car"),
                     style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               ),
             ),
           ],

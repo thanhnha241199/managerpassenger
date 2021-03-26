@@ -5,8 +5,6 @@ import 'package:managepassengercar/src/views/chat/user.dart';
 class SocketUtils {
   //
   static String _serverIP = 'https://chat-socketio-passenger.herokuapp.com/';
-  // Platform.isAndroid ?  : 'https://socketchat-passenger.herokuapp.com';
-  // static const int SERVER_PORT = 4002;
   static String _connectUrl = '$_serverIP';
 
   // Events
@@ -25,12 +23,12 @@ class SocketUtils {
   // Type of Chat
   static const String SINGLE_CHAT = 'single_chat';
 
-  User _fromUser;
+  UserChat _fromUser;
 
   SocketIO _socket;
   SocketIOManager _manager;
 
-  initSocket(User fromUser) async {
+  initSocket(UserChat fromUser) async {
     print('Connecting user: ${fromUser.name}');
     this._fromUser = fromUser;
     await _init();
@@ -53,7 +51,7 @@ class SocketUtils {
     );
   }
 
-  sendSingleChatMessage(ChatMessageModel chatMessageModel, User toChatUser) {
+  sendSingleChatMessage(ChatMessageModel chatMessageModel, UserChat toChatUser) {
     print('Sending Message to: ${toChatUser.name}, ID: ${toChatUser.id}');
     if (null == _socket) {
       print("Socket is Null, Cannot send message");

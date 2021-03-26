@@ -1,37 +1,32 @@
-import 'file:///D:/Flutter/managepassengercar/lib/src/views/savelocation/save_location.dart';
 import 'package:managepassengercar/src/views/banned/banned_driver.dart';
-import 'package:managepassengercar/src/views/buy_ticket.dart';
 import 'package:managepassengercar/src/views/changepassword.dart';
-import 'package:managepassengercar/src/views/chedules.dart';
 import 'package:managepassengercar/src/views/history/order_buy.dart';
 import 'package:managepassengercar/src/views/home/bottombar.dart';
 import 'package:managepassengercar/src/views/infor/licence.dart';
 import 'package:managepassengercar/src/views/introduction/introdure_page.dart';
 import 'package:managepassengercar/src/views/otp/otp_page.dart';
-import 'package:managepassengercar/src/views/profile/user_profile.dart';
-import 'package:managepassengercar/src/views/savelocation/form_location.dart';
-import 'package:managepassengercar/src/views/signin/forget_password.dart';
+import 'file:///D:/Flutter/managepassengercar/lib/blocs/savelocation/view/form_location.dart';
+import 'file:///D:/Flutter/managepassengercar/lib/blocs/register/view/forget_password/forget_form.dart';
 import 'package:managepassengercar/src/views/signin/signin.dart';
 import 'package:managepassengercar/src/views/signup/signup.dart';
 import 'package:managepassengercar/src/views/splash/splash_page.dart';
-import 'package:managepassengercar/src/views/widget/homeappchat.dart';
+import 'package:managepassengercar/src/views/test.dart';
+import 'package:managepassengercar/src/views/ticket/chedules.dart';
 
 Object appRoutes = {
-  '/': (context) => HomePage(),
-  '/splash': (context) => SplashScreenPage(),
+  // '/': (context) => HomePage(),
+  // '/splash': (context) => SplashScreenPage(userRepository: userRepository),
   '/intro': (context) => IntrodurePage(),
-  '/homeapp': (context) => HomeApp(),
-  '/login': (context) => LoginPage(),
-  '/userprofile': (context) => ProfilePage(),
+  // '/login': (context) => LoginPage(),
   '/signup': (context) => RegisterPage(),
   '/otp': (context) => OTPPage(),
   '/forget': (context) => ForgetPass(),
   '/changepass': (context) => FormChangePassword(),
-  '/location': (context) => SaveLocation(),
+  // '/location': (context) => SaveLocation(),
   '/addlocation': (context) => FormLocation(),
   '/banned': (context) => BannedDriver(),
   '/licence': (context) => Licence(),
-  '/ticket': (context) => Ticket(),
-  '/schedules': (context) => Chedules(),
+  '/schedules': (context) => ChedulesBus(),
   '/orderbuy': (context) => OrderBuy(),
+  '/test': (context) => MyLocation(),
 };

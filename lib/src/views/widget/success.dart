@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class Success extends StatefulWidget {
-  String page;
+  Widget page;
   String title;
   Success({this.page, this.title});
   @override
@@ -15,7 +15,7 @@ class _SuccessState extends State<Success> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(milliseconds: 3000), () => Navigator.pushNamedAndRemoveUntil(context, widget.page, (route) => false));
+    Timer(Duration(milliseconds: 3000), () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => widget.page), (route) => false));
   }
   @override
   Widget build(BuildContext context) {

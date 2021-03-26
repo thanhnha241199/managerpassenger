@@ -4,7 +4,6 @@ import 'package:managepassengercar/src/views/chat/global.dart';
 import 'package:managepassengercar/src/views/chat/user.dart';
 
 class LoginScreen extends StatefulWidget {
-  //
   LoginScreen() : super();
 
   static const String ROUTE_ID = 'login_screen';
@@ -65,24 +64,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _loginBtnTap() async {
+    UserChat me;
     if (_usernameController.text.isEmpty) {
       return;
     }
-
-    User me = G.dummyUsers[0];
-    if (_usernameController.text != 'a') {
-      me = G.dummyUsers[1];
+    for (int i = 0; i < G.dummyUsers.length; i++) {
+      if (_usernameController.text == G.dummyUsers[i].email) {
+        me = G.dummyUsers[i];
+      }
     }
-
     G.loggedInUser = me;
 
-    openHomeScreen(context);
-  }
-
-  static openHomeScreen(BuildContext context) async {
-    await Navigator.pushReplacementNamed(
-      context,
-      ChatUsersScreen.ROUTE_ID,
-    );
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ChatUsersScreen()));
   }
 }

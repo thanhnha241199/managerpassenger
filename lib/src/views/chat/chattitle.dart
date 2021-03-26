@@ -3,34 +3,34 @@ import 'package:managepassengercar/src/views/chat/chatscreen.dart';
 import 'package:managepassengercar/src/views/chat/user.dart';
 
 class ChatTitle extends StatelessWidget {
-  //
   const ChatTitle({
     Key key,
     @required this.chatUser,
     @required this.userOnlineStatus,
   }) : super(key: key);
 
-  final User chatUser;
+  final UserChat chatUser;
   final UserOnlineStatus userOnlineStatus;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(chatUser.name),
-          Text(
-            _getStatusText(),
-            style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.white70,
-            ),
-          )
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        Text(
+          chatUser.name.toUpperCase(),
+          style: TextStyle(
+            fontSize: 17.0,
+            color: Colors.black,
+          ),
+        ),
+        Text(
+          _getStatusText(),
+          style: TextStyle(
+            fontSize: 12.0,
+            color: Colors.black,
+          ),
+        )
+      ],
     );
   }
 

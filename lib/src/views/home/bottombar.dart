@@ -1,6 +1,8 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/views/history/history.dart';
 import 'package:managepassengercar/src/views/home/homepage.dart';
 import 'package:managepassengercar/src/views/notification/notification.dart';
@@ -8,8 +10,9 @@ import 'package:managepassengercar/src/views/payment/payment.dart';
 import 'package:managepassengercar/src/views/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
-  String user;
-  HomePage({this.user});
+  final UserRepository userRepository;
+
+  HomePage({Key key, @required this.userRepository}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -38,16 +41,19 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SizedBox.expand(
         child: PageView(
+          physics: NeverScrollableScrollPhysics(),
           controller: _pageController,
           onPageChanged: (index) {
-            setState(() => _currentIndex = index);
+            setState(() {
+              _currentIndex = index;
+            });
           },
           children: <Widget>[
-            Home(),
+            Home(userRepository: widget.userRepository),
             History(),
             Payment(),
             Notifications(),
-            Profile(user: widget.user)
+            Profile(userRepository: widget.userRepository)
           ],
         ),
       ),
@@ -66,24 +72,24 @@ class _HomePageState extends State<HomePage> {
         },
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
-            title: Text('Trang chủ'),
+            title: Text(tr("home")),
             icon: Icon(Icons.home),
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-              title: Text('Lịch sử'),
-              icon: Icon(Icons.apps),
+              title: Text(tr("history")),
+              icon: Icon(Icons.refresh),
               textAlign: TextAlign.center),
           BottomNavyBarItem(
-              title: Text('Pay'),
-              icon: Icon(Icons.chat_bubble),
+              title: Text(tr("pay")),
+              icon: Icon(Icons.payment_outlined),
               textAlign: TextAlign.center),
           BottomNavyBarItem(
-              title: Text('Thông báo'),
+              title: Text(tr("notification")),
               icon: Icon(Icons.notifications),
               textAlign: TextAlign.center),
           BottomNavyBarItem(
-              title: Text('Tài khoản'),
+              title: Text(tr("account")),
               icon: Icon(Icons.person),
               textAlign: TextAlign.center),
         ],

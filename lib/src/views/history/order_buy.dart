@@ -5,72 +5,109 @@ class OrderBuy extends StatefulWidget {
   _OrderBuyState createState() => _OrderBuyState();
 }
 
-class _OrderBuyState extends State<OrderBuy> {
-  int selectRadio;
+class _OrderBuyState extends State<OrderBuy>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
 
   @override
   void initState() {
-    // TODO: implement initState
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
-    selectRadio = 1;
   }
 
-  setSelectedRadio(int val) {
-    setState(() {
-      selectRadio = val;
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
         title: Text(
-          "Đơn mua",
-          style: TextStyle(
-            color: Colors.black,
-          ),
+          "Danh sach ve",
         ),
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
         elevation: 0.0,
-        actionsIconTheme: IconThemeData(color: Colors.black),
-        iconTheme: IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
+            setState(() {});
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
       ),
-      body: Column(
-        children: [
-          ListTile(
-            selected: selectRadio.compareTo(1) == 0 ? true : false,
-            title: Text("Tuyen pho bien"),
-            trailing: Radio(
-              activeColor: Colors.red,
-              value: 1,
-              groupValue: selectRadio,
-              onChanged: (value) {
-                setSelectedRadio(value);
-              },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            // give the tab bar a height [can change hheight to preferred height]
+            Container(
+              height: 45,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(
+                  25.0,
+                ),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                // give the indicator a decoration (color and border radius)
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    25.0,
+                  ),
+                  color: Colors.green,
+                ),
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.black,
+                tabs: [
+                  // first tab [you can add an icon using the icon property]
+                  Tab(
+                    text: 'Lich su ve',
+                  ),
+
+                  // second tab [you can add an icon using the icon property]
+                  Tab(
+                    text: 'Sap khoi hanh',
+                  ),
+                ],
+              ),
             ),
-          ),
-          ListTile(
-            selected: selectRadio.compareTo(0) == 0 ? true : false,
-            title: Text("Khuyen mai"),
-            trailing: Radio(
-              activeColor: Colors.red,
-              value: 0,
-              groupValue: selectRadio,
-              onChanged: (value) {
-                setSelectedRadio(value);
-              },
+            // tab bar view here
+            Expanded(
+              child: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                controller: _tabController,
+                children: [
+                  // first tab bar view widget
+                  Center(
+                    child: Text(
+                      'Place Bid',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+
+                  // second tab bar view widget
+                  Center(
+                    child: Text(
+                      'Buy Now',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -43,38 +43,43 @@ class _HistoryState extends State<History> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0, vertical: 15.0),
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap: (){
-
-                          },
+                          onTap: () {},
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                color: Colors.grey
+                                color: Colors.grey),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 8.0),
+                            child: Text(
+                              "ĐẶT XE",
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                            child: Text("ĐẶT XE", style:  TextStyle(
-                              fontSize: 16,
-                            ),),
                           ),
                         ),
-                        SizedBox(width: 15.0,),
+                        SizedBox(
+                          width: 15.0,
+                        ),
                         GestureDetector(
-                          onTap: (){
-
-                          },
+                          onTap: () {},
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                color: Colors.grey
+                                color: Colors.grey),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 8.0),
+                            child: Text(
+                              "GIAO HÀNG NỘI THÀNH",
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                            child: Text("GIAO HÀNG NỘI THÀNH", style:  TextStyle(
-                              fontSize: 16,
-                            ),),
                           ),
                         ),
                       ],
@@ -90,7 +95,6 @@ class _HistoryState extends State<History> {
     );
   }
 }
-
 
 class MainPage extends StatefulWidget {
   @override

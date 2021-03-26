@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:managepassengercar/src/views/chat/chatbubble.dart';
 import 'package:managepassengercar/src/views/chat/chatmessagemodel.dart';
@@ -9,12 +10,7 @@ import 'package:managepassengercar/src/views/chat/user.dart';
 import 'ChatTitle.dart';
 
 class ChatScreen extends StatefulWidget {
-  //
   ChatScreen() : super();
-
-  final String title = "Chat Screen";
-
-  static const String ROUTE_ID = 'chat_screen';
 
   @override
   ChatScreenState createState() => ChatScreenState();
@@ -24,7 +20,7 @@ class ChatScreenState extends State<ChatScreen> {
   //
   TextEditingController _chatTfController;
   List<ChatMessageModel> _chatMessages;
-  User _chatUser;
+  UserChat _chatUser;
   ScrollController _chatLVController;
   UserOnlineStatus _userOnlineStatus;
 
@@ -59,9 +55,21 @@ class ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: true,
         title: ChatTitle(
           chatUser: G.toChatUser,
           userOnlineStatus: _userOnlineStatus,
+        ),
+        backgroundColor: Colors.white,
+        brightness: Brightness.light,
+        elevation: 0.0,
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.black),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios),
         ),
       ),
       body: SafeArea(
@@ -175,7 +183,7 @@ class ChatScreenState extends State<ChatScreen> {
     _chatTfController.text = '';
   }
 
-  _isFromMe(User fromUser) {
+  _isFromMe(UserChat fromUser) {
     return fromUser.id == G.loggedInUser.id;
   }
 
@@ -183,7 +191,7 @@ class ChatScreenState extends State<ChatScreen> {
     bool fromMe = chatMessageModel.from == G.loggedInUser.id;
     Alignment alignment = fromMe ? Alignment.topRight : Alignment.topLeft;
     Alignment chatArrowAlignment =
-    fromMe ? Alignment.topRight : Alignment.topLeft;
+        fromMe ? Alignment.topRight : Alignment.topLeft;
     TextStyle textStyle = TextStyle(
       fontSize: 16.0,
       color: fromMe ? Colors.white : Colors.black54,
@@ -258,7 +266,7 @@ class ChatScreenState extends State<ChatScreen> {
   _updateToUserOnlineStatusInUI(online) {
     setState(() {
       _userOnlineStatus =
-      online ? UserOnlineStatus.online : UserOnlineStatus.not_online;
+          online ? UserOnlineStatus.online : UserOnlineStatus.not_online;
     });
   }
 

@@ -1,0 +1,159 @@
+{
+  "project_info": {
+    "project_number": "309894734015",
+    "firebase_url": "https://appecommerce-59c20.firebaseio.com",
+    "project_id": "appecommerce-59c20",
+    "storage_bucket": "appecommerce-59c20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309894734015:android:04dcf807f33d4ecddc260a",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309894734015-1ah6m310sbvqd4gvjcbt54kt39clct2l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.app",
+            "certificate_hash": "787d408c8274aa935181ccf1373b102c4851103a"
+          }
+        },
+        {
+          "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtERaEjql9hu14_3ldwnje15MV9_emWF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309894734015:android:dcdca708f3a75470dc260a",
+        "android_client_info": {
+          "package_name": "com.example.appecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309894734015-jlaieqfbes1ei8fum3p7rfpf3upas4jg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.appecommerce",
+            "certificate_hash": "787d408c8274aa935181ccf1373b102c4851103a"
+          }
+        },
+        {
+          "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtERaEjql9hu14_3ldwnje15MV9_emWF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309894734015:android:e35708b145f426bcdc260a",
+        "android_client_info": {
+          "package_name": "com.example.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309894734015-0cgmd4p89fvtv3nki5e9iod0srcqocd4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatapp",
+            "certificate_hash": "787d408c8274aa935181ccf1373b102c4851103a"
+          }
+        },
+        {
+          "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtERaEjql9hu14_3ldwnje15MV9_emWF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309894734015:android:e36667f3397b4b9cdc260a",
+        "android_client_info": {
+          "package_name": "com.example.managepassengercar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309894734015-l336tbbglegn7fkjbicfpt2r5n5ukemb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.managepassengercar",
+            "certificate_hash": "787d408c8274aa935181ccf1373b102c4851103a"
+          }
+        },
+        {
+          "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtERaEjql9hu14_3ldwnje15MV9_emWF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

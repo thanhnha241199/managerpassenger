@@ -1,16 +1,4 @@
-// _showDialog(BuildContext context) {
-//   VoidCallback continueCallBack = () => {
-//     // test(),
-//   };
-//   BlurryDialog alert = BlurryDialog("Abort",
-//       "Are you sure you want to abort this operation?", continueCallBack);
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return alert;
-//     },
-//   );
-// }
+
 //
 // void _modalBottomSheetMenu4(context) {
 //   showModalBottomSheet(

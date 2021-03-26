@@ -1,29 +1,30 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:managepassengercar/blocs/chat/bloc/chat_bloc.dart';
 import 'package:managepassengercar/src/views/chat/chatscreen.dart';
 import 'package:managepassengercar/src/views/chat/global.dart';
-import 'package:managepassengercar/src/views/chat/login.dart';
 import 'package:managepassengercar/src/views/chat/user.dart';
 
 class ChatUsersScreen extends StatefulWidget {
-  //
   ChatUsersScreen() : super();
-
-  static const String ROUTE_ID = 'chat_users_list_screen';
 
   @override
   _ChatUsersScreenState createState() => _ChatUsersScreenState();
 }
 
 class _ChatUsersScreenState extends State<ChatUsersScreen> {
-  //
-  List<User> _chatUsers;
+  UserChat _chatUsers;
   bool _connectedToSocket;
   String _errorConnectMessage;
+  List<UserChat> list;
 
   @override
   void initState() {
     super.initState();
-    _chatUsers = G.getUsersFor(G.loggedInUser);
+    BlocProvider.of<ChatBloc>(context).add(DoFetchEvent());
+    _chatUsers = G.loggedInUser;
+    print("chat user ${_chatUsers.id}");
     _connectedToSocket = false;
     _errorConnectMessage = 'Connecting...';
     _connectSocket();
@@ -43,66 +44,139 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     });
   }
 
-  static openLoginScreen(BuildContext context) async {
-    await Navigator.pushReplacementNamed(
-      context,
-      LoginScreen.ROUTE_ID,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Users'),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                G.socketUtils.closeConnection();
-                openLoginScreen(context);
-              })
-        ],
-      ),
-      body: Container(
-        color: Colors.white,
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(30.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(_connectedToSocket ? 'Connected' : _errorConnectMessage),
-            SizedBox(
-              height: 20.0,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _chatUsers.length,
-                itemBuilder: (_, index) {
-                  User user = _chatUsers[index];
-                  return GestureDetector(
-                    onTap: () {
-                      G.toChatUser = user;
-                      openChatScreen(context);
-                    },
-                    child: ListTile(
-                      title: Text(user.name),
-                      subtitle: Text('ID: ${user.id}, ${user.email}'),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+        centerTitle: true,
+        title: Text(
+          "Chat",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        brightness: Brightness.light,
+        elevation: 0.0,
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.black),
+        leading: IconButton(
+          onPressed: () {
+            G.socketUtils.closeConnection();
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios),
         ),
       ),
-    );
-  }
-
-  static openChatScreen(BuildContext context) async {
-    await Navigator.pushNamed(
-      context,
-      ChatScreen.ROUTE_ID,
+      body: BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+        if (state is LoadingState) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is FailureState) {
+          return Scaffold(
+            body: Center(
+              child: Text(state.msg),
+            ),
+          );
+        }
+        if (state is SuccessState) {
+          list = state.user;
+          return Container(
+            color: Colors.white,
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                    height: 20,
+                    width: MediaQuery.of(context).size.width,
+                    color: _connectedToSocket ? Colors.green : Colors.redAccent,
+                    child: Center(
+                      child: Text(_connectedToSocket
+                          ? 'Connected'
+                          : _errorConnectMessage),
+                    )),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: state.user.length,
+                    itemBuilder: (_, index) {
+                      UserChat user = state.user[index];
+                      return _chatUsers.email != user.email
+                          ? GestureDetector(
+                              onTap: () {
+                                G.toChatUser = user;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen()));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 4),
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 35.0,
+                                    child: user.image != ""
+                                        ? ClipRRect(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(45)),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: FadeInImage.assetNetwork(
+                                                placeholder:
+                                                    'assets/images/small_icon/loading.gif',
+                                                image: user.image,
+                                              ),
+                                            ),
+                                          )
+                                        : ClipRRect(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(45)),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: FadeInImage.assetNetwork(
+                                                placeholder:
+                                                    'assets/images/small_icon/loading.gif',
+                                                image:
+                                                    "https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png",
+                                              ),
+                                            ),
+                                          ),
+                                    backgroundColor: Colors.black,
+                                  ),
+                                  title: Text(
+                                    user.name.toUpperCase(),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  subtitle: Text(
+                                    'ID: ${user.id.substring(0,10)}... - ${user.email}',
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Container();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+        return Container();
+      }),
     );
   }
 
@@ -125,7 +199,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     print('onConnectTimeout $data');
     setState(() {
       _connectedToSocket = false;
-      _errorConnectMessage = 'Connection timedout';
+      _errorConnectMessage = 'Connection timeout';
     });
   }
 

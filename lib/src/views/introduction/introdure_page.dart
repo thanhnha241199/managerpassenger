@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:managepassengercar/repository/user_repository.dart';
+import 'package:managepassengercar/src/views/home/bottombar.dart';
 import 'package:managepassengercar/src/views/introduction/widgets/image_intro.dart';
 
 class IntrodurePage extends StatefulWidget {
+  final UserRepository userRepository;
+
+  IntrodurePage({Key key, @required this.userRepository})
+      : assert(userRepository != null),
+        super(key: key);
+
   @override
   _IntrodurePageState createState() => _IntrodurePageState();
 }
 
 class _IntrodurePageState extends State<IntrodurePage> {
   final introKey = GlobalKey<IntroductionScreenState>();
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -30,22 +39,22 @@ class _IntrodurePageState extends State<IntrodurePage> {
         PageViewModel(
           title: "Fractional shares",
           body:
-          "Instead of having to buy an entire share, invest any amount you want.",
+              "Instead of having to buy an entire share, invest any amount you want.",
           image: ImageIntro(assetName: 'onbroading1'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Learn as you go",
           body:
-          "Download the Stockpile app and master the market with our mini-lesson.",
+              "Download the Stockpile app and master the market with our mini-lesson.",
           image: ImageIntro(assetName: 'onbroading2'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Kids and teens",
           body:
-          "Kids and teens can track their stocks 24/7 and place trades that you approve.",
-          image: ImageIntro(assetName:'onbroading3'),
+              "Kids and teens can track their stocks 24/7 and place trades that you approve.",
+          image: ImageIntro(assetName: 'onbroading3'),
           decoration: pageDecoration,
         ),
         PageViewModel(
@@ -77,12 +86,17 @@ class _IntrodurePageState extends State<IntrodurePage> {
               Text(" to edit a post", style: bodyStyle),
             ],
           ),
-          image: ImageIntro(assetName:'onbroading1'),
+          image: ImageIntro(assetName: 'onbroading1'),
           decoration: pageDecoration,
         ),
       ],
       onDone: () {
-        Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    HomePage(userRepository: widget.userRepository)),
+            (route) => false);
       },
       showSkipButton: true,
       skipFlex: 0,
