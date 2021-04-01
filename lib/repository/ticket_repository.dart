@@ -22,7 +22,6 @@ class TicketRepository {
         queryParameters: {"id": id});
     if (response != null && response.statusCode == 200) {
       var data = response.data;
-      print("data ${data}");
       data.map((ad) => tourbus.add(TourBus.fromJson(ad))).toList();
       return tourbus;
     }
@@ -33,7 +32,6 @@ class TicketRepository {
     Response response = await Dio().get(
         "https://managerpassenger.herokuapp.com/getseat",
         queryParameters: {"idtour": id});
-    print("res : ${response}");
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       data.map((ad) => seat.add(Seat.fromJson(ad))).toList();
@@ -50,6 +48,41 @@ class TicketRepository {
       var data = response.data;
       data.map((ad) => pickup.add(PickUp.fromJson(ad))).toList();
       return pickup;
+    }
+  }
+
+  Future<String> addOrder(
+      String uid,
+      String name,
+      String phone,
+      String email,
+      String idtour,
+      String time,
+      String locationstart,
+      String quantyseat,
+      String seat,
+      String price,
+      String totalprice) async {
+    Map data = {
+      "uid": uid,
+      "name": name,
+      "phone": phone,
+      "email": email,
+      "tour": idtour,
+      "timetour": time,
+      "location": locationstart,
+      "quantity": quantyseat,
+      "seat": seat,
+      "price": price,
+      "totalprice": totalprice
+    };
+    print(data);
+    Response response = await Dio()
+        .post("https://managerpassenger.herokuapp.com/addorder", data: data);
+    print(response);
+    if (response != null && response.statusCode == 200) {
+      var data = response.data;
+      return data['success'].toString();
     }
   }
 }

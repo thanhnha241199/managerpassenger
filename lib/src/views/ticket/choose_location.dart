@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +78,7 @@ class _BottomSheetLocation extends State<BottomSheetLocation> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
                           child: Text(
-                            "Danh sach diem don",
+                            tr('listlocation'),
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           )),
@@ -107,8 +108,9 @@ class _BottomSheetLocation extends State<BottomSheetLocation> {
                                     });
                                     Navigator.pop(
                                         context,
-                                        state.pickup[0].address[num].address
-                                            .toString());
+                                        state.pickup[0].address[num].address +
+                                            " , " +
+                                            state.pickup[0].address[num].title);
                                   },
                                   selected: num == index ? true : false,
                                   trailing: num == index

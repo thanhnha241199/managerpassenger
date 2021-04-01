@@ -12,11 +12,10 @@ import 'package:managepassengercar/src/models/profile_user.dart';
 import 'package:managepassengercar/src/views/chat/chatuserscreen.dart';
 import 'package:managepassengercar/src/views/chat/global.dart';
 import 'package:managepassengercar/src/views/chat/user.dart';
-import 'package:managepassengercar/src/views/home/search_location.dart';
+import 'package:managepassengercar/blocs/rental/view/rental.dart';
 import 'package:managepassengercar/src/views/infor/licence.dart';
 import 'package:managepassengercar/src/views/test.dart';
 import 'package:managepassengercar/src/views/widget/icon_menu.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
@@ -127,13 +126,13 @@ class _HomeState extends State<Home> {
                         IconMenu(Colors.red, EvaIcons.carOutline, tr("menu1"),
                             Ticket(), context),
                         IconMenu(Colors.blueAccent, EvaIcons.attach2,
-                            tr("menu2"), MyLocation(), context),
+                            tr("menu2"), RentalScreen(), context),
                         IconMenu(Colors.grey, EvaIcons.carOutline, tr("menu3"),
-                            Home1(), context),
+                            MyLocation(), context),
                         IconMenu(Colors.green, EvaIcons.carOutline, tr("menu4"),
                             MyLocation(), context),
                         IconMenu(Colors.yellow, EvaIcons.carOutline,
-                            tr("menu5"), Home1(), context),
+                            tr("menu5"), MyLocation(), context),
                       ],
                     ),
                   ),

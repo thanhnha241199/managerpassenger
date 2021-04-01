@@ -34,10 +34,18 @@ class _MyLocationState extends State<MyLocation> {
     location.onLocationChanged.listen((l) {
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 15),
+          CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 25),
         ),
       );
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+    mapController.dispose();
   }
 
   @override

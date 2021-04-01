@@ -161,7 +161,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   subtitle: Text(
-                                    'ID: ${user.id.substring(0,10)}... - ${user.email}',
+                                    'ID: ${user.id.substring(0, 10)}... - ${user.email}',
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),

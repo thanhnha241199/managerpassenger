@@ -3,14 +3,11 @@ import 'package:managepassengercar/blocs/savelocation/blocs/model/addressmodel.d
 import 'package:managepassengercar/src/models/address.dart';
 
 class AddressRepository {
-  Future<List<Address>> fetchAddress() async {
+  Future<List<Address>> fetchAddress(String id) async {
     List<Address> address = [];
-    Map data = {
-      'uid': '603315cf7c9ba513e47d3e28',
-    };
-    Response response =
-        await Dio().get("https://managerpassenger.herokuapp.com/getaddress");
 
+    Response response = await Dio()
+        .get("https://managerpassenger.herokuapp.com/getaddress?uid=${id}");
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       data.map((ad) => address.add(Address.fromJson(ad))).toList();
@@ -20,9 +17,6 @@ class AddressRepository {
 
   Future<List<AddressModel>> fetchAddressModel() async {
     List<AddressModel> address = [];
-    Map data = {
-      'uid': '603315cf7c9ba513e47d3e28',
-    };
     Response response =
         await Dio().get("https://managerpassenger.herokuapp.com/addressmodel");
     if (response != null && response.statusCode == 200) {

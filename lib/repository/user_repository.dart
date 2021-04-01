@@ -73,7 +73,11 @@ class UserRepository {
     @required String phone,
   }) async {
     UserRegister userRegister = UserRegister(
-        username: username, password: password, name: name, phone: phone);
+        username: username,
+        password: password,
+        name: name,
+        phone: phone,
+        type: '1');
     var res = await signUp(userRegister);
     print(res);
   }

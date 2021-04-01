@@ -142,23 +142,134 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                           ),
-                    Column(
-                      children: [
-                        Container(
+                    SizedBox(
+                      height: (10.0),
+                      child: Container(
+                        color: Color(0xFFf5f6f7),
+                      ),
+                    ),
+                    Container(
+                        height: 60,
+                        child: Stack(children: <Widget>[
+                          GestureDetector(
+                              child: ListTile(
+                                contentPadding: EdgeInsets.all(8),
+                                title: Text(tr("setting")),
+                                leading: Icon(
+                                  EvaIcons.settingsOutline,
+                                ),
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SettingApp()));
+                              }),
+                          Divider(),
+                        ])),
+                    Container(
+                        height: 60,
+                        child: Stack(children: <Widget>[
+                          GestureDetector(
+                              child: ListTile(
+                                contentPadding: EdgeInsets.all(8),
+                                title: Text(tr("banner drive")),
+                                leading: Icon(
+                                  EvaIcons.loaderOutline,
+                                ),
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => BannedDriver()));
+                              }),
+                          Divider(),
+                        ])),
+                    Container(
+                        height: 60,
+                        child: Stack(children: <Widget>[
+                          GestureDetector(
+                              child: ListTile(
+                                contentPadding: EdgeInsets.all(8),
+                                title: Text(tr("address")),
+                                leading: Icon(
+                                  EvaIcons.toggleRightOutline,
+                                ),
+                                trailing: Icon(Icons.keyboard_arrow_right),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SaveLocation()));
+                              }),
+                          Divider(),
+                        ])),
+                    check == null
+                        ? Text("")
+                        : Container(
                             height: 60,
                             child: Stack(children: <Widget>[
                               GestureDetector(
                                   child: ListTile(
                                     contentPadding: EdgeInsets.all(8),
-                                    title: Text("Quan ly don hang"),
+                                    title: Text(tr("changepass")),
                                     leading: Icon(
-                                      EvaIcons.archiveOutline,
+                                      EvaIcons.toggleLeftOutline,
                                     ),
                                     trailing: Icon(Icons.keyboard_arrow_right),
                                   ),
                                   onTap: () {
-                                    BlocProvider.of<AuthenticationBloc>(context)
-                                        .add(LoggedOut());
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                FormChangePassword()));
+                                  }),
+                              Divider(),
+                            ])),
+                    check == null
+                        ? Text("")
+                        : Container(
+                            height: 60,
+                            child: Stack(children: <Widget>[
+                              GestureDetector(
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.all(8),
+                                    title: Text(tr("logout")),
+                                    leading: Icon(
+                                      EvaIcons.logOut,
+                                    ),
+                                    trailing: Icon(Icons.keyboard_arrow_right),
+                                  ),
+                                  onTap: () {
+                                    final action = CupertinoActionSheet(
+                                      message: Text(
+                                        "Bạn có muốn đăng xuất ?",
+                                        style: TextStyle(fontSize: 15.0),
+                                      ),
+                                      actions: <Widget>[
+                                        CupertinoActionSheetAction(
+                                          child: Text("Đăng xuất"),
+                                          isDestructiveAction: true,
+                                          onPressed: () {
+                                            logout();
+                                          },
+                                        )
+                                      ],
+                                      cancelButton: CupertinoActionSheetAction(
+                                        child: Text("Cancel"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    );
+                                    showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (context) => action);
                                   }),
                               SizedBox(
                                 height: (10.0),
@@ -166,181 +277,7 @@ class _ProfileState extends State<Profile> {
                                   color: Color(0xFFf5f6f7),
                                 ),
                               ),
-                              //replyNotification(),
-                            ])),
-                        Container(
-                            height: 60,
-                            child: Stack(children: <Widget>[
-                              GestureDetector(
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.all(8),
-                                    title: Text("Don the nap"),
-                                    leading: Icon(
-                                      EvaIcons.browserOutline,
-                                    ),
-                                    trailing: Icon(Icons.keyboard_arrow_right),
-                                  ),
-                                  onTap: () {}),
-                              Divider(),
-                            ])),
-                        Container(
-                            height: 60,
-                            child: Stack(children: <Widget>[
-                              GestureDetector(
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.all(8),
-                                    title: Text("Mua lan nua"),
-                                    leading: Icon(
-                                      EvaIcons.flip2Outline,
-                                    ),
-                                    trailing: Icon(Icons.keyboard_arrow_right),
-                                  ),
-                                  onTap: () {}),
-                              SizedBox(
-                                height: 10.0,
-                                child: Container(
-                                  color: Color(0xFFf5f6f7),
-                                ),
-                              ),
-                            ])),
-                        Container(
-                            height: 60,
-                            child: Stack(children: <Widget>[
-                              GestureDetector(
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.all(8),
-                                    title: Text(tr("setting")),
-                                    leading: Icon(
-                                      EvaIcons.settingsOutline,
-                                    ),
-                                    trailing: Icon(Icons.keyboard_arrow_right),
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SettingApp()));
-                                  }),
-                              Divider(),
-                            ])),
-                        Container(
-                            height: 60,
-                            child: Stack(children: <Widget>[
-                              GestureDetector(
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.all(8),
-                                    title: Text(tr("banner drive")),
-                                    leading: Icon(
-                                      EvaIcons.loaderOutline,
-                                    ),
-                                    trailing: Icon(Icons.keyboard_arrow_right),
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                BannedDriver()));
-                                  }),
-                              Divider(),
-                            ])),
-                        Container(
-                            height: 60,
-                            child: Stack(children: <Widget>[
-                              GestureDetector(
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.all(8),
-                                    title: Text(tr("address")),
-                                    leading: Icon(
-                                      EvaIcons.toggleRightOutline,
-                                    ),
-                                    trailing: Icon(Icons.keyboard_arrow_right),
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SaveLocation()));
-                                  }),
-                              Divider(),
-                            ])),
-                        check == null
-                            ? Text("")
-                            : Container(
-                                height: 60,
-                                child: Stack(children: <Widget>[
-                                  GestureDetector(
-                                      child: ListTile(
-                                        contentPadding: EdgeInsets.all(8),
-                                        title: Text(tr("changepass")),
-                                        leading: Icon(
-                                          EvaIcons.toggleLeftOutline,
-                                        ),
-                                        trailing:
-                                            Icon(Icons.keyboard_arrow_right),
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    FormChangePassword()));
-                                      }),
-                                  Divider(),
-                                ])),
-                        check == null
-                            ? Text("")
-                            : Container(
-                                height: 60,
-                                child: Stack(children: <Widget>[
-                                  GestureDetector(
-                                      child: ListTile(
-                                        contentPadding: EdgeInsets.all(8),
-                                        title: Text(tr("logout")),
-                                        leading: Icon(
-                                          EvaIcons.logOut,
-                                        ),
-                                        trailing:
-                                            Icon(Icons.keyboard_arrow_right),
-                                      ),
-                                      onTap: () {
-                                        final action = CupertinoActionSheet(
-                                          message: Text(
-                                            "Bạn có muốn đăng xuất ?",
-                                            style: TextStyle(fontSize: 15.0),
-                                          ),
-                                          actions: <Widget>[
-                                            CupertinoActionSheetAction(
-                                              child: Text("Đăng xuất"),
-                                              isDestructiveAction: true,
-                                              onPressed: () {
-                                                logout();
-                                              },
-                                            )
-                                          ],
-                                          cancelButton:
-                                              CupertinoActionSheetAction(
-                                            child: Text("Cancel"),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        );
-                                        showCupertinoModalPopup(
-                                            context: context,
-                                            builder: (context) => action);
-                                      }),
-                                  SizedBox(
-                                    height: (10.0),
-                                    child: Container(
-                                      color: Color(0xFFf5f6f7),
-                                    ),
-                                  ),
-                                ])),
-                      ],
-                    )
+                            ]))
                   ],
                 ),
               ),

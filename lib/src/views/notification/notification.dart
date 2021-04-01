@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class Notifications extends StatefulWidget {
@@ -6,6 +9,38 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
+  String messageTitle = "Empty";
+  String notificationAlert = "alert";
+
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  @override
+  void initState() {
+    StreamSubscription iosSubscription =
+        _firebaseMessaging.onIosSettingsRegistered.listen((data) {
+      print('data: $data');
+    });
+    // TODO: implement initState
+    super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (message) async {
+        setState(() {
+          messageTitle = message["notification"]["title"];
+          notificationAlert = "New Notification Alert";
+        });
+      },
+      // onBackgroundMessage: fcmBackgroundMessageHandler,
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (message) async {
+        setState(() {
+          messageTitle = message["data"]["title"];
+          notificationAlert = "Application opened from Notification";
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +71,9 @@ class _NotificationsState extends State<Notifications> {
             child: Container(
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0))
-              ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25.0),
+                      topRight: Radius.circular(25.0))),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -49,6 +85,20 @@ class _NotificationsState extends State<Notifications> {
                       width: 150.0,
                     ),
                     Text("Hiện tại, bạn không có thông báo mới nào."),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            notificationAlert,
+                          ),
+                          Text(
+                            messageTitle,
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),

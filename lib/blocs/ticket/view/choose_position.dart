@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,63 +31,66 @@ class _ChoosePositionState extends State<ChoosePosition> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Text("Chon giuong ${count}/5"),
-            centerTitle: true,
-            backgroundColor: Colors.white,
-            brightness: Brightness.light,
-            elevation: 0.0,
-            actionsIconTheme: IconThemeData(color: Colors.black),
-            iconTheme: IconThemeData(color: Colors.black),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context, seat);
-                },
-                icon: Icon(Icons.close),
-              )
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text("${tr('choosev')} ${count}/5"),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+          elevation: 0.0,
+          actionsIconTheme: IconThemeData(color: Colors.black),
+          iconTheme: IconThemeData(color: Colors.black),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context, seat);
+              },
+              icon: Icon(Icons.close),
+            )
+          ],
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                  icon: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [Icon(Icons.download_outlined), Text(tr('flors1'))],
+              )),
+              Tab(
+                  icon: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [Icon(Icons.upgrade_outlined), Text(tr('flors2'))],
+              )),
             ],
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                    icon: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [Icon(Icons.download_outlined), Text("Tang duoi")],
-                )),
-                Tab(
-                    icon: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [Icon(Icons.upgrade_outlined), Text("Tang tren")],
-                )),
-              ],
-            ),
           ),
-          body: BlocBuilder<TicketBloc, TicketState>(
-            builder: (context, state) {
-              if (state is LoadingState) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (state is FailureState) {
-                return Scaffold(
-                  body: Center(
-                    child: Text(state.msg),
-                  ),
-                );
-              }
-              if (state is SuccessState) {
-                return TabBarView(
-                  children: [
-                    Column(
+        ),
+        body: BlocBuilder<TicketBloc, TicketState>(
+          builder: (context, state) {
+            if (state is LoadingState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is FailureState) {
+              return Scaffold(
+                body: Center(
+                  child: Text(state.msg),
+                ),
+              );
+            }
+            if (state is SuccessState) {
+              return TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: Column(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.5,
+                          height: MediaQuery.of(context).size.height * 0.45,
                           color: Colors.white,
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: SingleChildScrollView(
@@ -104,8 +108,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[0] =
@@ -174,8 +178,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[1] =
@@ -320,8 +324,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[3] =
@@ -456,8 +460,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[5] =
@@ -532,8 +536,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[6] =
@@ -668,8 +672,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[8] =
@@ -744,8 +748,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[9] =
@@ -880,8 +884,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[11] =
@@ -956,8 +960,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[12] =
@@ -1092,8 +1096,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[14] =
@@ -1176,8 +1180,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors1[15] =
@@ -1256,8 +1260,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors1[16] =
@@ -1328,8 +1332,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors1[17] =
@@ -1400,8 +1404,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors1[18] =
@@ -1472,8 +1476,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors1[19] =
@@ -1544,8 +1548,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors1[20] =
@@ -1634,17 +1638,23 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                     children: [
                                       Row(
                                         children: [
-                                          Text("Ghế đã chọn"),
+                                          Text(tr('seated'),
+                                              style: TextStyle(fontSize: 18)),
                                           Spacer(),
-                                          Text(seat == null ? " " : seat)
+                                          Text(
+                                            seat == null ? " " : seat,
+                                            style: TextStyle(fontSize: 16),
+                                          )
                                         ],
                                       ),
                                       Row(
                                         children: [
-                                          Text("Tổng tiền"),
+                                          Text(tr('total'),
+                                              style: TextStyle(fontSize: 18)),
                                           Spacer(),
                                           Text(
-                                              "${count * int.parse(widget.price)} VND")
+                                              "${count * int.parse(widget.price)} VND",
+                                              style: TextStyle(fontSize: 18))
                                         ],
                                       ),
                                     ],
@@ -1673,7 +1683,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text("Trống")
+                                      Text(tr('empty'),
+                                          style: TextStyle(fontSize: 18))
                                     ],
                                   ),
                                   Row(
@@ -1691,7 +1702,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text("Đang chọn")
+                                      Text(tr('choosing'),
+                                          style: TextStyle(fontSize: 18))
                                     ],
                                   ),
                                   Row(
@@ -1709,30 +1721,24 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text("Đã đặt")
+                                      Text(tr('ordered'),
+                                          style: TextStyle(fontSize: 18))
                                     ],
                                   ),
                                 ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 10),
-                                child: DefaultButton(
-                                  press: () {
-                                    Navigator.pop(context, seat);
-                                  },
-                                  text: "Tiep tuc",
-                                ),
                               ),
                             ],
                           ),
                         )
                       ],
                     ),
-                    Column(
+                  ),
+                  Container(
+                    color: Colors.white,
+                    child: Column(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.5,
+                          height: MediaQuery.of(context).size.height * 0.45,
                           color: Colors.white,
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: SingleChildScrollView(
@@ -1750,8 +1756,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[0] =
@@ -1820,8 +1826,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[1] =
@@ -1890,8 +1896,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[2] =
@@ -1966,8 +1972,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[3] =
@@ -2102,8 +2108,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[5] =
@@ -2178,8 +2184,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[6] =
@@ -2314,8 +2320,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[8] =
@@ -2390,8 +2396,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[9] =
@@ -2526,8 +2532,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[11] =
@@ -2602,8 +2608,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[12] =
@@ -2738,8 +2744,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[14] =
@@ -2822,8 +2828,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                 if (seat.length >= 19) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Khong the them nua!'),
+                                                    content:
+                                                        Text(tr('alertseat')),
                                                   ));
                                                 } else {
                                                   state.seat[0].floors2[15] =
@@ -2902,8 +2908,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors2[16] =
@@ -2974,8 +2980,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors2[17] =
@@ -3046,8 +3052,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors2[18] =
@@ -3118,8 +3124,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors2[19] =
@@ -3190,8 +3196,8 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          'Khong the them nua!'),
+                                                      content:
+                                                          Text(tr('alertseat')),
                                                     ));
                                                   } else {
                                                     state.seat[0].floors2[20] =
@@ -3280,17 +3286,28 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                     children: [
                                       Row(
                                         children: [
-                                          Text("Ghế đã chọn"),
+                                          Text(
+                                            tr('seated'),
+                                            style: TextStyle(fontSize: 18),
+                                          ),
                                           Spacer(),
-                                          Text(seat == null ? " " : seat)
+                                          Text(
+                                            seat == null ? " " : seat,
+                                            style: TextStyle(fontSize: 16),
+                                          )
                                         ],
                                       ),
                                       Row(
                                         children: [
-                                          Text("Tổng tiền"),
+                                          Text(
+                                            tr('total'),
+                                            style: TextStyle(fontSize: 18),
+                                          ),
                                           Spacer(),
                                           Text(
-                                              "${count * int.parse(widget.price)} VND")
+                                            "${count * int.parse(widget.price)} VND",
+                                            style: TextStyle(fontSize: 18),
+                                          )
                                         ],
                                       ),
                                     ],
@@ -3319,7 +3336,10 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text("Trống")
+                                      Text(
+                                        tr('empty'),
+                                        style: TextStyle(fontSize: 18),
+                                      )
                                     ],
                                   ),
                                   Row(
@@ -3337,7 +3357,10 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text("Đang chọn")
+                                      Text(
+                                        tr('choosing'),
+                                        style: TextStyle(fontSize: 18),
+                                      )
                                     ],
                                   ),
                                   Row(
@@ -3355,31 +3378,38 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text("Đã đặt")
+                                      Text(
+                                        tr('ordered'),
+                                        style: TextStyle(fontSize: 18),
+                                      )
                                     ],
                                   ),
                                 ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 10),
-                                child: DefaultButton(
-                                  press: () {},
-                                  text: "Tiep tuc",
-                                ),
                               ),
                             ],
                           ),
                         )
                       ],
                     ),
-                  ],
-                );
-              }
-              return Container();
+                  ),
+                ],
+              );
+            }
+            return Container();
+          },
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+          child: DefaultButton(
+            press: () {
+              Navigator.pop(context, seat);
             },
+            text: tr('continue'),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   String replaceWhitespacesUsingRegex(String s, String replace) {

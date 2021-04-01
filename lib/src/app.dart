@@ -6,13 +6,17 @@ import 'package:managepassengercar/blocs/authentication/bloc/authentication_bloc
 import 'package:managepassengercar/blocs/chat/bloc/chat_bloc.dart';
 import 'package:managepassengercar/blocs/employee/bloc/employee_bloc.dart';
 import 'package:managepassengercar/blocs/employee/view/employee.dart';
+import 'package:managepassengercar/blocs/payment/bloc/payment_bloc.dart';
+import 'package:managepassengercar/blocs/rental/bloc/rental_bloc.dart';
 import 'package:managepassengercar/blocs/savelocation/blocs/location_bloc.dart';
 import 'package:managepassengercar/blocs/ticket/blocs/ticket_bloc.dart';
 import 'package:managepassengercar/blocs/userprofile/blocs/profile_bloc.dart';
 import 'package:managepassengercar/repository/address_repository.dart';
 import 'package:managepassengercar/repository/chat_repository.dart';
 import 'package:managepassengercar/repository/employee_repository.dart';
+import 'package:managepassengercar/repository/payment_repository.dart';
 import 'package:managepassengercar/repository/profile_repository.dart';
+import 'package:managepassengercar/repository/rental_repository.dart';
 import 'package:managepassengercar/repository/ticket_repository.dart';
 import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/views/home/bottombar.dart';
@@ -34,10 +38,16 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (context) =>
+                RentalBloc(RentalInitialState(), RentalRepository())),
+        BlocProvider(
+            create: (context) =>
                 EmployeeBloc(EmployeeInitialState(), EmployeeRepository())),
         BlocProvider(
             create: (context) =>
                 ChatBloc(InitialChatState(), ChatRepository())),
+        BlocProvider(
+            create: (context) =>
+                PaymentBloc(PaymentInitialState(), PaymentRepository())),
         BlocProvider(
           create: (context) =>
               TicketBloc(TicketInitialState(), TicketRepository()),

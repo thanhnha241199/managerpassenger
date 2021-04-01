@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class Ticket extends StatefulWidget {
 class _TicketState extends State<Ticket> with TickerProviderStateMixin {
   int selectRadio;
   DateTime selectedDate = DateTime.now();
+  DateTime selectedDateReturn = DateTime.now();
   bool swap;
 
   bool _decideWhichDayToEnable(DateTime day) {
@@ -45,6 +47,21 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
       case TargetPlatform.linux:
       case TargetPlatform.windows:
         return buildMaterialDatePicker(context);
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return buildCupertinoDatePicker(context);
+    }
+  }
+
+  _selectDateReturn(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    assert(theme.platform != null);
+    switch (theme.platform) {
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        return buildMaterialDatePickerReturn(context);
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
         return buildCupertinoDatePicker(context);
@@ -98,18 +115,18 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2000),
+      firstDate: DateTime(2021),
       lastDate: DateTime(2025),
       initialEntryMode: DatePickerEntryMode.calendar,
       initialDatePickerMode: DatePickerMode.day,
       selectableDayPredicate: _decideWhichDayToEnable,
-      helpText: 'Select booking date',
-      cancelText: 'Not now',
-      confirmText: 'Book',
-      errorFormatText: 'Enter valid date',
-      errorInvalidText: 'Enter date in valid range',
-      fieldLabelText: 'Booking date',
-      fieldHintText: 'Month/Date/Year',
+      helpText: tr('"Selectbookingdate"'),
+      cancelText: tr('cancel'),
+      confirmText: tr('book'),
+      errorFormatText: tr('Entervaliddate'),
+      errorInvalidText: tr('Enterdateinvalidrange'),
+      fieldLabelText: tr('Bookingdate'),
+      fieldHintText: tr('Month/Date/Year'),
       builder: (context, child) {
         return Theme(
           data: ThemeData.light(),
@@ -120,6 +137,35 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
+      });
+  }
+
+  buildMaterialDatePickerReturn(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2021),
+      lastDate: DateTime(2025),
+      initialEntryMode: DatePickerEntryMode.calendar,
+      initialDatePickerMode: DatePickerMode.day,
+      selectableDayPredicate: _decideWhichDayToEnable,
+      helpText: tr('"Selectbookingdate"'),
+      cancelText: tr('cancel'),
+      confirmText: tr('book'),
+      errorFormatText: tr('Entervaliddate'),
+      errorInvalidText: tr('Enterdateinvalidrange'),
+      fieldLabelText: tr('Bookingdate'),
+      fieldHintText: tr('Month/Date/Year'),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child,
+        );
+      },
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDateReturn = picked;
       });
   }
 
@@ -134,7 +180,7 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Mua vé xe",
+          tr('buyticket'),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -156,7 +202,7 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(EvaIcons.fileTextOutline),
-                Text("Đơn mua"),
+                Text(tr('rentalorder')),
               ],
             ),
           ),
@@ -194,6 +240,7 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                     height: MediaQuery.of(context).size.height * 0.2),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
                       padding:
@@ -215,7 +262,7 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Điêm khởi hành",
+                                  tr('locationstart'),
                                   style: TextStyle(),
                                 ),
                                 swap == false
@@ -260,7 +307,7 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Điểm đến",
+                                  tr('locationend'),
                                   style: TextStyle(),
                                 ),
                                 swap == false
@@ -296,7 +343,7 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Ngày khởi hành",
+                                    tr('timestart'),
                                     style: TextStyle(fontSize: 18),
                                   ),
                                   GestureDetector(
@@ -327,7 +374,7 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Khứ hồi",
+                                    tr('2chieu'),
                                     style: TextStyle(fontSize: 18),
                                   ),
                                   SwitchControl(
@@ -355,12 +402,12 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                               ? Column(
                                   children: [
                                     Text(
-                                      "Ngày về",
+                                      tr('timeend'),
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        _selectDate(context);
+                                        _selectDateReturn(context);
                                       },
                                       child: Container(
                                         padding: EdgeInsets.symmetric(
@@ -371,7 +418,7 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                                             borderRadius:
                                                 BorderRadius.circular(8)),
                                         child: Text(
-                                          "${selectedDate.toLocal()}"
+                                          "${selectedDateReturn.toLocal()}"
                                               .split(' ')[0],
                                           style: TextStyle(
                                               fontSize: 20,
@@ -386,15 +433,22 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                             height: 20,
                           ),
                           DefaultButton(
-                            text: 'Tìm vé',
+                            text: tr('findtick'),
                             press: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => ChooseTicket(
+                                            datestart: selectedDate.toString(),
+                                            dateback:
+                                                selectedDateReturn.toString(),
                                             tourBus: state.buyticket[number],
                                             dumplex: ontap,
-                                          )));
+                                          ))).then((value) {
+                                setState(() {
+                                  ontap = value;
+                                });
+                              });
                             },
                           ),
                           SizedBox(
@@ -404,7 +458,7 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Tuyến phổ biến",
+                                tr('tickpopular'),
                                 style: TextStyle(fontSize: 16),
                               ),
                               GestureDetector(
@@ -426,11 +480,11 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                                   children: [
                                     _switchValue
                                         ? Text(
-                                            "Tat ca",
+                                            tr('all'),
                                             style: TextStyle(fontSize: 16),
                                           )
                                         : Text(
-                                            "Khuyen mai",
+                                            tr('sale'),
                                             style: TextStyle(fontSize: 16),
                                           ),
                                     Icon(Icons.arrow_drop_down)
@@ -445,74 +499,69 @@ class _TicketState extends State<Ticket> with TickerProviderStateMixin {
                   ],
                 ),
                 Container(
-                  padding: EdgeInsets.only(
-                      top: ontap ? 380 : 300, right: 20, left: 20),
-                  child: Stack(
-                    children: [
-                      ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (BuildContext buildContext, int index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: index == number
-                                        ? Colors.red
-                                        : Colors.white),
-                                borderRadius: BorderRadius.circular(12)),
-                            child: ListTile(
-                              onTap: () {
-                                setState(() {
-                                  widget.locationstart =
-                                      state.buyticket[index].locationstart;
-                                  widget.locationend =
-                                      state.buyticket[index].locationend;
-                                  number = index;
-                                  print(number);
-                                });
-                              },
-                              selected: index == number ? true : false,
-                              title: Row(
-                                children: [
-                                  Text(state.buyticket[index].locationstart),
-                                  Spacer(),
-                                  Icon(EvaIcons.arrowForwardOutline),
-                                  Spacer(),
-                                  Text(state.buyticket[index].locationend)
-                                ],
-                              ),
-                              subtitle: Row(
-                                children: [
-                                  Text(state.buyticket[index].range),
-                                  Spacer(),
-                                  Text(
-                                    state.buyticket[index].time,
-                                  ),
-                                  Spacer(),
-                                  Text(state.buyticket[index].price)
-                                ],
-                              ),
-                              trailing: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.id = state.buyticket[index].id;
-                                    });
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ChedulesBus(id: widget.id)));
-                                  },
-                                  child:
-                                      Icon(EvaIcons.arrowCircleRightOutline)),
+                    padding: EdgeInsets.only(
+                        top: ontap ? 450 : 380, right: 20, left: 20),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext buildContext, int index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: index == number
+                                      ? Colors.red
+                                      : Colors.white),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: ListTile(
+                            onTap: () {
+                              setState(() {
+                                widget.locationstart =
+                                    state.buyticket[index].locationstart;
+                                widget.locationend =
+                                    state.buyticket[index].locationend;
+                                number = index;
+                                print(number);
+                              });
+                            },
+                            selected: index == number ? true : false,
+                            title: Row(
+                              children: [
+                                Text(state.buyticket[index].locationstart),
+                                Spacer(),
+                                Icon(EvaIcons.arrowForwardOutline),
+                                Spacer(),
+                                Text(state.buyticket[index].locationend)
+                              ],
                             ),
-                          );
-                        },
-                        itemCount: state.buyticket.length,
-                      )
-                    ],
-                  ),
-                )
+                            subtitle: Row(
+                              children: [
+                                Text(state.buyticket[index].range),
+                                Spacer(),
+                                Text(
+                                  state.buyticket[index].time,
+                                ),
+                                Spacer(),
+                                Text(state.buyticket[index].price)
+                              ],
+                            ),
+                            trailing: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    widget.id = state.buyticket[index].id;
+                                  });
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ChedulesBus(id: widget.id)));
+                                },
+                                child: Icon(EvaIcons.arrowCircleRightOutline)),
+                          ),
+                        );
+                      },
+                      itemCount: state.buyticket.length,
+                    )),
               ],
             );
           }

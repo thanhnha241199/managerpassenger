@@ -66,119 +66,94 @@ class _SettingAppState extends State<SettingApp> {
             icon: Icon(Icons.arrow_back_ios),
           ),
         ),
-        body: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height * 0.28,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tr("manual"),
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-                    child: Row(
-                      children: [
-                        Text(
-                          tr("dartmode"),
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        Spacer(),
-                        SwitchControl(
-                          onChanged: (value) {
-                            if (ontap == true) {
-                              setState(() {
-                                ontap = false;
-                              });
-                            } else {
-                              setState(() {
-                                ontap = true;
-                              });
-                            }
-                            //   context.read<ThemeCubit>().toggleTheme();
-                          },
-                          value: ontap,
-                        )
-                      ],
+        body: Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                height: MediaQuery.of(context).size.height * 0.17,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      tr("manual"),
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Ngon ngu",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        Spacer(),
-                        SwitchControl(
-                          onChanged: (value) {
-                            if (ontap == true) {
-                              setState(() {
-                                ontap = false;
-                              });
-                            } else {
-                              setState(() {
-                                ontap = true;
-                              });
-                            }
-                            //   context.read<ThemeCubit>().toggleTheme();
-                          },
-                          value: ontap,
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height * 0.28,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tr("setting lang"),
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _navigateAndDisplaySelection(context);
-                    },
-                    child: Container(
+                    Container(
                       padding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                       child: Row(
                         children: [
                           Text(
-                            tr("language"),
+                            tr("dartmode"),
                             style: TextStyle(fontSize: 18),
                           ),
                           Spacer(),
-                          Text(
-                            language,
-                            style: TextStyle(fontSize: 18),
-                          ),
+                          SwitchControl(
+                            onChanged: (value) {
+                              if (ontap == true) {
+                                setState(() {
+                                  ontap = false;
+                                });
+                              } else {
+                                setState(() {
+                                  ontap = true;
+                                });
+                              }
+                              //   context.read<ThemeCubit>().toggleTheme();
+                            },
+                            value: ontap,
+                          )
                         ],
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                color: Colors.white,
+                height: MediaQuery.of(context).size.height * 0.28,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      tr("setting lang"),
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _navigateAndDisplaySelection(context);
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                        child: Row(
+                          children: [
+                            Text(
+                              tr("language"),
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Spacer(),
+                            Text(
+                              language,
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }

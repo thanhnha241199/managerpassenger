@@ -67,6 +67,13 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
           ),
         ),
         body: BlocBuilder<ProfileBloc, ProfileState>(
+          buildWhen: (previous, current) {
+            if (previous is SuccessProfileState) {
+              return false;
+            } else {
+              return true;
+            }
+          },
           builder: (context, state) {
             if (state is LoadingProfileState) {
               return Center(

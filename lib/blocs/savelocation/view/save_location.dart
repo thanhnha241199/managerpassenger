@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:managepassengercar/blocs/savelocation/blocs/location_bloc.dart';
 import 'package:managepassengercar/blocs/savelocation/view/form_location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveLocation extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _SaveLocationState extends State<SaveLocation> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
         .copyWith(statusBarColor: Colors.transparent));
+
     BlocProvider.of<AddressBloc>(context).add(DoFetchEvent());
     return Scaffold(
       appBar: AppBar(
@@ -62,36 +64,52 @@ class _SaveLocationState extends State<SaveLocation> {
               );
             }
             if (state is SuccessState) {
-              return Stack(
-                children: [
-                  Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      child: Text(
-                        "Location favorite",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40.0),
-                    child: Container(
-                        child: ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            itemCount: state.address.length,
-                            itemBuilder: (context, index) {
-                              return AddressContainer(
-                                  state.address[index].title,
-                                  state.address[index].address,
-                                  state.address[index].uid,
-                                  state.address[index].id);
-                            })),
-                  ),
-                ],
-              );
+              return state.address.length != 0
+                  ? Stack(
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 10.0),
+                            child: Text(
+                              "Location favorite",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 40.0),
+                          child: Container(
+                              child: ListView.builder(
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: state.address.length,
+                                  itemBuilder: (context, index) {
+                                    return AddressContainer(
+                                        state.address[index].title,
+                                        state.address[index].address,
+                                        state.address[index].uid,
+                                        state.address[index].id);
+                                  })),
+                        ),
+                      ],
+                    )
+                  : Container(
+                      color: Colors.white,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/screen/9_Location Error.png",
+                            fit: BoxFit.cover,
+                          ),
+                          Text(
+                            "Chua co dia chi",
+                            style: TextStyle(fontSize: 22),
+                          )
+                        ],
+                      ),
+                    );
             }
-            return Container(
-              child: Text("Error"),
-            );
+            return Container();
           },
         ),
       ),
@@ -103,31 +121,45 @@ class _SaveLocationState extends State<SaveLocation> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.11,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(12)),
-        child: ListTile(
-          title: Text(title),
-          subtitle: Text(subtitle),
-          leading: Icon(EvaIcons.pinOutline),
-          trailing: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FormLocation(
-                            title: title,
-                            address: subtitle,
-                            uid: uid,
-                            id: id,
-                          )));
-            },
-            child: Column(
-              children: [Icon(EvaIcons.edit2Outline), Text("Edit")],
-            ),
-          ),
-        ),
-      ),
+          height: MediaQuery.of(context).size.height * 0.13,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(12)),
+          child: ListTile(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              title: Text(
+                title,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+              ),
+              subtitle: Text(
+                subtitle,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w200),
+              ),
+              leading: Container(
+                padding: EdgeInsets.only(right: 12.0),
+                decoration: BoxDecoration(
+                    border: Border(
+                        right: BorderSide(width: 1.0, color: Colors.black))),
+                child: Icon(
+                  Icons.turned_in,
+                  color: Colors.black,
+                  size: 35,
+                ),
+              ),
+              trailing: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FormLocation(
+                                  title: title,
+                                  address: subtitle,
+                                  uid: uid,
+                                  id: id,
+                                )));
+                  },
+                  child: Icon(Icons.keyboard_arrow_right,
+                      color: Colors.black, size: 30.0)))),
     );
   }
 }

@@ -8,6 +8,8 @@ class AddressEvent extends Equatable {
 
 class DoFetchEvent extends AddressEvent {}
 
+class DoFetchAddressEvent extends AddressEvent {}
+
 class UpdateEvent extends AddressEvent {
   final String id;
   final String name;
@@ -20,15 +22,15 @@ class UpdateEvent extends AddressEvent {
 }
 
 class AddEvent extends AddressEvent {
-  final String id;
   final String name;
   final String address;
 
-  AddEvent({@required this.id, @required this.name, @required this.address});
+  AddEvent({@required this.name, @required this.address});
 
   @override
-  List<Object> get props => [id, name, address];
+  List<Object> get props => [name, address];
 }
+
 class DeleteEvent extends AddressEvent {
   final String id;
 
@@ -37,4 +39,3 @@ class DeleteEvent extends AddressEvent {
   @override
   List<Object> get props => [id];
 }
-

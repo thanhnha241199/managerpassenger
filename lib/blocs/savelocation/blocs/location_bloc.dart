@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:managepassengercar/blocs/savelocation/blocs/model/addressmodel.dart';
 import 'package:managepassengercar/repository/address_repository.dart';
 import 'package:managepassengercar/src/models/address.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'location_event.dart';
 
@@ -21,9 +22,24 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     if (addressEvent is DoFetchEvent) {
       yield LoadingState();
       try {
-        var address = await addressRepository.fetchAddress();
+        SharedPreferences pref = await SharedPreferences.getInstance();
+
+        var address =
+            await addressRepository.fetchAddress(pref.getString('id'));
         var addressmodel = await addressRepository.fetchAddressModel();
         yield SuccessState(address: address, addressmodel: addressmodel);
+      } catch (e) {
+        yield FailureState(msg: e.toString());
+      }
+    }
+    if (addressEvent is DoFetchAddressEvent) {
+      yield LoadingState();
+      try {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+
+        var address =
+            await addressRepository.fetchAddress(pref.getString('id'));
+        yield SuccessState(address: address);
       } catch (e) {
         yield FailureState(msg: e.toString());
       }
@@ -40,8 +56,11 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
             yield UpdateSuccessState();
             yield LoadingState();
             try {
-              var address = await addressRepository.fetchAddress();
-              yield SuccessState(address: address);
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              var address =
+                  await addressRepository.fetchAddress(pref.getString('id'));
+              var addressmodel = await addressRepository.fetchAddressModel();
+              yield SuccessState(address: address, addressmodel: addressmodel);
             } catch (e) {
               yield FailureState(msg: e.toString());
             }
@@ -57,14 +76,20 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         yield AddNullState();
       } else {
         try {
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          print("pref : ${pref.getString('id')}");
           String msg = await addressRepository.addAddress(
-              addressEvent.id, addressEvent.name, addressEvent.address);
+              pref.getString('id'), addressEvent.name, addressEvent.address);
           if (msg == "true") {
             yield AddSuccessState();
             yield LoadingState();
             try {
-              var address = await addressRepository.fetchAddress();
-              yield SuccessState(address: address);
+              SharedPreferences pref = await SharedPreferences.getInstance();
+
+              var address =
+                  await addressRepository.fetchAddress(pref.getString('id'));
+              var addressmodel = await addressRepository.fetchAddressModel();
+              yield SuccessState(address: address, addressmodel: addressmodel);
             } catch (e) {
               yield FailureState(msg: e.toString());
             }
@@ -82,8 +107,11 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
           yield DeleteSuccessState();
           yield LoadingState();
           try {
-            var address = await addressRepository.fetchAddress();
-            yield SuccessState(address: address);
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            var address =
+                await addressRepository.fetchAddress(pref.getString('id'));
+            var addressmodel = await addressRepository.fetchAddressModel();
+            yield SuccessState(address: address, addressmodel: addressmodel);
           } catch (e) {
             yield FailureState(msg: e.toString());
           }

@@ -43,10 +43,6 @@ class _RegisterFormState extends State<RegisterForm> {
     _passwordFocusNode = FocusNode();
     _nameFocusNode = FocusNode();
     _phoneFocusNode = FocusNode();
-    emailController.text = "trana@gmail.com";
-    passwordController.text = "123456";
-    nameController.text = "tran van a";
-    phoneController.text = "123456";
     super.initState();
   }
 

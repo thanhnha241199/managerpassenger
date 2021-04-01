@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,7 +94,7 @@ class _BottomSheetTime extends State<BottomSheetTime> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               child: Text(
-                                "Thoi gian khoi hanh",
+                                tr('timesstart'),
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               )),
@@ -107,172 +108,38 @@ class _BottomSheetTime extends State<BottomSheetTime> {
                                       borderRadius: BorderRadius.circular(12)),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
-                                  child: Stack(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text("Buoi Sang"),
-                                          Spacer(),
-                                          Icon(
-                                            Icons.lightbulb_outline,
-                                            color: Colors.redAccent,
-                                          )
-                                        ],
-                                      ),
-                                      ListView.builder(
-                                        padding: EdgeInsets.only(top: 20),
-                                        physics: NeverScrollableScrollPhysics(),
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        itemCount: state.pickup[0].time.length,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            title: Text(state
-                                                .pickup[0].time[index]
-                                                .toString()),
-                                            subtitle: Text(
-                                                "Giuong -  ${widget.price}"),
-                                            onTap: () {
-                                              setState(() {
-                                                number = index;
-                                              });
-                                              Navigator.pop(
-                                                  context,
-                                                  state.pickup[0].time[number]
-                                                      .toString());
-                                            },
-                                            selected:
-                                                number == index ? true : false,
-                                            trailing: number == index
-                                                ? Icon(
-                                                    Icons.check_circle,
-                                                    color: Colors.redAccent,
-                                                  )
-                                                : Text(""),
-                                          );
+                                  child: ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: state.pickup[0].time.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        title: Text(state.pickup[0].time[index]
+                                            .toString()),
+                                        subtitle: Text(
+                                            "${tr('seat')} -  ${widget.price} (VND)"),
+                                        onTap: () {
+                                          setState(() {
+                                            number = index;
+                                          });
+                                          Navigator.pop(
+                                              context,
+                                              state.pickup[0].time[number]
+                                                  .toString());
                                         },
-                                      )
-                                    ],
+                                        selected:
+                                            number == index ? true : false,
+                                        trailing: number == index
+                                            ? Icon(
+                                                Icons.check_circle,
+                                                color: Colors.redAccent,
+                                              )
+                                            : Text(""),
+                                      );
+                                    },
                                   ),
                                 ),
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //       color: Colors.greenAccent,
-                                //       borderRadius: BorderRadius.circular(12)),
-                                //   padding: EdgeInsets.symmetric(
-                                //       horizontal: 10, vertical: 5),
-                                //   child: Column(
-                                //     children: [
-                                //       Row(
-                                //         children: [
-                                //           Text("Buoi Chieu"),
-                                //           Spacer(),
-                                //           Icon(
-                                //             Icons.wb_sunny_outlined,
-                                //             color: Colors.redAccent,
-                                //           )
-                                //         ],
-                                //       ),
-                                //       isloading
-                                //           ? Center(child: CircularProgressIndicator())
-                                //           : ListView.builder(
-                                //               padding: EdgeInsets.only(top: 20),
-                                //               physics: NeverScrollableScrollPhysics(),
-                                //               scrollDirection: Axis.vertical,
-                                //               shrinkWrap: true,
-                                //               itemCount: l.length,
-                                //               itemBuilder: (context, index) {
-                                //                 return convertTime(l[index]) >= 13 &&
-                                //                         convertTime(l[index]) <= 17
-                                //                     ? ListTile(
-                                //                         title:
-                                //                             Text(l[index].toString()),
-                                //                         subtitle: Text(
-                                //                             "Giuong -  170.000d"),
-                                //                         onTap: () {
-                                //                           setState(() {
-                                //                             number = index;
-                                //                           });
-                                //                         },
-                                //                         selected: number == index
-                                //                             ? true
-                                //                             : false,
-                                //                         trailing: number == index
-                                //                             ? Icon(
-                                //                                 Icons.check_circle,
-                                //                                 color:
-                                //                                     Colors.redAccent,
-                                //                               )
-                                //                             : Text(""),
-                                //                       )
-                                //                     : ListTile(
-                                //                         title: Text(
-                                //                             "Khong co trong thoi gian nay"),
-                                //                       );
-                                //               },
-                                //             )
-                                //     ],
-                                //   ),
-                                // ),
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //       color: Colors.grey,
-                                //       borderRadius: BorderRadius.circular(12)),
-                                //   padding: EdgeInsets.symmetric(
-                                //       horizontal: 10, vertical: 5),
-                                //   child: Column(
-                                //     children: [
-                                //       Row(
-                                //         children: [
-                                //           Text("Buoi Toi"),
-                                //           Spacer(),
-                                //           Icon(
-                                //             Icons.cloud,
-                                //             color: Colors.black87,
-                                //           )
-                                //         ],
-                                //       ),
-                                //       isloading
-                                //           ? Center(child: CircularProgressIndicator())
-                                //           : ListView.builder(
-                                //               padding: EdgeInsets.only(top: 20),
-                                //               physics: NeverScrollableScrollPhysics(),
-                                //               scrollDirection: Axis.vertical,
-                                //               shrinkWrap: true,
-                                //               itemCount: l.length,
-                                //               itemBuilder: (context, index) {
-                                //                 return convertTime(l[index]) >= 18 &&
-                                //                         convertTime(l[index]) <= 23
-                                //                     ? ListTile(
-                                //                         title:
-                                //                             Text(l[index].toString()),
-                                //                         subtitle: Text(
-                                //                             "Giuong -  170.000d"),
-                                //                         onTap: () {
-                                //                           setState(() {
-                                //                             number = index;
-                                //                           });
-                                //                         },
-                                //                         selected: number == index
-                                //                             ? true
-                                //                             : false,
-                                //                         trailing: number == index
-                                //                             ? Icon(
-                                //                                 Icons.check_circle,
-                                //                                 color:
-                                //                                     Colors.redAccent,
-                                //                               )
-                                //                             : Text(""),
-                                //                       )
-                                //                     : ListTile(
-                                //                         title: Text(
-                                //                             "Khong co trong thoi gian nay"),
-                                //                       );
-                                //               },
-                                //             )
-                                //     ],
-                                //   ),
-                                // ),
                               ],
                             ),
                           )
