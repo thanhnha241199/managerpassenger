@@ -24,14 +24,20 @@ class _BottomSheetLocation extends State<BottomSheetLocation> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<TicketBloc>(context)
-        .add(DoFetchEvent(idtourbus: widget.id));
+    BlocProvider.of<TicketBloc>(context).add(DoFetchEvent());
     _switchValue = widget.switchValue;
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TicketBloc, TicketState>(
+      buildWhen: (previous, current) {
+        if (previous is SuccessState) {
+          return false;
+        } else {
+          return true;
+        }
+      },
       builder: (context, state) {
         if (state is LoadingState) {
           return Container(
@@ -82,48 +88,76 @@ class _BottomSheetLocation extends State<BottomSheetLocation> {
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           )),
-                      ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: state.pickup[0].address.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                                color: Colors.greenAccent,
-                                borderRadius: BorderRadius.circular(12)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  title: Text(
-                                      state.pickup[0].address[index].title),
-                                  subtitle: Text(
-                                      state.pickup[0].address[index].address),
-                                  onTap: () {
-                                    setState(() {
-                                      num = index;
-                                    });
-                                    Navigator.pop(
-                                        context,
-                                        state.pickup[0].address[num].address +
-                                            " , " +
-                                            state.pickup[0].address[num].title);
-                                  },
-                                  selected: num == index ? true : false,
-                                  trailing: num == index
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.redAccent,
-                                        )
-                                      : Text(""),
-                                )
-                              ],
-                            ),
-                          );
-                        },
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: state.pickup[0].address.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                  color: Colors.white),
+                              child: ListTile(
+                                leading: Container(
+                                  height: 75,
+                                  width: 75,
+                                  decoration: BoxDecoration(
+                                      color: Colors.amberAccent,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Icon(Icons.bookmark),
+                                ),
+                                title: Text(
+                                  state.pickup[0].address[index].title,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  state.pickup[0].address[index].address,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    num = index;
+                                  });
+                                  Navigator.pop(
+                                      context,
+                                      state.pickup[0].address[num].address +
+                                          " , " +
+                                          state.pickup[0].address[num].title);
+                                },
+                                selected: num == index ? true : false,
+                                trailing: num == index
+                                    ? Icon(
+                                        Icons.check_circle,
+                                        color: Colors.redAccent,
+                                      )
+                                    : Text(""),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

@@ -44,7 +44,6 @@ class _FormForgetState extends State<FormForget> {
   Widget build(BuildContext context) {
     print(widget.email);
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       body: SafeArea(
         child: Container(
           width: double.infinity,

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,7 +27,6 @@ class _FormLocationState extends State<FormLocation> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     addressController.text = widget.address ?? null;
     nameController.text = widget.title ?? null;
@@ -34,7 +34,6 @@ class _FormLocationState extends State<FormLocation> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     addressController.dispose();
     nameController.dispose();
@@ -43,11 +42,11 @@ class _FormLocationState extends State<FormLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+
       appBar: AppBar(
         centerTitle: false,
         title: Text(
-          nameController.text == null ? "Add location" : "Update location",
+          widget.title == null ? "Add location" : "Update location",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -79,6 +78,7 @@ class _FormLocationState extends State<FormLocation> {
             Container(
               height: MediaQuery.of(context).size.height / 11,
               width: MediaQuery.of(context).size.width / 1.2,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                   color: Color(0xFFF2F2F2),
                   borderRadius: BorderRadius.circular(12.0)),
@@ -129,19 +129,6 @@ class _FormLocationState extends State<FormLocation> {
                                 MaterialPageRoute(
                                     builder: (context) => MyLocation()))
                             .then((value) {
-                          setState(() {
-                            addressController.text = value;
-                          });
-                        });
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyApp())).then((value) {
                           setState(() {
                             addressController.text = value;
                           });
@@ -270,22 +257,28 @@ class _FormLocationState extends State<FormLocation> {
                               child: Center(child: CircularProgressIndicator()))
                           : Expanded(
                               flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  _showDialog(context);
+                              child: AnimatedButton(
+                                color: Colors.red,
+                                text: "Xoa",
+                                pressEvent: () {
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.QUESTION,
+                                    headerAnimationLoop: true,
+                                    animType: AnimType.BOTTOMSLIDE,
+                                    title: 'Bạn chưa đăng nhập',
+                                    desc:
+                                        'Vui lòng đăng nhập để có thể tiếp tục sử dung!',
+                                    buttonsTextStyle:
+                                        TextStyle(color: Colors.black),
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {
+                                      BlocProvider.of<AddressBloc>(context)
+                                          .add(DeleteEvent(id: widget.id));
+                                    },
+                                  )..show();
                                 },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: Text("Delete",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18)),
-                                ),
-                              ),
-                            ),
+                              )),
                   SizedBox(
                     width: 5,
                   ),
@@ -296,8 +289,10 @@ class _FormLocationState extends State<FormLocation> {
                               child: Center(child: CircularProgressIndicator()))
                           : Expanded(
                               flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
+                              child: AnimatedButton(
+                                color: Colors.green,
+                                text: "Update",
+                                pressEvent: () {
                                   BlocProvider.of<AddressBloc>(context).add(
                                       UpdateEvent(
                                           id: widget.id,
@@ -305,65 +300,30 @@ class _FormLocationState extends State<FormLocation> {
                                           address:
                                               addressController.text.trim()));
                                 },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: Text("Update",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18)),
-                                ),
-                              ),
-                            )
+                              ))
                       : state is AddLoadingState
                           ? Expanded(
                               flex: 1,
                               child: Center(child: CircularProgressIndicator()))
                           : Expanded(
                               flex: 1,
-                              child: GestureDetector(
-                                onTap: () async {
+                              child: AnimatedButton(
+                                color: Colors.red,
+                                text: "Add",
+                                pressEvent: () async {
                                   BlocProvider.of<AddressBloc>(context).add(
                                       AddEvent(
                                           name: nameController.text.trim(),
                                           address:
                                               addressController.text.trim()));
                                 },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  child: Text("Add",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18)),
-                                ),
-                              ),
-                            ),
+                              )),
                 ],
               ),
             );
           },
         ),
       ),
-    );
-  }
-
-  _showDialog(BuildContext context) {
-    VoidCallback continueCallBack = () {
-      BlocProvider.of<AddressBloc>(context).add(DeleteEvent(id: widget.id));
-      Navigator.pop(context);
-    };
-    BlurryDialog alert = BlurryDialog("Abort",
-        "Are you sure you want to abort this operation?", continueCallBack);
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
     );
   }
 }

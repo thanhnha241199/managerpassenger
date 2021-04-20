@@ -70,8 +70,11 @@ class _OrderRentalState extends State<OrderRental>
           BlocBuilder<RentalBloc, RentalState>(
             builder: (context, state) {
               if (state is LoadingState) {
-                return Center(
-                  child: CircularProgressIndicator(),
+                return Container(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               }
               if (state is FailureState) {
@@ -95,12 +98,33 @@ class _OrderRentalState extends State<OrderRental>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(state.rental[index].id),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, top: 20),
+                                    child: Text(
+                                      "Order ID: ${state.rental[index].id}",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
                                   ExpansionTile(
-                                    title: Text("Schedule"),
+                                    childrenPadding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    title: Text("Detail"),
                                     expandedCrossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [Text("AAA")],
+                                    children: [
+                                      Text(
+                                        "Start: ${state.rental[index].locationstart}",
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        "End: ${state.rental[index].locationend}",
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text("Note: ${state.rental[index].note}")
+                                    ],
                                   ),
                                 ],
                               ),

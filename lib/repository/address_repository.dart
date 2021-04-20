@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:managepassengercar/blocs/savelocation/blocs/model/addressmodel.dart';
 import 'package:managepassengercar/src/models/address.dart';
+import 'package:managepassengercar/utils/config.dart';
 
 class AddressRepository {
   Future<List<Address>> fetchAddress(String id) async {
     List<Address> address = [];
 
-    Response response = await Dio()
-        .get("https://managerpassenger.herokuapp.com/getaddress?uid=${id}");
+    Response response =
+        await Dio().get("${ServerAddress.serveraddress}getaddress?uid=${id}");
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       data.map((ad) => address.add(Address.fromJson(ad))).toList();
@@ -18,7 +19,7 @@ class AddressRepository {
   Future<List<AddressModel>> fetchAddressModel() async {
     List<AddressModel> address = [];
     Response response =
-        await Dio().get("https://managerpassenger.herokuapp.com/addressmodel");
+        await Dio().get("${ServerAddress.serveraddress}addressmodel");
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       data.map((ad) => address.add(AddressModel.fromJson(ad))).toList();
@@ -30,7 +31,7 @@ class AddressRepository {
     Map data = {'id': id, 'title': title, "address": address};
     print(data);
     Response response = await Dio()
-        .post("https://managerpassenger.herokuapp.com/addaddress", data: data);
+        .post("${ServerAddress.serveraddress}addaddress", data: data);
     print(response);
     if (response != null && response.statusCode == 200) {
       var data = response.data;
@@ -40,9 +41,8 @@ class AddressRepository {
 
   Future<String> updateAddress(String id, String title, String address) async {
     Map data = {'id': id, 'title': title, "address": address};
-    Response response = await Dio().post(
-        "https://managerpassenger.herokuapp.com/updateaddress",
-        data: data);
+    Response response = await Dio()
+        .post("${ServerAddress.serveraddress}updateaddress", data: data);
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       return data['success'].toString();
@@ -51,9 +51,8 @@ class AddressRepository {
 
   Future<String> deleteAddress(String id) async {
     Map data = {'id': id};
-    Response response = await Dio().post(
-        "https://managerpassenger.herokuapp.com/deleteaddress",
-        data: data);
+    Response response = await Dio()
+        .post("${ServerAddress.serveraddress}deleteaddress", data: data);
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       return data['success'].toString();

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -588,27 +589,26 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
             child: Padding(
               padding: EdgeInsets.only(right: 10.0),
               child: Container(
-                  child: new RaisedButton(
-                child: new Text(tr("save")),
-                textColor: Colors.white,
-                color: Colors.green,
-                onPressed: () async {
-                  SharedPreferences pref =
-                      await SharedPreferences.getInstance();
-                  print("id ${pref.getString("id")}");
-                  BlocProvider.of<ProfileBloc>(context).add(UpdateEvent(
-                      id: pref.getString("id"),
-                      name: nameController.text.trim(),
-                      phone: phoneController.text.trim(),
-                      image: image,
-                      token: pref.getString("token")));
-                  setState(() {
-                    _status = true;
-                    //   FocusScope.of(context).requestFocus(new FocusNode());
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
+                  child: Container(
+                child: AnimatedButton(
+                  color: Colors.green,
+                  text: tr("save"),
+                  pressEvent: () async {
+                    SharedPreferences pref =
+                        await SharedPreferences.getInstance();
+                    print("id ${pref.getString("id")}");
+                    BlocProvider.of<ProfileBloc>(context).add(UpdateEvent(
+                        id: pref.getString("id"),
+                        name: nameController.text.trim(),
+                        phone: phoneController.text.trim(),
+                        image: image,
+                        token: pref.getString("token")));
+                    setState(() {
+                      _status = true;
+                      //   FocusScope.of(context).requestFocus(new FocusNode());
+                    });
+                  },
+                ),
               )),
             ),
             flex: 2,
@@ -617,18 +617,16 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
             child: Padding(
               padding: EdgeInsets.only(left: 10.0),
               child: Container(
-                  child: new RaisedButton(
-                child: new Text(tr("cancel")),
-                textColor: Colors.white,
-                color: Colors.red,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
+                child: AnimatedButton(
+                  color: Colors.red,
+                  text: tr("cancel"),
+                  pressEvent: () {
+                    setState(() {
+                      _status = true;
+                    });
+                  },
+                ),
+              ),
             ),
             flex: 2,
           ),

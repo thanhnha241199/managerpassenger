@@ -38,6 +38,13 @@
             {
               "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "309894734015-baaeu2jnu93gs42m16voob1roib5c99v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.managepassengercar"
+              }
             }
           ]
         }
@@ -75,43 +82,13 @@
             {
               "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
               "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:309894734015:android:e35708b145f426bcdc260a",
-        "android_client_info": {
-          "package_name": "com.example.chatapp"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "309894734015-0cgmd4p89fvtv3nki5e9iod0srcqocd4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.chatapp",
-            "certificate_hash": "787d408c8274aa935181ccf1373b102c4851103a"
-          }
-        },
-        {
-          "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAtERaEjql9hu14_3ldwnje15MV9_emWF8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
+            },
             {
-              "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
-              "client_type": 3
+              "client_id": "309894734015-baaeu2jnu93gs42m16voob1roib5c99v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.managepassengercar"
+              }
             }
           ]
         }
@@ -149,6 +126,57 @@
             {
               "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "309894734015-baaeu2jnu93gs42m16voob1roib5c99v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.managepassengercar"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309894734015:android:f08cfff19914fe9adc260a",
+        "android_client_info": {
+          "package_name": "easyapproach.com.messaging_tut"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309894734015-crkdrmivqrmnmakebc053c4kq9224amk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "easyapproach.com.messaging_tut",
+            "certificate_hash": "787d408c8274aa935181ccf1373b102c4851103a"
+          }
+        },
+        {
+          "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtERaEjql9hu14_3ldwnje15MV9_emWF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309894734015-lcbsfrc4sg9ca7hi4cc4ibql2p1efokp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "309894734015-baaeu2jnu93gs42m16voob1roib5c99v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.managepassengercar"
+              }
             }
           ]
         }

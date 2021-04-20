@@ -10,6 +10,10 @@ class PaymentInitialState extends PaymentState {}
 
 class LoadingState extends PaymentState {}
 
+class AddSuccessState extends PaymentState {}
+
+class DeleteSuccessState extends PaymentState {}
+
 class SuccessState extends PaymentState {
   List<CardModel> card;
   SuccessState({this.card});

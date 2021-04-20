@@ -11,11 +11,14 @@ import 'package:managepassengercar/blocs/savelocation/view/autocomplete.dart';
 import 'package:managepassengercar/src/utils/constants.dart';
 import 'package:managepassengercar/blocs/rental/view/order_rental.dart';
 import 'package:managepassengercar/src/views/home/bottombar.dart';
+import 'package:managepassengercar/src/views/home/test.dart';
 import 'package:managepassengercar/src/views/widget/default_btn.dart';
 import 'package:managepassengercar/src/views/widget/success.dart';
 import 'package:managepassengercar/src/views/widget/switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:async';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class RentalScreen extends StatefulWidget {
   @override
@@ -43,16 +46,34 @@ class _RentalScreenState extends State<RentalScreen> {
     });
   }
 
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     getInfor();
+    // var initializationSettingsAndroid =
+    //     AndroidInitializationSettings('@mipmap/ic_launcher');
+    // var initializationSettingsIOs = IOSInitializationSettings();
+    // var initSetttings = InitializationSettings(
+    //     initializationSettingsAndroid, initializationSettingsIOs);
+
+    // flutterLocalNotificationsPlugin.initialize(initSetttings,
+    //     onSelectNotification: onSelectNotification);
   }
+
+  // Future onSelectNotification(String payload) {
+  //   Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+  //     return NewScreen(
+  //       payload: payload,
+  //     );
+  //   }));
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+
       appBar: AppBar(
         centerTitle: false,
         title: Text(
@@ -112,7 +133,9 @@ class _RentalScreenState extends State<RentalScreen> {
                   setState(() {
                     locationstart = value.description;
                   });
+                  return value;
                 });
+                print(result);
               },
               child: Container(
                 child: ListTile(
@@ -151,7 +174,9 @@ class _RentalScreenState extends State<RentalScreen> {
                   setState(() {
                     locationend = value.description;
                   });
+                  return value;
                 });
+                print(result);
               },
               child: Container(
                 child: ListTile(
@@ -329,7 +354,7 @@ class _RentalScreenState extends State<RentalScreen> {
                               print('change $date in time zone ' +
                                   date.timeZoneOffset.inHours.toString());
                             }, onConfirm: (date) {
-                              _date = date;
+                              _dateend = date;
                             }, currentTime: DateTime.now());
                           },
                           child: Container(
@@ -628,9 +653,10 @@ class _RentalScreenState extends State<RentalScreen> {
                     builder: (context) => Success(
                         title: "Order Successfull",
                         page: HomePage(
-                            //  userRepository: widget.userRepository,
+                            // userRepository: widget.userRepository,
                             ))),
                 (route) => false);
+          //  showNotification();
           }
           if (state is FailureState) {
             print("Order Failed");
@@ -641,37 +667,54 @@ class _RentalScreenState extends State<RentalScreen> {
             return Container(
               color: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 40, vertical: 5),
-              child: DefaultButton(
-                press: () async {
-                  SharedPreferences pref =
-                      await SharedPreferences.getInstance();
-                  BlocProvider.of<RentalBloc>(context).add(OrderRentalEvent(
-                      uid: pref.getString('id'),
-                      name: ontap == false
-                          ? pref.getString('name')
-                          : nameController.text,
-                      phone: ontap == false
-                          ? pref.getString('phone')
-                          : phoneController.text,
-                      email: ontap == false
-                          ? pref.getString('email')
-                          : emailController.text,
-                      locationstart: locationstart,
-                      locationend: locationend,
-                      quanticus: quantyController.text,
-                      note: noteController.text,
-                      quantyseat: _switchValueseat ? "4" : "16",
-                      timeend:
-                          _switchValue ? null : _dateend.toLocal().toString(),
-                      timestart: _date.toLocal().toString(),
-                      type: _switchValuetype ? "Tieu chuan" : "Hang sang"));
-                },
-                text: tr('request'),
-              ),
+              child: state is LoadingState
+                  ? CircularProgressIndicator()
+                  : DefaultButton(
+                      press: () async {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        BlocProvider.of<RentalBloc>(context).add(
+                            OrderRentalEvent(
+                                uid: pref.getString('id'),
+                                name: ontap == false
+                                    ? pref.getString('name')
+                                    : nameController.text,
+                                phone: ontap == false
+                                    ? pref.getString('phone')
+                                    : phoneController.text,
+                                email: ontap == false
+                                    ? pref.getString('email')
+                                    : emailController.text,
+                                locationstart: locationstart,
+                                locationend: locationend,
+                                quanticus: quantyController.text,
+                                note: noteController.text,
+                                quantyseat: _switchValueseat ? "4" : "16",
+                                timeend: _switchValue
+                                    ? null
+                                    : _dateend.toLocal().toString(),
+                                timestart: _date.toLocal().toString(),
+                                type: _switchValuetype
+                                    ? "Tieu chuan"
+                                    : "Hang sang"));
+                      },
+                      text: tr('request'),
+                    ),
             );
           },
         ),
       ),
     );
   }
+
+  // showNotification() async {
+  //   var android = new AndroidNotificationDetails(
+  //       'id', 'channel ', 'description',
+  //       priority: Priority.High, importance: Importance.Max);
+  //   var iOS = new IOSNotificationDetails();
+  //   var platform = new NotificationDetails(android, iOS);
+  //   await flutterLocalNotificationsPlugin.show(
+  //       0, 'Flutter devs', 'Flutter Local Notification Demo', platform,
+  //       payload: 'Welcome to the Local Notification demo ');
+  // }
 }

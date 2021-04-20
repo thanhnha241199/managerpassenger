@@ -2,11 +2,11 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:managepassengercar/blocs/notification/view/notification.dart';
 import 'package:managepassengercar/blocs/payment/view/payment.dart';
 import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/views/history/history.dart';
 import 'package:managepassengercar/src/views/home/homepage.dart';
-import 'package:managepassengercar/src/views/notification/notification.dart';
 import 'package:managepassengercar/src/views/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Home(userRepository: widget.userRepository),
             History(),
-            Payment(),
+            Payment(userRepository: widget.userRepository),
             Notifications(),
             Profile(userRepository: widget.userRepository)
           ],

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,7 +45,7 @@ class _ProfileState extends State<Profile> {
                   gradient: LinearGradient(
                       begin: Alignment.centerLeft,
                       end: Alignment.bottomCenter,
-                      colors: [Colors.red[900], Colors.blue[700]])),
+                      colors: [Colors.blue[400], Colors.blue[900]])),
               height: MediaQuery.of(context).size.height * 0.2,
               child: Center(
                 child: Padding(
@@ -52,7 +53,7 @@ class _ProfileState extends State<Profile> {
                   child: Text(
                     tr("title_acc"),
                     style: TextStyle(
-                        color: Colors.black87,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                   ),
@@ -60,7 +61,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 80.0),
+              padding: EdgeInsets.only(top: 110.0),
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
@@ -142,21 +143,19 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                           ),
-                    SizedBox(
-                      height: (10.0),
-                      child: Container(
-                        color: Color(0xFFf5f6f7),
-                      ),
-                    ),
                     Container(
                         height: 60,
+                        alignment: Alignment.center,
                         child: Stack(children: <Widget>[
                           GestureDetector(
                               child: ListTile(
                                 contentPadding: EdgeInsets.all(8),
                                 title: Text(tr("setting")),
-                                leading: Icon(
-                                  EvaIcons.settingsOutline,
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.blue.withOpacity(0.9),
+                                  child: Icon(
+                                    EvaIcons.settingsOutline,
+                                  ),
                                 ),
                                 trailing: Icon(Icons.keyboard_arrow_right),
                               ),
@@ -172,65 +171,150 @@ class _ProfileState extends State<Profile> {
                         height: 60,
                         child: Stack(children: <Widget>[
                           GestureDetector(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.all(8),
-                                title: Text(tr("banner drive")),
-                                leading: Icon(
-                                  EvaIcons.loaderOutline,
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(8),
+                              title: Text(tr("banner drive")),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.blue.withOpacity(0.9),
+                                child: Icon(
+                                  EvaIcons.alertTriangleOutline,
                                 ),
-                                trailing: Icon(Icons.keyboard_arrow_right),
                               ),
-                              onTap: () {
+                              trailing: Icon(Icons.keyboard_arrow_right),
+                            ),
+                            onTap: () async {
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              if (pref.getString("token") == null) {
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.QUESTION,
+                                  headerAnimationLoop: true,
+                                  animType: AnimType.BOTTOMSLIDE,
+                                  title: 'Bạn chưa đăng nhập',
+                                  desc:
+                                      'Vui lòng đăng nhập để có thể tiếp tục sử dung!',
+                                  buttonsTextStyle:
+                                      TextStyle(color: Colors.black),
+                                  btnCancelOnPress: () {},
+                                  btnOkOnPress: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginPage(
+                                                userRepository:
+                                                    widget.userRepository)));
+                                  },
+                                )..show();
+                              } else {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => BannedDriver()));
-                              }),
+                              }
+                            },
+                          ),
                           Divider(),
                         ])),
                     Container(
                         height: 60,
                         child: Stack(children: <Widget>[
                           GestureDetector(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.all(8),
-                                title: Text(tr("address")),
-                                leading: Icon(
-                                  EvaIcons.toggleRightOutline,
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(8),
+                              title: Text(tr("address")),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.blue.withOpacity(0.9),
+                                child: Icon(
+                                  EvaIcons.bookOpenOutline,
                                 ),
-                                trailing: Icon(Icons.keyboard_arrow_right),
                               ),
-                              onTap: () {
+                              trailing: Icon(Icons.keyboard_arrow_right),
+                            ),
+                            onTap: () async {
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              if (pref.getString("token") == null) {
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.QUESTION,
+                                  headerAnimationLoop: true,
+                                  animType: AnimType.BOTTOMSLIDE,
+                                  title: 'Bạn chưa đăng nhập',
+                                  desc:
+                                      'Vui lòng đăng nhập để có thể tiếp tục sử dung!',
+                                  buttonsTextStyle:
+                                      TextStyle(color: Colors.black),
+                                  btnCancelOnPress: () {},
+                                  btnOkOnPress: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginPage(
+                                                userRepository:
+                                                    widget.userRepository)));
+                                  },
+                                )..show();
+                              } else {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => SaveLocation()));
-                              }),
+                              }
+                            },
+                          ),
                           Divider(),
                         ])),
-                    check == null
-                        ? Text("")
-                        : Container(
-                            height: 60,
-                            child: Stack(children: <Widget>[
-                              GestureDetector(
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.all(8),
-                                    title: Text(tr("changepass")),
-                                    leading: Icon(
-                                      EvaIcons.toggleLeftOutline,
-                                    ),
-                                    trailing: Icon(Icons.keyboard_arrow_right),
-                                  ),
-                                  onTap: () {
+                    Container(
+                        height: 60,
+                        child: Stack(children: <Widget>[
+                          GestureDetector(
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(8),
+                              title: Text(tr("changepass")),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.blue.withOpacity(0.9),
+                                child: Icon(
+                                  EvaIcons.toggleLeftOutline,
+                                ),
+                              ),
+                              trailing: Icon(Icons.keyboard_arrow_right),
+                            ),
+                            onTap: () async {
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              if (pref.getString("token") == null) {
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.QUESTION,
+                                  headerAnimationLoop: true,
+                                  animType: AnimType.BOTTOMSLIDE,
+                                  title: 'Bạn chưa đăng nhập',
+                                  desc:
+                                      'Vui lòng đăng nhập để có thể tiếp tục sử dung!',
+                                  buttonsTextStyle:
+                                      TextStyle(color: Colors.black),
+                                  btnCancelOnPress: () {},
+                                  btnOkOnPress: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                FormChangePassword()));
-                                  }),
-                              Divider(),
-                            ])),
+                                            builder: (context) => LoginPage(
+                                                userRepository:
+                                                    widget.userRepository)));
+                                  },
+                                )..show();
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            FormChangePassword()));
+                              }
+                            },
+                          ),
+                          Divider()
+                        ])),
                     check == null
                         ? Text("")
                         : Container(
@@ -240,8 +324,12 @@ class _ProfileState extends State<Profile> {
                                   child: ListTile(
                                     contentPadding: EdgeInsets.all(8),
                                     title: Text(tr("logout")),
-                                    leading: Icon(
-                                      EvaIcons.logOut,
+                                    leading: CircleAvatar(
+                                      backgroundColor:
+                                          Colors.blue.withOpacity(0.9),
+                                      child: Icon(
+                                        EvaIcons.logOut,
+                                      ),
                                     ),
                                     trailing: Icon(Icons.keyboard_arrow_right),
                                   ),

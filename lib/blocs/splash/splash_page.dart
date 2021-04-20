@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:managepassengercar/blocs/userprofile/blocs/profile_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreenPage extends StatefulWidget {
   @override
@@ -7,11 +10,29 @@ class SplashScreenPage extends StatefulWidget {
 }
 
 class _SplashScreenPageState extends State<SplashScreenPage> {
+  var check;
+
+  void checkUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var status = prefs.getString('token');
+    setState(() {
+      check = status;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
     );
+    BlocProvider.of<ProfileBloc>(context).add(DoFetchEvent(token: check));
     return Container(
       child: Scaffold(
         body: Stack(
@@ -46,14 +67,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                         Container(
                           height: 80.0,
                           width: 80.0,
-                          decoration: BoxDecoration(
-                              color: Colors.black87,
-                              borderRadius: BorderRadius.circular(25)),
-                          child: Icon(
-                            Icons.directions_car_sharp,
-                            color: Colors.red,
-                            size: 50.0,
-                          ),
+                          child: Image.asset("assets/images/screen/car.png"),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 10.0),

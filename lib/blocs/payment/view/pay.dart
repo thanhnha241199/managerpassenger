@@ -3,143 +3,63 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:managepassengercar/blocs/payment/bloc/payment_bloc.dart';
 import 'package:managepassengercar/blocs/payment/model/card.dart';
+import 'package:managepassengercar/blocs/payment/view/add_card.dart';
+import 'package:managepassengercar/blocs/ticket/model/discount.dart';
+import 'package:managepassengercar/providers/api_provider.dart';
 import 'package:managepassengercar/providers/service_stripe.dart';
+import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
-class HomePage1 extends StatefulWidget {
-  HomePage1({Key key}) : super(key: key);
-
-  @override
-  HomePage1State createState() => HomePage1State();
-}
-
-class HomePage1State extends State<HomePage1> {
-  onItemPress(BuildContext context, int index) async {
-    switch (index) {
-      case 0:
-        payViaNewCard(context);
-        break;
-      case 1:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ExistingCardsPage()));
-        break;
-    }
-  }
-
-  payViaNewCard(BuildContext context) async {
-    ProgressDialog dialog = new ProgressDialog(context);
-    dialog.style(message: 'Please wait...');
-    await dialog.show();
-    var response =
-        await StripeService.payWithNewCard(amount: '15000', currency: 'USD');
-    await dialog.hide();
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(response.message),
-      duration:
-          new Duration(milliseconds: response.success == true ? 1200 : 3000),
-    ));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    StripeService.init();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: Text(
-          "Card",
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
-        elevation: 0,
-        actionsIconTheme: IconThemeData(color: Colors.black),
-        iconTheme: IconThemeData(color: Colors.black),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios),
-        ),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: ListView.separated(
-            itemBuilder: (context, index) {
-              Icon icon;
-              Text text;
-
-              switch (index) {
-                case 0:
-                  icon = Icon(Icons.add_circle, color: theme.primaryColor);
-                  text = Text('Pay via new card');
-                  break;
-                case 1:
-                  icon = Icon(Icons.credit_card, color: theme.primaryColor);
-                  text = Text('Pay via existing card');
-                  break;
-              }
-
-              return InkWell(
-                onTap: () {
-                  onItemPress(context, index);
-                },
-                child: ListTile(
-                  title: text,
-                  leading: icon,
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => Divider(
-                  color: theme.primaryColor,
-                ),
-            itemCount: 2),
-      ),
-    );
-    ;
-  }
-}
-
 class ExistingCardsPage extends StatefulWidget {
-  ExistingCardsPage({Key key}) : super(key: key);
+  List<Discount> discount;
+  TourBus tourBus;
+  String time;
+  bool dumplex;
+  String title;
+  String seat;
+  String address;
+  String name;
+  String phone;
+  String email;
+  String datestart;
+  String dateback;
+  final UserRepository userRepository;
+
+  ExistingCardsPage(
+      {this.userRepository,
+      this.tourBus,
+      this.dumplex,
+      this.time,
+      this.title,
+      this.address,
+      this.seat,
+      this.name,
+      this.email,
+      this.phone,
+      this.dateback,
+      this.datestart,
+      this.discount});
 
   @override
   ExistingCardsPageState createState() => ExistingCardsPageState();
 }
 
 class ExistingCardsPageState extends State<ExistingCardsPage> {
-  List cards = [
-    {
-      'cardNumber': '4242424242424242',
-      'expiryDate': '04/24',
-      'cardHolderName': 'Muhammad Ahsan Ayaz',
-      'cvvCode': '424',
-      'showBackView': false,
-    },
-    {
-      'cardNumber': '5555555566554444',
-      'expiryDate': '04/23',
-      'cardHolderName': 'Tracer',
-      'cvvCode': '123',
-      'showBackView': false,
-    },
-    {
-      'cardNumber': '4000000000003055',
-      'expiryDate': '04/23',
-      'cardHolderName': 'Passport',
-      'cvvCode': '123',
-      'showBackView': false,
-    }
-  ];
+  String name, email, phone, id;
+
+  Future<void> getInfor() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      name = widget.name.isEmpty ? preferences.getString('name') : widget.name;
+      phone =
+          widget.phone.isEmpty ? preferences.getString('phone') : widget.phone;
+      email =
+          widget.email.isEmpty ? preferences.getString('email') : widget.email;
+      id = preferences.getString('id');
+    });
+  }
 
   payViaExistingCard(BuildContext context, CardModel card) async {
     ProgressDialog dialog = new ProgressDialog(context);
@@ -154,6 +74,19 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
     var response = await StripeService.payViaExistingCard(
         amount: '2500', currency: 'USD', card: stripeCard);
     await dialog.hide();
+    BlocProvider.of<PaymentBloc>(context).add(OrderEvent(
+        idtour: widget.tourBus.id,
+        email: email,
+        name: name,
+        phone: phone,
+        locationstart: widget.address,
+        quantyseat: widget.seat.trim().split(' ').length.toString(),
+        seat: widget.seat.trim(),
+        time: widget.time,
+        price: widget.tourBus.price,
+        totalprice:
+            "${widget.seat.trim().split(' ').length * int.parse("${widget.tourBus.price}")} VND",
+        uid: id));
     Scaffold.of(context)
         .showSnackBar(SnackBar(
           content: Text(response.message),
@@ -199,7 +132,7 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
           IconButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MySample()));
+                  context, MaterialPageRoute(builder: (context) => AddCard()));
             },
             icon: Icon(Icons.add),
           )
@@ -243,130 +176,5 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
         },
       ),
     );
-  }
-}
-
-class MySample extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return MySampleState();
-  }
-}
-
-class MySampleState extends State<MySample> {
-  String cardNumber = '';
-  String expiryDate = '';
-  String cardHolderName = '';
-  String cvvCode = '';
-  bool isCvvFocused = false;
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Credit Card View Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              CreditCardWidget(
-                cardNumber: cardNumber,
-                expiryDate: expiryDate,
-                cardHolderName: cardHolderName,
-                cvvCode: cvvCode,
-                showBackView: isCvvFocused,
-                obscureCardNumber: true,
-                obscureCardCvv: true,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      CreditCardForm(
-                        formKey: formKey,
-                        obscureCvv: true,
-                        obscureNumber: true,
-                        cardNumber: cardNumber,
-                        cvvCode: cvvCode,
-                        cardHolderName: cardHolderName,
-                        expiryDate: expiryDate,
-                        themeColor: Colors.blue,
-                        cardNumberDecoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Number',
-                          hintText: 'XXXX XXXX XXXX XXXX',
-                        ),
-                        expiryDateDecoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Expired Date',
-                          hintText: 'XX/XX',
-                        ),
-                        cvvCodeDecoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'CVV',
-                          hintText: 'XXX',
-                        ),
-                        cardHolderDecoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Card Holder',
-                        ),
-                        onCreditCardModelChange: onCreditCardModelChange,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          primary: const Color(0xff1b447b),
-                        ),
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          child: const Text(
-                            'Validate',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'halter',
-                              fontSize: 14,
-                              package: 'flutter_credit_card',
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (formKey.currentState.validate()) {
-                            BlocProvider.of<PaymentBloc>(context).add(AddEvent(
-                                cardHolderName: cardHolderName,
-                                cardNumber: cardNumber,
-                                cvvCode: cvvCode,
-                                expiryDate: expiryDate,
-                                showBackView: isCvvFocused.toString()));
-                          } else {
-                            print('invalid!');
-                          }
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void onCreditCardModelChange(CreditCardModel creditCardModel) {
-    setState(() {
-      cardNumber = creditCardModel.cardNumber;
-      expiryDate = creditCardModel.expiryDate;
-      cardHolderName = creditCardModel.cardHolderName;
-      cvvCode = creditCardModel.cvvCode;
-      isCvvFocused = creditCardModel.isCvvFocused;
-    });
   }
 }

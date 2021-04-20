@@ -10,6 +10,7 @@ import 'package:managepassengercar/src/views/home/bottombar.dart';
 import 'package:managepassengercar/src/views/widget/loading.dart';
 import 'package:managepassengercar/src/views/widget/success.dart';
 import 'package:http/http.dart' as http;
+import 'package:managepassengercar/utils/config.dart';
 
 class FormChangePassword extends StatefulWidget {
   String email;
@@ -27,9 +28,8 @@ class _FormChangePasswordState extends State<FormChangePassword> {
       'newpassword': newpassword,
     };
     var jsonResponse = null;
-    var response = await http.post(
-        "https://managerpassenger.herokuapp.com/changepassword",
-        body: data);
+    var response = await http
+        .post(Uri.parse("${ServerAddress.serveraddress}changepassword"), body: data);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print(jsonResponse);
@@ -96,7 +96,7 @@ class _FormChangePasswordState extends State<FormChangePassword> {
   Widget build(BuildContext context) {
     print(widget.email);
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+
       body: _isLoading
           ? Loading()
           : SafeArea(

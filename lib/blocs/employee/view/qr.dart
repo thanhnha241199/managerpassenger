@@ -243,7 +243,10 @@ class GenerateScreenState extends State<GenerateScreen> {
         backgroundColor: Colors.deepOrange,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.share),
+            icon: Icon(
+              Icons.share,
+              color: Colors.black,
+            ),
             onPressed: _captureAndSharePng,
           )
         ],
@@ -260,12 +263,12 @@ class GenerateScreenState extends State<GenerateScreen> {
       ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
       Uint8List pngBytes = byteData.buffer.asUint8List();
 
-      final tempDir = await getTemporaryDirectory();
-      final file = await new File('${tempDir.path}/image.png').create();
-      await file.writeAsBytes(pngBytes);
+      // final tempDir = await getTemporaryDirectory();
+      // final file = await new File('${tempDir.path}/image.png').create();
+      // await file.writeAsBytes(pngBytes);
 
-      final channel = const MethodChannel('channel:me.camellabs.share/share');
-      channel.invokeMethod('shareFile', 'image.png');
+      // final channel = const MethodChannel('channel:me.camellabs.share/share');
+      // channel.invokeMethod('shareFile', 'image.png');
     } catch (e) {
       print(e.toString());
     }

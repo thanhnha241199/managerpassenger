@@ -51,8 +51,14 @@ class _ScheduleTourState extends State<ScheduleTour> {
               (route) => false);
         }
       },
-      child:
-          BlocBuilder<EmployeeBloc, EmployeeState>(builder: (context, state) {
+      child: BlocBuilder<EmployeeBloc, EmployeeState>(
+          buildWhen: (previous, current) {
+        if (previous is SuccessState) {
+          return false;
+        } else {
+          return true;
+        }
+      }, builder: (context, state) {
         if (state is LoadingState) {
           return Center(
             child: CircularProgressIndicator(),
@@ -104,12 +110,8 @@ class _ScheduleTourState extends State<ScheduleTour> {
                       color: Colors.blue,
                     ),
                   ),
-                  Divider(
-                    height: 1,
-                    thickness: 1,
-                  ),
                   ListTile(
-                    leading: Icon(Icons.favorite),
+                    leading: CircleAvatar(child: Icon(Icons.home)),
                     title: Text(tr('home')),
                     selected: _selectedDestination == 0,
                     onTap: () {
@@ -128,7 +130,7 @@ class _ScheduleTourState extends State<ScheduleTour> {
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.timelapse),
+                    leading: CircleAvatar(child: Icon(Icons.payments)),
                     title: Text(tr('ticket')),
                     selected: _selectedDestination == 1,
                     onTap: () {
@@ -152,7 +154,7 @@ class _ScheduleTourState extends State<ScheduleTour> {
                     thickness: 1,
                   ),
                   ListTile(
-                    leading: Icon(Icons.bookmark),
+                    leading: CircleAvatar(child: Icon(Icons.settings)),
                     title: Text(tr('setting')),
                     selected: _selectedDestination == 2,
                     onTap: () {
@@ -164,13 +166,13 @@ class _ScheduleTourState extends State<ScheduleTour> {
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.bookmark),
+                    leading: CircleAvatar(child: Icon(Icons.track_changes)),
                     title: Text(tr('changepass')),
                     selected: _selectedDestination == 3,
                     onTap: () => selectDestination(3),
                   ),
                   ListTile(
-                    leading: Icon(Icons.exit_to_app),
+                    leading: CircleAvatar(child: Icon(Icons.exit_to_app)),
                     title: Text(tr('logout')),
                     selected: _selectedDestination == 4,
                     onTap: () async {

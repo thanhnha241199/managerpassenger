@@ -19,10 +19,9 @@ class ChoosePosition extends StatefulWidget {
 class _ChoosePositionState extends State<ChoosePosition> {
   int count = 0;
   String seat = " ";
-
+  final formatter = new NumberFormat("#,###");
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     BlocProvider.of<TicketBloc>(context)
         .add(DoFetchEvent(idtourbus: widget.id));
@@ -68,6 +67,13 @@ class _ChoosePositionState extends State<ChoosePosition> {
           ),
         ),
         body: BlocBuilder<TicketBloc, TicketState>(
+          buildWhen: (previous, current) {
+            if (previous is SuccessState) {
+              return false;
+            } else {
+              return true;
+            }
+          },
           builder: (context, state) {
             if (state is LoadingState) {
               return Center(
@@ -90,7 +96,7 @@ class _ChoosePositionState extends State<ChoosePosition> {
                     child: Column(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.55,
                           color: Colors.white,
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: SingleChildScrollView(
@@ -1653,7 +1659,7 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                               style: TextStyle(fontSize: 18)),
                                           Spacer(),
                                           Text(
-                                              "${count * int.parse(widget.price)} VND",
+                                              "${formatter.format(count * int.parse(widget.price))} VND",
                                               style: TextStyle(fontSize: 18))
                                         ],
                                       ),
@@ -1738,7 +1744,7 @@ class _ChoosePositionState extends State<ChoosePosition> {
                     child: Column(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.55,
                           color: Colors.white,
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: SingleChildScrollView(
@@ -2676,7 +2682,11 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                             onTap: () {
                                               setState(() {
                                                 if (seat.length >= 19) {
-                                                  print("Khong the chon them");
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    content:
+                                                        Text(tr('alertseat')),
+                                                  ));
                                                 } else {
                                                   state.seat[0].floors2[13] =
                                                       "done";
@@ -2693,7 +2703,7 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                                   height: 40,
                                                   width: 40,
                                                 ),
-                                                Text("B14")
+                                                Text("B13")
                                               ],
                                             ),
                                           )
@@ -2701,7 +2711,7 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                             ? GestureDetector(
                                                 onTap: () {
                                                   setState(() {
-                                                    state.seat[0].floors1[13] =
+                                                    state.seat[0].floors2[13] =
                                                         "trong";
                                                     count--;
                                                     seat = seat.replaceAll(
@@ -3305,7 +3315,7 @@ class _ChoosePositionState extends State<ChoosePosition> {
                                           ),
                                           Spacer(),
                                           Text(
-                                            "${count * int.parse(widget.price)} VND",
+                                            "${formatter.format(count * int.parse(widget.price))} VND",
                                             style: TextStyle(fontSize: 18),
                                           )
                                         ],

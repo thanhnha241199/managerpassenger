@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:managepassengercar/blocs/rental/model/rental.dart';
+import 'package:managepassengercar/utils/config.dart';
 
 class RentalRepository {
   Future<List<RentalOrder>> fetchRental(String id) async {
@@ -7,9 +8,8 @@ class RentalRepository {
     Map data = {
       'id': id,
     };
-    Response response = await Dio().post(
-        "https://managerpassenger.herokuapp.com/getrentalorder",
-        data: data);
+    Response response = await Dio()
+        .post("${ServerAddress.serveraddress}getrentalorder", data: data);
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       print(data);
@@ -46,8 +46,8 @@ class RentalRepository {
       "note": note
     };
     print(data);
-    Response response = await Dio()
-        .post("https://managerpassenger.herokuapp.com/addrental", data: data);
+    Response response =
+        await Dio().post("${ServerAddress.serveraddress}addrental", data: data);
     print(response);
     if (response != null && response.statusCode == 200) {
       var data = response.data;

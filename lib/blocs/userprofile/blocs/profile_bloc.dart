@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:managepassengercar/blocs/savelocation/savelocation.dart';
 import 'package:managepassengercar/repository/profile_repository.dart';
 import 'package:managepassengercar/src/models/profile_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'profile_event.dart';
 
@@ -23,7 +24,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         var profile =
             await profileRepository.fetchProfileUser(profileEvent.token);
-        print("profie ${profile}");
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString("name", profile.name);
+        pref.setString("email", profile.email);
+        pref.setString("phone", profile.phone);
+        print("success");
         yield SuccessProfileState(profile: profile);
       } catch (e) {
         yield FailureProfileState(msg: e.toString());

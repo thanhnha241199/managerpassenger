@@ -74,7 +74,7 @@ class _RegisterFormState extends State<RegisterForm> {
     }, child: BlocBuilder<RegisterBloc, RegisterState>(
       builder: (context, state) {
         return Scaffold(
-          resizeToAvoidBottomPadding: false,
+
           body: SafeArea(
             child: Container(
               width: double.infinity,

@@ -37,9 +37,6 @@ class _SettingAppState extends State<SettingApp> {
                   language: language,
                 )),
       );
-      ScaffoldMessenger.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text("$result")));
       setState(() {
         language = result ?? language;
       });
@@ -51,7 +48,8 @@ class _SettingAppState extends State<SettingApp> {
           title: Text(
             tr("title_setting"),
             style: TextStyle(
-              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
           backgroundColor: Colors.white,
@@ -77,10 +75,13 @@ class _SettingAppState extends State<SettingApp> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      tr("manual"),
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
-                    ),
+                        tr(
+                          "manual",
+                        ),
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        )),
                     Container(
                       padding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 4),
@@ -88,7 +89,9 @@ class _SettingAppState extends State<SettingApp> {
                         children: [
                           Text(
                             tr("dartmode"),
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
                           ),
                           Spacer(),
                           SwitchControl(

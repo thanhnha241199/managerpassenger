@@ -1,4 +1,4 @@
-import 'package:emoji_picker/emoji_picker.dart';
+
 import 'package:flutter/material.dart';
 
 class History extends StatefulWidget {
@@ -15,6 +15,11 @@ class _HistoryState extends State<History> {
           padding: const EdgeInsets.only(top: 10.0),
           child: Text(
             "Lịch Sử",
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Raleway'),
           ),
         ),
         centerTitle: true,
@@ -29,11 +34,11 @@ class _HistoryState extends State<History> {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.red[900], Colors.blue[700]])),
-            height: MediaQuery.of(context).size.height * 0.3,
+                    colors: [Colors.blue[400], Colors.blue[900]])),
+            height: MediaQuery.of(context).size.height * 0.2,
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 100.0),
+            padding: const EdgeInsets.only(top: 110.0),
             child: Container(
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -136,7 +141,7 @@ class MainPageState extends State<MainPage> {
               buildInput(),
 
               // Sticker
-              (isShowSticker ? buildSticker() : Container()),
+           //   (isShowSticker ? buildSticker() : Container()),
             ],
           ),
         ],
@@ -215,16 +220,16 @@ class MainPageState extends State<MainPage> {
     );
   }
 
-  Widget buildSticker() {
-    return EmojiPicker(
-      rows: 3,
-      columns: 7,
-      buttonMode: ButtonMode.MATERIAL,
-      recommendKeywords: ["racing", "horse"],
-      numRecommended: 10,
-      onEmojiSelected: (emoji, category) {
-        print(emoji);
-      },
-    );
-  }
+  // Widget buildSticker() {
+  //   return EmojiPicker(
+  //     rows: 3,
+  //     columns: 7,
+  //     buttonMode: ButtonMode.MATERIAL,
+  //     recommendKeywords: ["racing", "horse"],
+  //     numRecommended: 10,
+  //     onEmojiSelected: (emoji, category) {
+  //       print(emoji);
+  //     },
+  //   );
+  // }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:geocoder/geocoder.dart';
@@ -34,7 +35,7 @@ class _MyLocationState extends State<MyLocation> {
     location.onLocationChanged.listen((l) {
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 25),
+          CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 11),
         ),
       );
     });
@@ -44,8 +45,8 @@ class _MyLocationState extends State<MyLocation> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _controller.dispose();
-    mapController.dispose();
+    _controller?.dispose();
+    mapController?.dispose();
   }
 
   @override
@@ -75,6 +76,7 @@ class _MyLocationState extends State<MyLocation> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: GoogleMap(
+                  
                   compassEnabled: true,
                   zoomControlsEnabled: true,
                   initialCameraPosition:
@@ -85,14 +87,14 @@ class _MyLocationState extends State<MyLocation> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-                child: DefaultButton(
-                  press: () {
-                    Navigator.pop(context, _address);
-                  },
-                  text: "Confirm",
-                ),
-              )
+                  padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+                  child: AnimatedButton(
+                    color: Colors.red,
+                    text: "CONFIRM",
+                    pressEvent: () {
+                      Navigator.pop(context, _address);
+                    },
+                  ))
             ],
           ),
         ),

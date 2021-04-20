@@ -14,8 +14,16 @@ class SuccessState extends TicketState {
   List<TourBus> buyticket;
   List<Seat> seat;
   List<PickUp> pickup;
-
-  SuccessState({this.buyticket, this.seat, this.pickup});
+  List<Discount> discount;
+  List<Order> order;
+  List<Address> address;
+  SuccessState(
+      {this.buyticket,
+      this.seat,
+      this.pickup,
+      this.discount,
+      this.order,
+      this.address});
 }
 
 class FailureState extends TicketState {

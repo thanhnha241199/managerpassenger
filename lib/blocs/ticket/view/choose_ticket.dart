@@ -1,9 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:managepassengercar/blocs/ticket/model/discount.dart';
+import 'package:managepassengercar/blocs/ticket/view/bottomsheet_location.dart';
 import 'package:managepassengercar/blocs/ticket/view/choose_position.dart';
 import 'package:managepassengercar/blocs/ticket/view/time_choose_ticket.dart';
+
 import 'package:managepassengercar/providers/api_provider.dart';
 import 'package:managepassengercar/src/utils/constants.dart';
+import 'package:managepassengercar/src/views/ticket/choose_address.dart';
 import 'package:managepassengercar/src/views/ticket/choose_location.dart';
 import 'package:managepassengercar/src/views/ticket/order_ticket.dart';
 import 'package:managepassengercar/src/views/widget/default_btn.dart';
@@ -11,6 +15,7 @@ import 'package:managepassengercar/src/views/widget/switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChooseTicket extends StatefulWidget {
+  List<Discount> discount;
   TourBus tourBus;
   String timestart;
   String timeback;
@@ -24,7 +29,12 @@ class ChooseTicket extends StatefulWidget {
   String seatback;
   bool dumplex;
 
-  ChooseTicket({this.tourBus, this.dumplex, this.datestart, this.dateback});
+  ChooseTicket(
+      {this.tourBus,
+      this.dumplex,
+      this.datestart,
+      this.dateback,
+      this.discount});
 
   @override
   _ChooseTicketState createState() => _ChooseTicketState();
@@ -98,9 +108,11 @@ class _ChooseTicketState extends State<ChooseTicket> {
                     child: SingleChildScrollView(
                       physics: BouncingScrollPhysics(),
                       child: Container(
+                        color: Colors.white,
                         height: MediaQuery.of(context).size.height,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
                               padding: EdgeInsets.symmetric(vertical: 10),
@@ -108,6 +120,7 @@ class _ChooseTicketState extends State<ChooseTicket> {
                               color: Colors.white,
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   SizedBox(width: 20),
                                   Icon(
@@ -119,8 +132,6 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           "${widget.tourBus.locationstart} => ${widget.tourBus.locationend}",
@@ -173,26 +184,31 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                           backgroundColor: Colors.transparent,
                                           builder: (context) {
                                             return FractionallySizedBox(
-                                                heightFactor: 0.9,
+                                                heightFactor: 0.7,
                                                 child: BottomSheetTime(
-                                                    price: widget.tourBus.price,
-                                                    switchValue: _switchValue,
-                                                    valueChanged: (value) {
-                                                      setState(() {
-                                                        _switchValue = value;
-                                                      });
-                                                    },
-                                                    id: widget.tourBus.id));
+                                                  price: widget.tourBus.price,
+                                                  switchValue: _switchValue,
+                                                  valueChanged: (value) {
+                                                    setState(() {
+                                                      _switchValue = value;
+                                                    });
+                                                  },
+                                                  id: widget.tourBus.id,
+                                                ));
                                           }).then((value) {
-                                        setState(() {
-                                          widget.timestart = value;
-                                        });
+                                        if (value != null) {
+                                          setState(() {
+                                            widget.timestart = value;
+                                          });
+                                        }
                                       });
                                     },
                                     child: Row(
                                       children: [
-                                        Text(tr('edit'),
-                                            style: TextStyle(fontSize: 18)),
+                                        Text(
+                                          tr('edit'),
+                                          style: TextStyle(fontSize: 18),
+                                        ),
                                         SizedBox(
                                           width: 5,
                                         ),
@@ -220,7 +236,9 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        tr('chooseseat'),
+                                        tr(
+                                          'chooseseat',
+                                        ),
                                         style: TextStyle(fontSize: 18),
                                       ),
                                       widget.seat == null
@@ -235,85 +253,17 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ChoosePosition(
-                                                    id: widget.tourBus.id,
-                                                    price: widget.tourBus.price,
-                                                  ))).then((value) {
-                                        setState(() {
-                                          widget.seat = value;
-                                        });
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          tr('edit'),
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Icon(
-                                          Icons.edit,
-                                          color: Colors.redAccent,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.15,
-                              color: Colors.white,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: Row(
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        tr('substart'),
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                      Text(
-                                        widget.locationstart ?? " ",
-                                        style: TextStyle(fontSize: 18),
-                                      )
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  GestureDetector(
-                                    onTap: () {
-                                      print(widget.tourBus.id);
-                                      showModalBottomSheet<String>(
-                                          context: context,
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          builder: (context) {
-                                            return FractionallySizedBox(
-                                                heightFactor: 0.8,
-                                                child: BottomSheetLocation(
-                                                  switchValue: _switchValue,
-                                                  valueChanged: (value) {
-                                                    setState(() {
-                                                      _switchValue = value;
-                                                    });
-                                                  },
-                                                  id: widget.tourBus.id,
-                                                ));
-                                          }).then((value) {
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChoosePosition(
+                                                          id: widget.tourBus.id,
+                                                          price: widget
+                                                              .tourBus.price)))
+                                          .then((value) {
                                         if (value != null) {
                                           setState(() {
-                                            widget.locationstart =
-                                                value.split(',')[0];
-                                            widget.title = value.split(',')[1];
+                                            widget.seat = value;
                                           });
                                         }
                                       });
@@ -339,8 +289,209 @@ class _ChooseTicketState extends State<ChooseTicket> {
                               ),
                             ),
                             Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Lựa chon",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet<void>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return BottomSheetAddress(
+                                              switchValue: _switchValue,
+                                              valueChanged: (value) {
+                                                setState(() {
+                                                  _switchValue = value;
+                                                });
+                                              },
+                                            );
+                                          });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        _switchValue
+                                            ? Text(
+                                                "Chọn bến xe",
+                                                style: TextStyle(fontSize: 18),
+                                              )
+                                            : Text(
+                                                "Chọn địa chỉ đón bạn",
+                                                style: TextStyle(fontSize: 18),
+                                              ),
+                                        Icon(Icons.arrow_drop_down)
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            _switchValue
+                                ? Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.12,
+                                    color: Colors.white,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              tr('substart'),
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                            Text(
+                                              widget.locationstart ?? " ",
+                                              style: TextStyle(fontSize: 18),
+                                            )
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showModalBottomSheet<String>(
+                                                context: context,
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                builder: (context) {
+                                                  return FractionallySizedBox(
+                                                      heightFactor: 0.8,
+                                                      child:
+                                                          BottomSheetLocation(
+                                                        switchValue:
+                                                            _switchValue,
+                                                        valueChanged: (value) {
+                                                          setState(() {
+                                                            _switchValue =
+                                                                value;
+                                                          });
+                                                        },
+                                                        id: widget.tourBus.id,
+                                                      ));
+                                                }).then((value) {
+                                              if (value != null) {
+                                                setState(() {
+                                                  widget.locationstart =
+                                                      value.split(',')[0];
+                                                  widget.title =
+                                                      value.split(',')[1];
+                                                });
+                                              }
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                tr('edit'),
+                                                style: TextStyle(fontSize: 18),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Icon(
+                                                Icons.edit,
+                                                color: Colors.redAccent,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Divider()
+                                      ],
+                                    ),
+                                  )
+                                : Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.12,
+                                    color: Colors.white,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Địa điểm đón bạn",
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                            Text(
+                                              widget.locationstart ?? " ",
+                                              style: TextStyle(fontSize: 18),
+                                            )
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showModalBottomSheet<String>(
+                                                context: context,
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                builder: (context) {
+                                                  return FractionallySizedBox(
+                                                      heightFactor: 0.8,
+                                                      child:
+                                                          BottomSheetChooseAddress(
+                                                        switchValue:
+                                                            _switchValue,
+                                                        valueChanged: (value) {
+                                                          setState(() {
+                                                            _switchValue =
+                                                                value;
+                                                          });
+                                                        },
+                                                      ));
+                                                }).then((value) {
+                                              if (value != null) {
+                                                setState(() {
+                                                  widget.locationstart =
+                                                      value.split(',')[0];
+                                                  widget.title =
+                                                      value.split(',')[1];
+                                                });
+                                              }
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                tr('edit'),
+                                                style: TextStyle(fontSize: 18),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Icon(
+                                                Icons.edit,
+                                                color: Colors.redAccent,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Divider()
+                                      ],
+                                    ),
+                                  ),
+                            Container(
                               color: Colors.white,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                               child: Row(
                                 children: [
                                   Text(
@@ -482,8 +633,6 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                         horizontal: 20, vertical: 10),
                                     color: Colors.white,
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -770,8 +919,9 @@ class _ChooseTicketState extends State<ChooseTicket> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => OrderTicket(
+                                  discount: widget.discount,
                                   tourBus: widget.tourBus,
-                                  dumplex: ontap,
+                                  dumplex: true,
                                   time: widget.timestart,
                                   title: widget.title,
                                   email: emailController.text,
@@ -819,19 +969,22 @@ class _ChooseTicketState extends State<ChooseTicket> {
                   children: [
                     Container(
                       height: MediaQuery.of(context).size.height * 0.1,
-                      color: Colors.white,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(width: 20),
-                          Icon(
-                            Icons.check_circle,
-                            color: Colors.redAccent,
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            child: Icon(
+                              Icons.check_circle,
+                              color: Colors.redAccent,
+                            ),
                           ),
                           SizedBox(width: 20),
                           Center(
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "${widget.tourBus.locationstart} => ${widget.tourBus.locationend}",
@@ -883,7 +1036,7 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                   backgroundColor: Colors.transparent,
                                   builder: (context) {
                                     return FractionallySizedBox(
-                                        heightFactor: 0.9,
+                                        heightFactor: 0.7,
                                         child: BottomSheetTime(
                                           price: widget.tourBus.price,
                                           switchValue: _switchValue,
@@ -985,74 +1138,188 @@ class _ChooseTicketState extends State<ChooseTicket> {
                       ),
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      color: Colors.white,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                tr('substart'),
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              Text(
-                                widget.locationstart ?? " ",
-                                style: TextStyle(fontSize: 18),
-                              )
-                            ],
+                          Text(
+                            "Lựa chon",
+                            style: TextStyle(fontSize: 18),
                           ),
-                          Spacer(),
                           GestureDetector(
                             onTap: () {
-                              showModalBottomSheet<String>(
+                              showModalBottomSheet<void>(
                                   context: context,
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (context) {
-                                    return FractionallySizedBox(
-                                        heightFactor: 0.8,
-                                        child: BottomSheetLocation(
-                                          switchValue: _switchValue,
-                                          valueChanged: (value) {
-                                            setState(() {
-                                              _switchValue = value;
-                                            });
-                                          },
-                                          id: widget.tourBus.id,
-                                        ));
-                                  }).then((value) {
-                                if (value != null) {
-                                  setState(() {
-                                    widget.locationstart = value.split(',')[0];
-                                    widget.title = value.split(',')[1];
+                                  builder: (BuildContext context) {
+                                    return BottomSheetAddress(
+                                      switchValue: _switchValue,
+                                      valueChanged: (value) {
+                                        setState(() {
+                                          _switchValue = value;
+                                        });
+                                      },
+                                    );
                                   });
-                                }
-                              });
                             },
                             child: Row(
                               children: [
-                                Text(
-                                  tr('edit'),
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Icon(
-                                  Icons.edit,
-                                  color: Colors.redAccent,
-                                )
+                                _switchValue
+                                    ? Text(
+                                        "Chọn bến xe",
+                                        style: TextStyle(fontSize: 18),
+                                      )
+                                    : Text(
+                                        "Chọn địa chỉ đón bạn",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                Icon(Icons.arrow_drop_down)
                               ],
                             ),
                           ),
-                          Divider()
                         ],
                       ),
                     ),
+                    _switchValue
+                        ? Container(
+                            height: MediaQuery.of(context).size.height * 0.12,
+                            color: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Row(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      tr('substart'),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    Text(
+                                      widget.locationstart ?? " ",
+                                      style: TextStyle(fontSize: 18),
+                                    )
+                                  ],
+                                ),
+                                Spacer(),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet<String>(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return FractionallySizedBox(
+                                              heightFactor: 0.8,
+                                              child: BottomSheetLocation(
+                                                switchValue: _switchValue,
+                                                valueChanged: (value) {
+                                                  setState(() {
+                                                    _switchValue = value;
+                                                  });
+                                                },
+                                                id: widget.tourBus.id,
+                                              ));
+                                        }).then((value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          widget.locationstart =
+                                              value.split(',')[0];
+                                          widget.title = value.split(',')[1];
+                                        });
+                                      }
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        tr('edit'),
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.edit,
+                                        color: Colors.redAccent,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Divider()
+                              ],
+                            ),
+                          )
+                        : Container(
+                            height: MediaQuery.of(context).size.height * 0.12,
+                            color: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Row(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Địa điểm đón bạn",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    Text(
+                                      widget.locationstart ?? " ",
+                                      style: TextStyle(fontSize: 18),
+                                    )
+                                  ],
+                                ),
+                                Spacer(),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet<String>(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return FractionallySizedBox(
+                                              heightFactor: 0.8,
+                                              child: BottomSheetChooseAddress(
+                                                switchValue: _switchValue,
+                                                valueChanged: (value) {
+                                                  setState(() {
+                                                    _switchValue = value;
+                                                  });
+                                                },
+                                              ));
+                                        }).then((value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          widget.locationstart =
+                                              value.split(',')[0];
+                                          widget.title = value.split(',')[1];
+                                        });
+                                      }
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        tr('edit'),
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.edit,
+                                        color: Colors.redAccent,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Divider()
+                              ],
+                            ),
+                          ),
                     Container(
                       color: Colors.white,
                       padding:
@@ -1199,8 +1466,10 @@ class _ChooseTicketState extends State<ChooseTicket> {
               ),
             ),
             bottomNavigationBar: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
+              padding: EdgeInsets.symmetric(
+                vertical: (15),
+                horizontal: (30),
+              ),
               child: DefaultButton(
                 press: () {
                   Navigator.push(
@@ -1208,7 +1477,8 @@ class _ChooseTicketState extends State<ChooseTicket> {
                       MaterialPageRoute(
                           builder: (context) => OrderTicket(
                                 tourBus: widget.tourBus,
-                                dumplex: ontap,
+                                discount: widget.discount,
+                                dumplex: false,
                                 time: widget.timestart,
                                 title: widget.title,
                                 email: emailController.text,
@@ -1222,7 +1492,6 @@ class _ChooseTicketState extends State<ChooseTicket> {
                 },
                 text: tr('continue'),
               ),
-            ),
-          );
+            ));
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:managepassengercar/blocs/savelocation/blocs/location_bloc.dart';
 import 'package:managepassengercar/blocs/savelocation/view/form_location.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveLocation extends StatefulWidget {
   @override
@@ -121,9 +120,16 @@ class _SaveLocationState extends State<SaveLocation> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4),
       child: Container(
+          alignment: Alignment.center,
           height: MediaQuery.of(context).size.height * 0.13,
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ], color: Colors.white, borderRadius: BorderRadius.circular(12)),
           child: ListTile(
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),

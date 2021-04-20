@@ -26,6 +26,29 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         yield FailureState(msg: e.toString());
       }
     }
+    if (event is DeleteEvent) {
+      yield LoadingState();
+      try {
+        var msg = await paymentRepository.deleteCard(event.id);
+        if (msg == "true") {
+          yield AddSuccessState();
+          yield LoadingState();
+          try {
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            var card = await paymentRepository.fetchCard(pref.getString('id'));
+            yield SuccessState(card: card);
+          } catch (e) {
+            print(e.toString());
+            yield FailureState(msg: e.toString());
+          }
+        } else {
+          yield FailureState(msg: "error");
+        }
+      } catch (e) {
+        print(e.toString());
+        yield FailureState(msg: e.toString());
+      }
+    }
     if (event is AddEvent) {
       yield LoadingState();
       try {
@@ -38,13 +61,46 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
             event.showBackView,
             pref.getString('id'));
         if (msg == "true") {
-          yield SuccessState();
+          yield AddSuccessState();
+          yield LoadingState();
+          try {
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            var card = await paymentRepository.fetchCard(pref.getString('id'));
+            yield SuccessState(card: card);
+          } catch (e) {
+            print(e.toString());
+            yield FailureState(msg: e.toString());
+          }
         } else {
-          print("AAA");
+          yield FailureState(msg: "error");
         }
       } catch (error) {
         print(error.toString());
         yield FailureState(msg: error.toString());
+      }
+    }
+    if (event is OrderEvent) {
+      try {
+        yield LoadingState();
+        var buyticket = await paymentRepository.addOrder(
+            event.uid,
+            event.name,
+            event.phone,
+            event.email,
+            event.idtour,
+            event.time,
+            event.locationstart,
+            event.quantyseat,
+            event.seat,
+            event.price,
+            event.totalprice);
+        if (buyticket == "true") {
+          yield SuccessState();
+        } else {
+          yield FailureState(msg: "Order failed");
+        }
+      } catch (e) {
+        yield FailureState(msg: e.toString());
       }
     }
   }

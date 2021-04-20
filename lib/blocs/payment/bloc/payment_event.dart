@@ -24,3 +24,35 @@ class AddEvent extends PaymentEvent {
       this.id,
       this.showBackView});
 }
+
+class DeleteEvent extends PaymentEvent {
+  final String id;
+  DeleteEvent({this.id});
+}
+
+class OrderEvent extends PaymentEvent {
+  final String uid;
+  final String name;
+  final String phone;
+  final String email;
+  final String idtour;
+  final String time;
+  final String locationstart;
+  final String quantyseat;
+  final String seat;
+  final String price;
+  final String totalprice;
+
+  OrderEvent(
+      {this.uid,
+      this.name,
+      this.phone,
+      this.email,
+      this.idtour,
+      this.time,
+      this.locationstart,
+      this.quantyseat,
+      this.seat,
+      this.price,
+      this.totalprice});
+}

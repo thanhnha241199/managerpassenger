@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:managepassengercar/blocs/payment/view/pay.dart';
-import 'package:managepassengercar/blocs/ticket/blocs/ticket_bloc.dart';
 import 'package:managepassengercar/providers/service_stripe.dart';
 import 'package:managepassengercar/src/views/home/bottombar.dart';
 import 'package:progress_dialog/progress_dialog.dart';

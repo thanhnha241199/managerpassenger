@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:managepassengercar/blocs/ticket/model/order.dart';
+import 'package:managepassengercar/src/views/history/detail_order.dart';
 
 class OrderBuy extends StatefulWidget {
+  List<Order> order;
+  OrderBuy({this.order});
   @override
   _OrderBuyState createState() => _OrderBuyState();
 }
@@ -34,7 +38,6 @@ class _OrderBuyState extends State<OrderBuy>
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
-            setState(() {});
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
@@ -82,25 +85,208 @@ class _OrderBuyState extends State<OrderBuy>
                 physics: NeverScrollableScrollPhysics(),
                 controller: _tabController,
                 children: [
-                  // first tab bar view widget
-                  Center(
-                    child: Text(
-                      'Place Bid',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount: widget.order
+                          .where((element) => element.status == "order")
+                          .toList()
+                          .length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailOrder(
+                                        order: widget.order[index])));
+                          },
+                          child: Card(
+                              child: Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                width: MediaQuery.of(context).size.width / 6,
+                                height: MediaQuery.of(context).size.width / 6,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue.withOpacity(0.7),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Icon(
+                                  Icons.receipt_long_outlined,
+                                  size: 35,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "ID: ${widget.order[index].id}",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "ID Tour: ${widget.order[index].tour}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Seat:${widget.order[index].seat}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Location: ${widget.order[index].location}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Total: ${widget.order[index].totalprice}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )),
+                        );
+                      },
                     ),
                   ),
 
                   // second tab bar view widget
-                  Center(
-                    child: Text(
-                      'Buy Now',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount: widget.order
+                          .where((element) => element.status == "complete")
+                          .toList()
+                          .length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailOrder(
+                                        order: widget.order[index])));
+                          },
+                          child: Card(
+                              child: Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                width: MediaQuery.of(context).size.width / 6,
+                                height: MediaQuery.of(context).size.width / 6,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue.withOpacity(0.7),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Icon(
+                                  Icons.receipt_long_outlined,
+                                  size: 35,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "ID: ${widget.order[index].id}",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "ID Tour: ${widget.order[index].tour}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Seat:${widget.order[index].seat}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Location: ${widget.order[index].location}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Total: ${widget.order[index].totalprice}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Raleway'),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )),
+                        );
+                      },
                     ),
                   ),
                 ],

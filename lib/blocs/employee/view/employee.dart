@@ -56,6 +56,13 @@ class _EmployeeState extends State<Employee> {
         }
       },
       child: BlocBuilder<EmployeeBloc, EmployeeState>(
+        buildWhen: (previous, current) {
+          if (previous is SuccessState) {
+            return false;
+          } else {
+            return true;
+          }
+        },
         builder: (context, state) {
           if (state is LoadingState) {
             return Center(
@@ -118,12 +125,8 @@ class _EmployeeState extends State<Employee> {
                         color: Colors.blue,
                       ),
                     ),
-                    Divider(
-                      height: 1,
-                      thickness: 1,
-                    ),
                     ListTile(
-                      leading: Icon(Icons.home),
+                      leading: CircleAvatar(child: Icon(Icons.home)),
                       title: Text(tr('home')),
                       selected: _selectedDestination == 0,
                       onTap: () {
@@ -142,7 +145,7 @@ class _EmployeeState extends State<Employee> {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.timelapse),
+                      leading: CircleAvatar(child: Icon(Icons.payments)),
                       title: Text(tr('ticket')),
                       selected: _selectedDestination == 1,
                       onTap: () {
@@ -162,7 +165,7 @@ class _EmployeeState extends State<Employee> {
                       thickness: 1,
                     ),
                     ListTile(
-                        leading: Icon(Icons.bookmark),
+                        leading: CircleAvatar(child: Icon(Icons.settings)),
                         title: Text(tr('title_setting')),
                         selected: _selectedDestination == 3,
                         onTap: () {
@@ -173,7 +176,7 @@ class _EmployeeState extends State<Employee> {
                           selectDestination(3);
                         }),
                     ListTile(
-                        leading: Icon(Icons.bookmark),
+                        leading: CircleAvatar(child: Icon(Icons.track_changes)),
                         title: Text(tr('changepass')),
                         selected: _selectedDestination == 4,
                         onTap: () async {
@@ -185,11 +188,12 @@ class _EmployeeState extends State<Employee> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => FormChangePassword(
+                                        userRepository: widget.userRepository,
                                         email: pref.get("name"),
                                       )));
                         }),
                     ListTile(
-                      leading: Icon(Icons.exit_to_app),
+                      leading: CircleAvatar(child: Icon(Icons.exit_to_app)),
                       title: Text(tr('logout')),
                       selected: _selectedDestination == 5,
                       onTap: () async {
@@ -238,7 +242,7 @@ class _EmployeeState extends State<Employee> {
                         scrollPhysics: BouncingScrollPhysics(),
                         aspectRatio: 2.0,
                         enlargeCenterPage: true,
-                        enableInfiniteScroll: false,
+                        enableInfiniteScroll: true,
                         initialPage: 2,
                         autoPlay: true,
                       ),
@@ -511,8 +515,14 @@ class _EmployeeState extends State<Employee> {
       .map((item) => Container(
             child: Container(
               margin: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(25)),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(25)),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 child: Image.network(item, fit: BoxFit.cover, width: 1000.0),

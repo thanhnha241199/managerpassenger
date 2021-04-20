@@ -40,7 +40,7 @@ class _ChooseLanguageState extends State<ChooseLanguage> {
           ListTile(
             title: Text(tr("language1")),
             onTap: () async {
-              EasyLocalization.of(context).locale = Locale('vi', "VN");
+              EasyLocalization.of(context).setLocale(Locale('vi', "VN"));
               Navigator.pop(context, "Tiếng Việt");
               SharedPreferences pref = await SharedPreferences.getInstance();
               pref.setString("language", "Tiếng Việt");
@@ -52,7 +52,7 @@ class _ChooseLanguageState extends State<ChooseLanguage> {
           ListTile(
             title: Text(tr("language2")),
             onTap: () async {
-              EasyLocalization.of(context).locale = Locale('en', "US");
+              EasyLocalization.of(context).setLocale(Locale('en', "US"));
               Navigator.pop(context, "English");
               SharedPreferences pref = await SharedPreferences.getInstance();
               pref.setString("language", "English");

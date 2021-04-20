@@ -20,8 +20,7 @@ class UserRepository {
     Token token = await getToken(userLogin);
     var prefs = await SharedPreferences.getInstance();
     prefs.setString("token", token.token);
-    prefs.setString("name", username);
-    print("id: ${token.id}");
+    prefs.setString("email", username);
     prefs.setString("id", token.id);
     User user =
         User(id: 0, username: username, token: token.token, type: token.type);
@@ -88,6 +87,14 @@ class UserRepository {
 
   Future<void> deleteToken({@required int id}) async {
     await userDao.deleteUser(id);
+  }
+
+  Future<bool> deleteData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove("email");
+    pref.remove("name");
+    pref.remove("phone");
+    return true;
   }
 
   Future<bool> hasToken() async {

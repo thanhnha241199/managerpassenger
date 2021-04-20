@@ -25,7 +25,7 @@ class BottomSheetTime extends StatefulWidget {
 class _BottomSheetTime extends State<BottomSheetTime> {
   bool _switchValue;
   int number;
-
+  final formatter = new NumberFormat("#,###");
   @override
   void initState() {
     super.initState();
@@ -44,6 +44,13 @@ class _BottomSheetTime extends State<BottomSheetTime> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TicketBloc, TicketState>(
+      buildWhen: (previous, current) {
+        if (previous is SuccessState) {
+          return false;
+        } else {
+          return true;
+        }
+      },
       builder: (context, state) {
         if (state is LoadingState) {
           return Container(
@@ -104,7 +111,7 @@ class _BottomSheetTime extends State<BottomSheetTime> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                      color: Colors.yellowAccent,
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(12)),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
@@ -114,28 +121,64 @@ class _BottomSheetTime extends State<BottomSheetTime> {
                                     shrinkWrap: true,
                                     itemCount: state.pickup[0].time.length,
                                     itemBuilder: (context, index) {
-                                      return ListTile(
-                                        title: Text(state.pickup[0].time[index]
-                                            .toString()),
-                                        subtitle: Text(
-                                            "${tr('seat')} -  ${widget.price} (VND)"),
-                                        onTap: () {
-                                          setState(() {
-                                            number = index;
-                                          });
-                                          Navigator.pop(
-                                              context,
-                                              state.pickup[0].time[number]
-                                                  .toString());
-                                        },
-                                        selected:
-                                            number == index ? true : false,
-                                        trailing: number == index
-                                            ? Icon(
-                                                Icons.check_circle,
-                                                color: Colors.redAccent,
-                                              )
-                                            : Text(""),
+                                      return Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 5),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
+                                                spreadRadius: 5,
+                                                blurRadius: 7,
+                                                offset: Offset(0,
+                                                    3), // changes position of shadow
+                                              ),
+                                            ],
+                                            color: Colors.white),
+                                        child: ListTile(
+                                          leading: Container(
+                                            height: 75,
+                                            width: 75,
+                                            decoration: BoxDecoration(
+                                                color: Colors.amberAccent,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Icon(Icons.alarm),
+                                          ),
+                                          title: Text(
+                                            state.pickup[0].time[index]
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          subtitle: Text(
+                                            "${tr('seat')} -  ${formatter.format(int.parse(widget.price))} (VND)",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              number = index;
+                                            });
+                                            Navigator.pop(
+                                                context,
+                                                state.pickup[0].time[number]
+                                                    .toString());
+                                          },
+                                          selected:
+                                              number == index ? true : false,
+                                          trailing: number == index
+                                              ? Icon(
+                                                  Icons.check_circle,
+                                                  color: Colors.redAccent,
+                                                )
+                                              : Text(""),
+                                        ),
                                       );
                                     },
                                   ),

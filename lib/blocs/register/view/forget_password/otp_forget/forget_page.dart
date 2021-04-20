@@ -22,7 +22,7 @@ class _ForgetPageState extends State<ForgetPage> {
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
     );
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+
         body: BlocProvider(
             create: (context) {
               return LoginBloc(

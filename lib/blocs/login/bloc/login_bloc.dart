@@ -82,7 +82,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (loginEvent.otp == prefs.getString("otp")) {
         yield ForgetConfirm();
       } else {
-        yield ForgetFailure();
+        yield ForgetFailure(error: "error");
       }
     }
     if (loginEvent is ChangeButtonPressed) {

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:managepassengercar/blocs/savelocation/blocs/location_bloc.dart';
@@ -22,13 +23,11 @@ class _AddAddressState extends State<AddAddress> {
   List<Ward> list_ward;
   @override
   void dispose() {
-    // TODO: implement dispose
     addressController.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     BlocProvider.of<AddressBloc>(context).add(DoFetchEvent());
   }
@@ -36,7 +35,7 @@ class _AddAddressState extends State<AddAddress> {
   PlaceApiProvider apiClient;
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+
       appBar: AppBar(
         centerTitle: false,
         title: Text(
@@ -80,229 +79,211 @@ class _AddAddressState extends State<AddAddress> {
           }
           if (state is SuccessState) {
             list_city = state.addressmodel;
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Text(
-                        "Tinh/Thanh Pho",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                      Spacer(),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            items: list_city.map((dropDownStringItem) {
-                              return DropdownMenuItem<String>(
-                                value: dropDownStringItem.name,
-                                child: Text(dropDownStringItem.name),
-                              );
-                            }).toList(),
-                            hint: Text(
-                              "Choose City",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            onChanged: (String value) {
-                              setState(() {
-                                city = value;
-                                list_city.forEach((element) {
-                                  if (element.name == city) {
-                                    list_district = element.districts;
-                                  }
+            return Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        Text(
+                          "Tinh/Thanh Pho",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        Spacer(),
+                        Container(
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              items: list_city.map((dropDownStringItem) {
+                                return DropdownMenuItem<String>(
+                                  value: dropDownStringItem.name,
+                                  child: Text(dropDownStringItem.name),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Choose City",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  city = value;
+                                  list_city.forEach((element) {
+                                    if (element.name == city) {
+                                      list_district = element.districts;
+                                    }
+                                  });
                                 });
-                              });
-                            },
-                            value: city,
+                              },
+                              value: city,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Huyen/Quan",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                      Spacer(),
-                      list_district == null
-                          ? Container(
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Huyen/Quan",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        Spacer(),
+                        list_district == null
+                            ? Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                      items: [],
+                                      onChanged: (value) {},
+                                      isExpanded: true,
+                                      hint: Text(
+                                        "Choose District",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      )),
+                                ))
+                            : Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
                                     isExpanded: true,
+                                    items:
+                                        list_district.map((dropDownStringItem) {
+                                      return DropdownMenuItem<String>(
+                                        value: dropDownStringItem.name,
+                                        child: Text(dropDownStringItem.name),
+                                      );
+                                    }).toList(),
                                     hint: Text(
                                       "Choose District",
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600),
-                                    )),
-                              ))
-                          : Container(
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  items:
-                                      list_district.map((dropDownStringItem) {
-                                    return DropdownMenuItem<String>(
-                                      value: dropDownStringItem.name,
-                                      child: Text(dropDownStringItem.name),
-                                    );
-                                  }).toList(),
-                                  hint: Text(
-                                    "Choose District",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      district = value;
-                                      list_district.forEach((element) {
-                                        if (element.name == district) {
-                                          list_ward = element.wards;
-                                        }
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        district = value;
+                                        list_district.forEach((element) {
+                                          if (element.name == district) {
+                                            list_ward = element.wards;
+                                          }
+                                        });
                                       });
-                                    });
-                                  },
-                                  value: district,
+                                    },
+                                    value: district,
+                                  ),
                                 ),
                               ),
-                            ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Xa/Phuong",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                      Spacer(),
-                      list_ward == null
-                          ? Container(
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Xa/Phuong",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        Spacer(),
+                        list_ward == null
+                            ? Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                      items: [],
+                                      onChanged: (value) {},
+                                      isExpanded: true,
+                                      hint: Text(
+                                        "Choose Ward",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      )),
+                                ))
+                            : Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
                                     isExpanded: true,
+                                    items: list_ward.map((dropDownStringItem) {
+                                      return DropdownMenuItem<String>(
+                                        value: dropDownStringItem.name,
+                                        child: Text(dropDownStringItem.name),
+                                      );
+                                    }).toList(),
                                     hint: Text(
                                       "Choose Ward",
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600),
-                                    )),
-                              ))
-                          : Container(
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  items: list_ward.map((dropDownStringItem) {
-                                    return DropdownMenuItem<String>(
-                                      value: dropDownStringItem.name,
-                                      child: Text(dropDownStringItem.name),
-                                    );
-                                  }).toList(),
-                                  hint: Text(
-                                    "Choose Ward",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        ward = value;
+                                      });
+                                    },
+                                    value: ward,
                                   ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      ward = value;
-                                    });
-                                  },
-                                  value: ward,
                                 ),
                               ),
-                            ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Dia chi cu them",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  FutureBuilder(
-                    future: addressController.text == ""
-                        ? null
-                        : apiClient.fetchSuggestions(addressController.text,
-                            Localizations.localeOf(context).languageCode),
-                    builder: (context, snapshot) =>
-                        (addressController.text == ''
-                            ? Container(
-                                height: MediaQuery.of(context).size.height / 5,
-                                width: MediaQuery.of(context).size.width / 1.2,
-                                margin: EdgeInsets.symmetric(
-                                  vertical: 8.0,
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Color(0xFFF2F2F2),
-                                    borderRadius: BorderRadius.circular(12.0)),
-                                child: TextField(
-                                  maxLines: 10,
-                                  controller: addressController,
-                                  decoration: InputDecoration(
-                                      hintText: "Address",
-                                      border: InputBorder.none,
-                                      contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 24.0,
-                                        vertical: 20.0,
-                                      )),
-                                  style: Constants.regularDarkText,
-                                ),
-                              )
-                            : snapshot.hasData
-                                ? ListView.builder(
-                                    itemBuilder: (context, index) => ListTile(
-                                      title: Text(
-                                          (snapshot.data[index] as Suggestion)
-                                              .description),
-                                      onTap: () {
-                                        print(snapshot.data[index]);
-                                      },
-                                    ),
-                                    itemCount: snapshot.data.length,
-                                  )
-                                : Container(child: Text('Loading...'))),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                    child: DefaultButton(
-                      press: () {
-                        Navigator.pop(
-                            context,
-                            addressController.text +
-                                ", " +
-                                ward +
-                                ", " +
-                                district +
-                                ", " +
-                                city);
-                      },
-                      text: "Confirm",
+                      ],
                     ),
-                  )
-                ],
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 1.2,
+                      margin: EdgeInsets.symmetric(
+                        vertical: 8.0,
+                      ),
+                      decoration: BoxDecoration(
+                          color: Color(0xFFF2F2F2),
+                          borderRadius: BorderRadius.circular(12.0)),
+                      child: TextField(
+                        maxLines: 10,
+                        controller: addressController,
+                        decoration: InputDecoration(
+                            hintText: "Address",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 24.0,
+                              vertical: 20.0,
+                            )),
+                        style: Constants.regularDarkText,
+                      ),
+                    ),
+                    Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 80, vertical: 20),
+                        child: AnimatedButton(
+                          color: Colors.red,
+                          text: "CONFIRM",
+                          pressEvent: () {
+                            Navigator.pop(
+                                context,
+                                addressController.text +
+                                    ", " +
+                                    ward +
+                                    ", " +
+                                    district +
+                                    ", " +
+                                    city);
+                          },
+                        ))
+                  ],
+                ),
               ),
             );
           }

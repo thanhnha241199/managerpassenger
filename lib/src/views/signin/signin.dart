@@ -11,6 +11,7 @@ import 'package:managepassengercar/src/utils/constants.dart';
 import 'package:managepassengercar/src/views/home/bottombar.dart';
 import 'package:managepassengercar/src/views/signin/authenticate.dart';
 import 'package:managepassengercar/src/views/widget/loading.dart';
+import 'package:managepassengercar/utils/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,8 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {'email': email, 'password': pass};
     var jsonResponse = null;
-    var response = await http.post(
-        "https://managerpassenger.herokuapp.com/authenticate",
+    var response = await http.post(Uri.parse("${ServerAddress.serveraddress}authenticate"),
         body: data);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
@@ -184,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+
       body: _isLoading
           ? Loading()
           : SafeArea(

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:managepassengercar/blocs/login/view/login.dart';
 
-import 'file:///D:/Flutter/managepassengercar/lib/blocs/register/view/register/register_form.dart';
+import 'package:managepassengercar/blocs/register/view/register/register_form.dart';
 import 'package:managepassengercar/src/views/widget/default_btn.dart';
 import 'package:managepassengercar/src/views/widget/success.dart';
 import 'package:shared_preferences/shared_preferences.dart';

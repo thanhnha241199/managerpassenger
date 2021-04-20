@@ -10,7 +10,6 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
   @override
   Stream<SettingState> mapEventToState(SettingEvent event) {
-    // TODO: implement mapEventToState
     throw UnimplementedError();
   }
 }

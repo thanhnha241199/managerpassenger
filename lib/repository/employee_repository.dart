@@ -4,13 +4,14 @@ import 'package:managepassengercar/src/models/pickup.dart';
 import 'package:managepassengercar/src/models/profile_user.dart';
 import 'package:managepassengercar/src/models/schedule.dart';
 import 'package:managepassengercar/src/models/seat.dart';
+import 'package:managepassengercar/utils/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EmployeeRepository {
   Future<List<TourBus>> fetchTourbus() async {
     List<TourBus> tourbus = [];
     Response response =
-        await Dio().get("https://managerpassenger.herokuapp.com/gettourbus");
+        await Dio().get("${ServerAddress.serveraddress}gettourbus");
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       data.map((ad) => tourbus.add(TourBus.fromJson(ad))).toList();
@@ -21,7 +22,7 @@ class EmployeeRepository {
   Future<List<PickUp>> fetchPickUp() async {
     List<PickUp> pickup = [];
     Response response =
-        await Dio().get("https://managerpassenger.herokuapp.com/getpickup");
+        await Dio().get("${ServerAddress.serveraddress}getpickup");
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       print(data);
@@ -33,7 +34,7 @@ class EmployeeRepository {
   Future<List<Schedule>> fetchSchedule() async {
     List<Schedule> schedule = [];
     Response response =
-        await Dio().get("https://managerpassenger.herokuapp.com/getschedule");
+        await Dio().get("${ServerAddress.serveraddress}getschedule");
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       print(data);
@@ -45,7 +46,7 @@ class EmployeeRepository {
   Future<List<Seat>> fetchSeat() async {
     List<Seat> seat = [];
     Response response =
-        await Dio().get("https://managerpassenger.herokuapp.com/getseat");
+        await Dio().get("${ServerAddress.serveraddress}getseat");
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       print(data);
@@ -60,8 +61,7 @@ class EmployeeRepository {
     Dio dio = new Dio();
     ProfileUser profileUser;
     dio.options.headers['Authorization'] = 'Bearer ${token}';
-    Response response =
-        await dio.get("https://managerpassenger.herokuapp.com/getinfo");
+    Response response = await dio.get("${ServerAddress.serveraddress}getinfo");
     if (response != null && response.statusCode == 200) {
       profileUser = ProfileUser.fromJson(response.data);
       return profileUser;
