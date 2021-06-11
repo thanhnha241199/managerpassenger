@@ -6,7 +6,7 @@ import 'package:managepassengercar/src/models/pickup.dart';
 import 'package:managepassengercar/src/models/profile_user.dart';
 import 'package:managepassengercar/src/models/schedule.dart';
 import 'package:managepassengercar/src/models/seat.dart';
-import 'package:managepassengercar/src/views/profile/profile.dart';
+import 'package:managepassengercar/src/models/order.dart';
 part 'employee_event.dart';
 part 'employee_state.dart';
 
@@ -27,12 +27,14 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         var schedule = await employeeRepository.fetchSchedule();
         var seat = await employeeRepository.fetchSeat();
         var profile = await employeeRepository.fetchProfileUser();
+        var listorder = await employeeRepository.fetchOrderTicket();
         yield SuccessState(
             toubus: tourbus,
             pickup: pickup,
             schedule: schedule,
             seat: seat,
-            profileUser: profile);
+            profileUser: profile,
+            listorder: listorder);
       } catch (e) {
         yield FailureState(msg: e.toString());
       }

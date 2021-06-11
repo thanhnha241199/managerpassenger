@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:managepassengercar/blocs/notification/bloc/notification_bloc.dart';
+import 'package:managepassengercar/main.dart';
+import 'package:managepassengercar/utils/app_style.dart';
 
 class Notifications extends StatefulWidget {
   @override
@@ -11,13 +14,37 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
-  String messageTitle = "Empty";
-  String notificationAlert = "alert";
+  String messageTitle = "Không có thông báo nào!";
+  String notificationAlert = "Thông báo";
 
   @override
   void initState() {
     getToken();
     BlocProvider.of<NotificationBloc>(context).add(DoFetchEvent());
+    var initialzationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings =
+        InitializationSettings(android: initialzationSettingsAndroid);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                icon: android?.smallIcon,
+              ),
+            ));
+      }
+    });
   }
 
   getToken() async {
@@ -56,10 +83,12 @@ class _NotificationsState extends State<Notifications> {
             height: MediaQuery.of(context).size.height * 0.2,
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 120.0),
+            padding: const EdgeInsets.only(top: 100.0),
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black
+                      : Colors.white,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30.0),
                       topRight: Radius.circular(30.0))),
@@ -90,12 +119,12 @@ class _NotificationsState extends State<Notifications> {
                                   width: 250.0,
                                 ),
                                 Text(
-                                  "Hiện tại, bạn không có thông báo mới nào.",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Raleway'),
-                                ),
+                                    "Hiện tại, bạn không có thông báo mới nào.",
+                                    style: AppTextStyles.textSize20(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.black
+                                            : Colors.white)),
                                 Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -105,9 +134,9 @@ class _NotificationsState extends State<Notifications> {
                                       ),
                                       Text(
                                         messageTitle,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4,
+                                        style: AppTextStyles.textSize18(
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ],
                                   ),
@@ -121,6 +150,7 @@ class _NotificationsState extends State<Notifications> {
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
                             child: ListView.builder(
+                              addAutomaticKeepAlives: true,
                               physics: BouncingScrollPhysics(),
                               itemCount: state.notification.length,
                               padding: EdgeInsets.only(top: 0),

@@ -18,6 +18,7 @@ import 'package:managepassengercar/src/views/chat/chatuserscreen.dart';
 import 'package:managepassengercar/src/views/chat/global.dart';
 import 'package:managepassengercar/src/views/chat/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'reviewscreen.dart';
 
 class Employee extends StatefulWidget {
   final UserRepository userRepository;
@@ -355,10 +356,20 @@ class _EmployeeState extends State<Employee> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              DateTime dateTime = DateTime.now();
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomeScreen()));
+                                      builder: (context) => ReviewScreen(
+                                            listorder: state.listorder
+                                                .where((element) =>
+                                                    dateTime
+                                                        .difference(
+                                                            element.createdAt)
+                                                        .inDays ==
+                                                    0)
+                                                .toList(),
+                                          )));
                             },
                             child: Container(
                               height: MediaQuery.of(context).size.height / 6,
@@ -374,7 +385,7 @@ class _EmployeeState extends State<Employee> {
                                     Icons.star,
                                     size: 70,
                                   ),
-                                  Text(tr('rating')),
+                                  Text("Ticket"),
                                 ],
                               ),
                             ),

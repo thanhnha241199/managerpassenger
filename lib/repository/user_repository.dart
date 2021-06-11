@@ -22,6 +22,8 @@ class UserRepository {
     prefs.setString("token", token.token);
     prefs.setString("email", username);
     prefs.setString("id", token.id);
+    prefs.setString("name", token.name);
+    prefs.setString("phone", token.phone);
     User user =
         User(id: 0, username: username, token: token.token, type: token.type);
     return user;
@@ -35,7 +37,13 @@ class UserRepository {
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     UserRegister userRegister = UserRegister(
-        username: username, password: password, name: name, phone: phone);
+        username: username,
+        password: password,
+        name: name,
+        phone: phone,
+        active: "true",
+        type: "1");
+    print("userregister : ${userRegister}");
     Otp otp = await confirmOTP(userRegister);
     prefs.setString('otp', otp.otp.toString());
     prefs.setString('email', username);
@@ -76,7 +84,8 @@ class UserRepository {
         password: password,
         name: name,
         phone: phone,
-        type: '1');
+        type: '1',
+        active: "true");
     var res = await signUp(userRegister);
     print(res);
   }

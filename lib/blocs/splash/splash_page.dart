@@ -14,10 +14,8 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 
   void checkUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var status = prefs.getString('token');
-    setState(() {
-      check = status;
-    });
+    BlocProvider.of<ProfileBloc>(context)
+        .add(DoFetchEvent(token: prefs.getString('token')));
   }
 
   @override
@@ -32,7 +30,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
     );
-    BlocProvider.of<ProfileBloc>(context).add(DoFetchEvent(token: check));
+
     return Container(
       child: Scaffold(
         body: Stack(

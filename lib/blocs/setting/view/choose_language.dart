@@ -20,10 +20,14 @@ class _ChooseLanguageState extends State<ChooseLanguage> {
         title: Text(
           tr("choose"),
           style: TextStyle(
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
         brightness: Brightness.light,
         elevation: 0,
         actionsIconTheme: IconThemeData(color: Colors.black),
@@ -32,7 +36,10 @@ class _ChooseLanguageState extends State<ChooseLanguage> {
           onPressed: () {
             Navigator.pop(context, widget.language);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
         ),
       ),
       body: Column(

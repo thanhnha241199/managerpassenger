@@ -12,10 +12,17 @@ class Token {
   String token;
   String id;
   String type;
-  Token({this.token, this.id, this.type});
+  String name;
+  String phone;
+  Token({this.token, this.id, this.type, this.name, this.phone});
 
   factory Token.fromJson(Map<String, dynamic> json) {
-    return Token(token: json['token'], id: json['id'], type: json['type']);
+    return Token(
+        token: json['token'],
+        id: json['id'],
+        type: json['type'],
+        name: json['name'],
+        phone: json['phone']);
   }
 }
 

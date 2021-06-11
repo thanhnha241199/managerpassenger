@@ -6,6 +6,7 @@ import 'package:managepassengercar/src/models/schedule.dart';
 import 'package:managepassengercar/src/models/seat.dart';
 import 'package:managepassengercar/utils/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:managepassengercar/src/models/order.dart';
 
 class EmployeeRepository {
   Future<List<TourBus>> fetchTourbus() async {
@@ -16,6 +17,17 @@ class EmployeeRepository {
       var data = response.data;
       data.map((ad) => tourbus.add(TourBus.fromJson(ad))).toList();
       return tourbus;
+    }
+  }
+
+  Future<List<ListOrder>> fetchOrderTicket() async {
+    List<ListOrder> ticketorder = [];
+    Response response =
+        await Dio().get("${ServerAddress.serveraddress}getorder");
+    if (response != null && response.statusCode == 200) {
+      var data = response.data;
+      data.map((ad) => ticketorder.add(ListOrder.fromJson(ad))).toList();
+      return ticketorder;
     }
   }
 

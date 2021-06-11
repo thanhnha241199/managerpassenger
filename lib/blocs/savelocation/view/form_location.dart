@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +9,7 @@ import 'package:managepassengercar/blocs/savelocation/view/dropdown_address.dart
 import 'package:managepassengercar/src/utils/constants.dart';
 import 'package:managepassengercar/src/views/test.dart';
 import 'package:managepassengercar/src/views/widget/blur_dialog.dart';
+import 'package:managepassengercar/utils/app_style.dart';
 
 class FormLocation extends StatefulWidget {
   final String title;
@@ -42,17 +44,21 @@ class _FormLocationState extends State<FormLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         centerTitle: false,
         title: Text(
-          widget.title == null ? "Add location" : "Update location",
+          widget.title == null ? tr('addAddress') : tr('updateAddress'),
           style: TextStyle(
-            color: Colors.black,
-          ),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black),
         ),
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
+        brightness: Theme.of(context).brightness == Brightness.dark
+            ? Brightness.dark
+            : Brightness.light,
         elevation: 0,
         actionsIconTheme: IconThemeData(color: Colors.black),
         iconTheme: IconThemeData(color: Colors.black),
@@ -60,7 +66,10 @@ class _FormLocationState extends State<FormLocation> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
         ),
       ),
       body: Container(
@@ -69,7 +78,7 @@ class _FormLocationState extends State<FormLocation> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Name",
+              tr('nameAddress'),
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(
@@ -80,19 +89,24 @@ class _FormLocationState extends State<FormLocation> {
               width: MediaQuery.of(context).size.width / 1.2,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: Color(0xFFF2F2F2),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black
+                      : Color(0xFFF2F2F2),
                   borderRadius: BorderRadius.circular(12.0)),
               child: TextField(
                 maxLines: 10,
                 controller: nameController,
                 decoration: InputDecoration(
-                    hintText: "Name Address",
+                    hintText: tr('nameAddress'),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 24.0,
                       vertical: 20.0,
                     )),
-                style: Constants.regularDarkText,
+                style: AppTextStyles.textSize16(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
               ),
             ),
             SizedBox(
@@ -102,7 +116,7 @@ class _FormLocationState extends State<FormLocation> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Address",
+                  tr('detailAddress'),
                   style: TextStyle(fontSize: 20),
                 ),
                 Row(
@@ -146,19 +160,24 @@ class _FormLocationState extends State<FormLocation> {
               height: MediaQuery.of(context).size.height / 3,
               width: MediaQuery.of(context).size.width / 1.2,
               decoration: BoxDecoration(
-                  color: Color(0xFFF2F2F2),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black
+                      : Color(0xFFF2F2F2),
                   borderRadius: BorderRadius.circular(12.0)),
               child: TextField(
                 maxLines: 10,
                 controller: addressController,
                 decoration: InputDecoration(
-                    hintText: "Address",
+                    hintText: tr('detailAddress'),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 24.0,
                       vertical: 20.0,
                     )),
-                style: Constants.regularDarkText,
+                style: AppTextStyles.textSize16(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
               ),
             ),
           ],
@@ -197,7 +216,7 @@ class _FormLocationState extends State<FormLocation> {
           if (state is AddSuccessState) {
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text(
-                'Them thành công!',
+                'Thêm thành công!',
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
               ),
               backgroundColor: Colors.red,
@@ -259,16 +278,15 @@ class _FormLocationState extends State<FormLocation> {
                               flex: 1,
                               child: AnimatedButton(
                                 color: Colors.red,
-                                text: "Xoa",
+                                text: tr('delete'),
                                 pressEvent: () {
                                   AwesomeDialog(
                                     context: context,
                                     dialogType: DialogType.QUESTION,
                                     headerAnimationLoop: true,
                                     animType: AnimType.BOTTOMSLIDE,
-                                    title: 'Bạn chưa đăng nhập',
-                                    desc:
-                                        'Vui lòng đăng nhập để có thể tiếp tục sử dung!',
+                                    title: tr("alertlogin"),
+                                    desc: tr('descriptionLogin'),
                                     buttonsTextStyle:
                                         TextStyle(color: Colors.black),
                                     btnCancelOnPress: () {},
@@ -291,7 +309,7 @@ class _FormLocationState extends State<FormLocation> {
                               flex: 1,
                               child: AnimatedButton(
                                 color: Colors.green,
-                                text: "Update",
+                                text: tr('update'),
                                 pressEvent: () {
                                   BlocProvider.of<AddressBloc>(context).add(
                                       UpdateEvent(
@@ -309,7 +327,7 @@ class _FormLocationState extends State<FormLocation> {
                               flex: 1,
                               child: AnimatedButton(
                                 color: Colors.red,
-                                text: "Add",
+                                text: tr('add'),
                                 pressEvent: () async {
                                   BlocProvider.of<AddressBloc>(context).add(
                                       AddEvent(

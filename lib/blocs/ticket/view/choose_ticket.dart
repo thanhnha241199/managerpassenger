@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:managepassengercar/blocs/ticket/model/discount.dart';
@@ -6,12 +7,14 @@ import 'package:managepassengercar/blocs/ticket/view/choose_position.dart';
 import 'package:managepassengercar/blocs/ticket/view/time_choose_ticket.dart';
 
 import 'package:managepassengercar/providers/api_provider.dart';
+import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/utils/constants.dart';
 import 'package:managepassengercar/src/views/ticket/choose_address.dart';
 import 'package:managepassengercar/src/views/ticket/choose_location.dart';
 import 'package:managepassengercar/src/views/ticket/order_ticket.dart';
 import 'package:managepassengercar/src/views/widget/default_btn.dart';
 import 'package:managepassengercar/src/views/widget/switch.dart';
+import 'package:managepassengercar/utils/app_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChooseTicket extends StatefulWidget {
@@ -20,6 +23,7 @@ class ChooseTicket extends StatefulWidget {
   String timestart;
   String timeback;
   String datestart;
+  final UserRepository userRepository;
   String dateback;
   String seat;
   String title;
@@ -32,6 +36,7 @@ class ChooseTicket extends StatefulWidget {
   ChooseTicket(
       {this.tourBus,
       this.dumplex,
+      this.userRepository,
       this.datestart,
       this.dateback,
       this.discount});
@@ -65,6 +70,7 @@ class _ChooseTicketState extends State<ChooseTicket> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.tourBus.shuttle);
     return widget.dumplex
         ? DefaultTabController(
             length: 2,
@@ -74,8 +80,9 @@ class _ChooseTicketState extends State<ChooseTicket> {
                 title: Text(
                   tr('choosecar'),
                   style: TextStyle(
-                    color: Colors.black,
-                  ),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black),
                 ),
                 backgroundColor: Colors.white,
                 brightness: Brightness.light,
@@ -92,10 +99,24 @@ class _ChooseTicketState extends State<ChooseTicket> {
                   indicatorColor: Colors.red,
                   tabs: [
                     Tab(
-                      child: Text(tr('chieudi')),
+                      child: Text(
+                        tr('chieudi'),
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black),
+                      ),
                     ),
                     Tab(
-                      child: Text(tr('chieuve')),
+                      child: Text(
+                        tr('chieuve'),
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black),
+                      ),
                     )
                   ],
                 ),
@@ -288,51 +309,56 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                 ],
                               ),
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Lựa chon",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet<void>(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return BottomSheetAddress(
-                                              switchValue: _switchValue,
-                                              valueChanged: (value) {
-                                                setState(() {
-                                                  _switchValue = value;
-                                                });
-                                              },
-                                            );
-                                          });
-                                    },
+                            widget.tourBus.shuttle.compareTo("true") == 0
+                                ? Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        _switchValue
-                                            ? Text(
-                                                "Chọn bến xe",
-                                                style: TextStyle(fontSize: 18),
-                                              )
-                                            : Text(
-                                                "Chọn địa chỉ đón bạn",
-                                                style: TextStyle(fontSize: 18),
-                                              ),
-                                        Icon(Icons.arrow_drop_down)
+                                        Text(
+                                          "Lựa chon",
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showModalBottomSheet<void>(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return BottomSheetAddress(
+                                                    switchValue: _switchValue,
+                                                    valueChanged: (value) {
+                                                      setState(() {
+                                                        _switchValue = value;
+                                                      });
+                                                    },
+                                                  );
+                                                });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              _switchValue
+                                                  ? Text(
+                                                      "Chọn bến xe",
+                                                      style: TextStyle(
+                                                          fontSize: 18),
+                                                    )
+                                                  : Text(
+                                                      "Chọn địa chỉ đón bạn",
+                                                      style: TextStyle(
+                                                          fontSize: 18),
+                                                    ),
+                                              Icon(Icons.arrow_drop_down)
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            _switchValue
+                                  )
+                                : Container(),
+                            !_switchValue
                                 ? Container(
                                     height: MediaQuery.of(context).size.height *
                                         0.12,
@@ -944,11 +970,16 @@ class _ChooseTicketState extends State<ChooseTicket> {
               title: Text(
                 tr('choosecar'),
                 style: TextStyle(
-                  color: Colors.black,
-                ),
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
               ),
-              backgroundColor: Colors.white,
-              brightness: Brightness.light,
+              backgroundColor: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Colors.white,
+              brightness: Theme.of(context).brightness == Brightness.dark
+                  ? Brightness.dark
+                  : Brightness.light,
               elevation: 0.0,
               actionsIconTheme: IconThemeData(color: Colors.black),
               iconTheme: IconThemeData(color: Colors.black),
@@ -956,13 +987,18 @@ class _ChooseTicketState extends State<ChooseTicket> {
                 onPressed: () {
                   Navigator.pop(context, false);
                 },
-                icon: Icon(Icons.arrow_back_ios),
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.blue,
+                ),
               ),
             ),
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black12
+                    : Colors.white,
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1003,12 +1039,13 @@ class _ChooseTicketState extends State<ChooseTicket> {
                     SizedBox(
                       height: (10.0),
                       child: Container(
-                        color: Color(0xFFf5f6f7),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black
+                            : Color(0xFFf5f6f7),
                       ),
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.12,
-                      color: Colors.white,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Row(
@@ -1076,7 +1113,6 @@ class _ChooseTicketState extends State<ChooseTicket> {
                       ),
                     ),
                     Container(
-                      color: Colors.white,
                       height: MediaQuery.of(context).size.height * 0.12,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -1137,53 +1173,54 @@ class _ChooseTicketState extends State<ChooseTicket> {
                         ],
                       ),
                     ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Lựa chon",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return BottomSheetAddress(
-                                      switchValue: _switchValue,
-                                      valueChanged: (value) {
-                                        setState(() {
-                                          _switchValue = value;
-                                        });
-                                      },
-                                    );
-                                  });
-                            },
+                    widget.tourBus.shuttle == "true"
+                        ? Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _switchValue
-                                    ? Text(
-                                        "Chọn bến xe",
-                                        style: TextStyle(fontSize: 18),
-                                      )
-                                    : Text(
-                                        "Chọn địa chỉ đón bạn",
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                Icon(Icons.arrow_drop_down)
+                                Text(
+                                  tr('chooseoption'),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return BottomSheetAddress(
+                                            switchValue: _switchValue,
+                                            valueChanged: (value) {
+                                              setState(() {
+                                                _switchValue = value;
+                                              });
+                                            },
+                                          );
+                                        });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      _switchValue
+                                          ? Text(
+                                              tr('choosecar'),
+                                              style: TextStyle(fontSize: 18),
+                                            )
+                                          : Text(
+                                              tr('chooselocation'),
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                      Icon(Icons.arrow_drop_down)
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    _switchValue
+                          )
+                        : Container(),
+                    !_switchValue
                         ? Container(
                             height: MediaQuery.of(context).size.height * 0.12,
-                            color: Colors.white,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 10),
                             child: Row(
@@ -1253,7 +1290,6 @@ class _ChooseTicketState extends State<ChooseTicket> {
                           )
                         : Container(
                             height: MediaQuery.of(context).size.height * 0.12,
-                            color: Colors.white,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 10),
                             child: Row(
@@ -1321,15 +1357,16 @@ class _ChooseTicketState extends State<ChooseTicket> {
                             ),
                           ),
                     Container(
-                      color: Colors.white,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Row(
                         children: [
-                          Text(
-                            tr('orderhelp'),
-                            style: TextStyle(fontSize: 18),
-                          ),
+                          Text(tr('orderhelp'),
+                              style: AppTextStyles.textSize18(
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black)),
                           Spacer(),
                           SwitchControl(
                             onChanged: (value) {
@@ -1351,14 +1388,15 @@ class _ChooseTicketState extends State<ChooseTicket> {
                     ontap
                         ? Container(
                             padding: EdgeInsets.symmetric(horizontal: 20),
-                            color: Colors.white,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  tr('name'),
-                                  style: TextStyle(fontSize: 18),
-                                ),
+                                Text(tr('name'),
+                                    style: AppTextStyles.textSize18(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black)),
                                 Container(
                                   height:
                                       MediaQuery.of(context).size.height / 12,
@@ -1368,7 +1406,10 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                     vertical: 5.0,
                                   ),
                                   decoration: BoxDecoration(
-                                      color: Color(0xFFF2F2F2),
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.black
+                                          : Color(0xFFF2F2F2),
                                       borderRadius:
                                           BorderRadius.circular(12.0)),
                                   child: TextField(
@@ -1396,7 +1437,10 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                     vertical: 5.0,
                                   ),
                                   decoration: BoxDecoration(
-                                      color: Color(0xFFF2F2F2),
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.black
+                                          : Color(0xFFF2F2F2),
                                       borderRadius:
                                           BorderRadius.circular(12.0)),
                                   child: TextField(
@@ -1425,7 +1469,10 @@ class _ChooseTicketState extends State<ChooseTicket> {
                                     vertical: 5.0,
                                   ),
                                   decoration: BoxDecoration(
-                                      color: Color(0xFFF2F2F2),
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.black
+                                          : Color(0xFFF2F2F2),
                                       borderRadius:
                                           BorderRadius.circular(12.0)),
                                   child: TextField(
@@ -1446,17 +1493,24 @@ class _ChooseTicketState extends State<ChooseTicket> {
                         : Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 10),
-                            color: Colors.white,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   name,
-                                  style: TextStyle(fontSize: 18),
+                                  style: AppTextStyles.textSize18(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black),
                                 ),
                                 Text(
                                   phone,
-                                  style: TextStyle(fontSize: 18),
+                                  style: AppTextStyles.textSize18(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black),
                                 ),
                               ],
                             ),
@@ -1472,23 +1526,38 @@ class _ChooseTicketState extends State<ChooseTicket> {
               ),
               child: DefaultButton(
                 press: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OrderTicket(
-                                tourBus: widget.tourBus,
-                                discount: widget.discount,
-                                dumplex: false,
-                                time: widget.timestart,
-                                title: widget.title,
-                                email: emailController.text,
-                                phone: phoneController.text,
-                                name: nameController.text,
-                                dateback: widget.dateback,
-                                datestart: widget.datestart,
-                                address: widget.locationstart,
-                                seat: widget.seat,
-                              )));
+                  if (widget.seat == null ||
+                      widget.timestart == null ||
+                      widget.locationstart == null) {
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.WARNING,
+                      headerAnimationLoop: true,
+                      animType: AnimType.BOTTOMSLIDE,
+                      title: 'Thông báo',
+                      desc:
+                          'Bạn chưa chọn thời gian khởi hành hoặc chỗ ngồi hoặc điểm đón bán!',
+                      buttonsTextStyle: TextStyle(color: Colors.black),
+                    )..show();
+                  } else
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OrderTicket(
+                                  tourBus: widget.tourBus,
+                                  discount: widget.discount,
+                                  userRepository: widget.userRepository,
+                                  dumplex: false,
+                                  time: widget.timestart,
+                                  title: widget.title,
+                                  email: emailController.text,
+                                  phone: phoneController.text,
+                                  name: nameController.text,
+                                  dateback: widget.dateback,
+                                  datestart: widget.datestart,
+                                  address: widget.locationstart,
+                                  seat: widget.seat,
+                                )));
                 },
                 text: tr('continue'),
               ),

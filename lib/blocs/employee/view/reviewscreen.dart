@@ -1,0 +1,487 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:managepassengercar/blocs/ticket/blocs/ticket_bloc.dart';
+import 'package:managepassengercar/blocs/ticket/model/order.dart';
+import 'package:managepassengercar/src/models/order.dart';
+import 'package:managepassengercar/src/views/history/detail_employee.dart';
+import 'package:managepassengercar/src/views/history/ticket_view.dart';
+import 'package:managepassengercar/utils/app_style.dart';
+import 'package:shimmer/shimmer.dart';
+
+class ReviewScreen extends StatefulWidget {
+  List<ListOrder> listorder;
+  ReviewScreen({this.listorder});
+  @override
+  _ReviewScreenState createState() => _ReviewScreenState();
+}
+
+class _ReviewScreenState extends State<ReviewScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<TicketBloc>(context).add(DoFetchEvent());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        title: Text(
+          "Ticket Order",
+          style: TextStyle(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black),
+        ),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
+        brightness: Theme.of(context).brightness == Brightness.dark
+            ? Brightness.dark
+            : Brightness.light,
+        elevation: 0,
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.black),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
+        ),
+      ),
+      body: ListView.builder(
+        itemCount: widget.listorder.length,
+        itemBuilder: (context, index) {
+          return BlocBuilder<TicketBloc, TicketState>(
+            builder: (context, state) {
+              if (state is LoadingState) {
+                return Column(
+                  children: [
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300],
+                      highlightColor: Colors.grey[100],
+                      enabled: true,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: 60.0,
+                            height: 60.0,
+                            color: Colors.white,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: double.infinity,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.0),
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.0),
+                                ),
+                                Container(
+                                  width: 40.0,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey[300],
+                      highlightColor: Colors.grey[100],
+                      enabled: true,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: 60.0,
+                            height: 60.0,
+                            color: Colors.white,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: double.infinity,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.0),
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.0),
+                                ),
+                                Container(
+                                  width: 40.0,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              }
+              if (state is SuccessState) {
+                int test = state.buyticket.indexWhere(
+                    (element) => element.id == widget.listorder[index].tour);
+                return Padding(
+                  padding:
+                      EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailOrder(
+                                    order: Order.fromJson(
+                                        widget.listorder[index].toJson()),
+                                  )));
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.black
+                                  : Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(24),
+                                  topRight: Radius.circular(24))),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    state.buyticket[test].locationstart,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.indigo),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                        color: Colors.indigo.shade50,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: SizedBox(
+                                      height: 8,
+                                      width: 8,
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                            color: Colors.indigo.shade400,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Stack(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: 24,
+                                            child: LayoutBuilder(
+                                              builder: (context, constraints) {
+                                                return Flex(
+                                                  children: List.generate(
+                                                      (constraints.constrainWidth() /
+                                                              6)
+                                                          .floor(),
+                                                      (test) => SizedBox(
+                                                            height: 1,
+                                                            width: 3,
+                                                            child: DecoratedBox(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade300),
+                                                            ),
+                                                          )),
+                                                  direction: Axis.horizontal,
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          Center(
+                                              child: Transform.rotate(
+                                            angle: 1.5,
+                                            child: Icon(
+                                              Icons.car_rental,
+                                              color: Colors.indigo.shade300,
+                                              size: 24,
+                                            ),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                        color: Colors.pink.shade50,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: SizedBox(
+                                      height: 8,
+                                      width: 8,
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                            color: Colors.pink.shade400,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text(
+                                    state.buyticket[test].locationend,
+                                    style: AppTextStyles.textSize18(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.pink),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  SizedBox(
+                                      width: 100,
+                                      child: Text(
+                                        state.buyticket[test].locationstart,
+                                        style: AppTextStyles.textSize12(
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                      )),
+                                  Text(
+                                    widget.listorder[test].timetour,
+                                    style: AppTextStyles.textSize14(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black),
+                                  ),
+                                  SizedBox(
+                                      width: 100,
+                                      child: Text(
+                                        state.buyticket[test].locationend,
+                                        textAlign: TextAlign.end,
+                                        style: AppTextStyles.textSize12(
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                      )),
+                                ],
+                              ),
+                              SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    widget.listorder[test].createdAt.toString(),
+                                    style: AppTextStyles.textSize12(
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.grey),
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        tr('quantity'),
+                                        style: AppTextStyles.textSize12(
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                      ),
+                                      Text(
+                                        widget.listorder[test].quantity,
+                                        style: AppTextStyles.textSize12(
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black
+                              : Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 20,
+                                width: 10,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(10),
+                                          bottomRight: Radius.circular(10)),
+                                      color: Colors.grey.shade200),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                      return Flex(
+                                        children: List.generate(
+                                            (constraints.constrainWidth() / 10)
+                                                .floor(),
+                                            (index) => SizedBox(
+                                                  height: 1,
+                                                  width: 5,
+                                                  child: DecoratedBox(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors
+                                                            .grey.shade400),
+                                                  ),
+                                                )),
+                                        direction: Axis.horizontal,
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                                width: 10,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10)),
+                                      color: Colors.grey.shade200),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding:
+                              EdgeInsets.only(left: 16, right: 16, bottom: 12),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.black
+                                  : Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(24),
+                                  bottomRight: Radius.circular(24))),
+                          child: Row(
+                            children: <Widget>[
+                              // Container(
+                              //   padding: EdgeInsets.all(8),
+                              //   decoration: BoxDecoration(
+                              //       color: Colors.amber.shade50,
+                              //       borderRadius: BorderRadius.circular(20)),
+                              //   child: Icon(Icons.flight_land, color: Colors.amber),
+                              // ),
+                              // SizedBox(
+                              //   width: 16,
+                              // ),
+                              // Text("Jet Airways",
+                              //     style: TextStyle(
+                              //         fontSize: 16,
+                              //         fontWeight: FontWeight.w500,
+                              //         color: Colors.grey)),
+                              Expanded(
+                                  child: Text(
+                                      "${widget.listorder[index].totalprice} VND",
+                                      textAlign: TextAlign.end,
+                                      style: AppTextStyles.textSize18(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.grey))),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            },
+          );
+        },
+      ),
+    );
+  }
+}

@@ -138,7 +138,7 @@ class PlaceApiProvider {
 
   final sessionToken;
 
-  static final String androidKey = 'AIzaSyBHRMxpBKc25CMHY51h1jrnCCm6PjNs62s';
+  static final String androidKey = 'AIzaSyBLnQ6KLSCfkgMFDgbw1_jMzlo4fhXILss';
 
   final apiKey = androidKey;
 

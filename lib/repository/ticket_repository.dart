@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:managepassengercar/blocs/ticket/model/discount.dart';
 import 'package:managepassengercar/blocs/ticket/model/order.dart';
 import 'package:managepassengercar/providers/api_provider.dart';
+import 'package:managepassengercar/src/models/orderstatus.dart';
 import 'package:managepassengercar/src/models/pickup.dart';
 import 'package:managepassengercar/src/models/seat.dart';
 import 'package:managepassengercar/utils/config.dart';
@@ -90,19 +91,21 @@ class TicketRepository {
     }
   }
 
-  Future<String> addOrder(
-      String uid,
-      String name,
-      String phone,
-      String email,
-      String qr,
-      String idtour,
-      String time,
-      String locationstart,
-      String quantyseat,
-      String seat,
-      String price,
-      String totalprice) async {
+  Future<OrderStatus> addOrder(
+    String uid,
+    String name,
+    String phone,
+    String email,
+    String qr,
+    String idtour,
+    String time,
+    String locationstart,
+    String quantyseat,
+    String seat,
+    String price,
+    String totalprice,
+    String paymentType,
+  ) async {
     Map data = {
       "uid": uid,
       "name": name,
@@ -116,12 +119,51 @@ class TicketRepository {
       "quantity": quantyseat,
       "seat": seat,
       "price": price,
-      "totalprice": totalprice
+      "totalprice": totalprice,
+      "paymentType": paymentType,
     };
-    print(data);
+    OrderStatus orderStatus;
     Response response =
         await Dio().post("${ServerAddress.serveraddress}addorder", data: data);
-    print(response);
+    if (response != null && response.statusCode == 200) {
+      orderStatus = OrderStatus.fromJson(response.data);
+      return orderStatus;
+    }
+  }
+
+  Future<String> addNoti(String id, String title, String description) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    Map data = {
+      "id": id,
+      "title": pref.getString("orderID"),
+      "description": description
+    };
+
+    Response response =
+        await Dio().post("${ServerAddress.serveraddress}addnoti", data: data);
+    if (response != null && response.statusCode == 200) {
+      var data = response.data;
+      return data['success'].toString();
+    }
+  }
+
+  Future<String> changeorder(String id, String status) async {
+    Map data = {"id": id, "status": status};
+
+    Response response = await Dio()
+        .post("${ServerAddress.serveraddress}updateOrder", data: data);
+    if (response != null && response.statusCode == 200) {
+      var data = response.data;
+      return data['success'].toString();
+    }
+  }
+
+  Future<String> reviewTourBus(
+      String id, String rating, String description) async {
+    Map data = {"id": id, "rating": rating, "description": description};
+    print(data);
+    Response response = await Dio()
+        .post("${ServerAddress.serveraddress}updateRatingtourbus", data: data);
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       return data['success'].toString();
@@ -138,6 +180,7 @@ class TicketRepository {
       String quantyseat,
       String seat,
       String price,
+      String orderID,
       String totalprice) async {
     Map data = {
       "name": name,
@@ -149,6 +192,7 @@ class TicketRepository {
       "quantity": quantyseat,
       "seat": seat,
       "price": price,
+      "orderID": orderID,
       "totalprice": totalprice
     };
     print(data);
@@ -161,10 +205,11 @@ class TicketRepository {
     }
   }
 
-  Future<String> sendNoti(String tokenid) async {
-    Response response = await Dio().post(
-        "${ServerAddress.serveraddress}sendnoti",
-        queryParameters: {"token": tokenid});
+  Future<String> sendNoti(String token, String title, String body) async {
+    Map data = {"title": title, "token": token, "body": body};
+    print(data);
+    Response response =
+        await Dio().post("${ServerAddress.serveraddress}sendnoti", data: data);
     if (response != null && response.statusCode == 200) {
       var data = response.data;
       return data['success'].toString();

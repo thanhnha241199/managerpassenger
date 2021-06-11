@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:managepassengercar/blocs/savelocation/blocs/location_bloc.dart';
@@ -35,17 +36,21 @@ class _AddAddressState extends State<AddAddress> {
   PlaceApiProvider apiClient;
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         centerTitle: false,
         title: Text(
-          "Add address",
+          tr('addAddress'),
           style: TextStyle(
-            color: Colors.black,
-          ),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black),
         ),
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
+        brightness: Theme.of(context).brightness == Brightness.dark
+            ? Brightness.dark
+            : Brightness.light,
         elevation: 0,
         actionsIconTheme: IconThemeData(color: Colors.black),
         iconTheme: IconThemeData(color: Colors.black),
@@ -53,7 +58,10 @@ class _AddAddressState extends State<AddAddress> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
         ),
       ),
       body: BlocBuilder<AddressBloc, AddressState>(
@@ -88,7 +96,7 @@ class _AddAddressState extends State<AddAddress> {
                     Row(
                       children: [
                         Text(
-                          "Tinh/Thanh Pho",
+                          tr('city'),
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),
@@ -105,7 +113,7 @@ class _AddAddressState extends State<AddAddress> {
                                 );
                               }).toList(),
                               hint: Text(
-                                "Choose City",
+                                tr('chooseCity'),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -130,7 +138,7 @@ class _AddAddressState extends State<AddAddress> {
                     Row(
                       children: [
                         Text(
-                          "Huyen/Quan",
+                          tr('quan'),
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),
@@ -144,7 +152,7 @@ class _AddAddressState extends State<AddAddress> {
                                       onChanged: (value) {},
                                       isExpanded: true,
                                       hint: Text(
-                                        "Choose District",
+                                        tr('choosequan'),
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -164,7 +172,7 @@ class _AddAddressState extends State<AddAddress> {
                                       );
                                     }).toList(),
                                     hint: Text(
-                                      "Choose District",
+                                      'choosequan',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -189,7 +197,7 @@ class _AddAddressState extends State<AddAddress> {
                     Row(
                       children: [
                         Text(
-                          "Xa/Phuong",
+                          tr('xa'),
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),
@@ -203,7 +211,7 @@ class _AddAddressState extends State<AddAddress> {
                                       onChanged: (value) {},
                                       isExpanded: true,
                                       hint: Text(
-                                        "Choose Ward",
+                                        tr('choosexa'),
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -222,7 +230,7 @@ class _AddAddressState extends State<AddAddress> {
                                       );
                                     }).toList(),
                                     hint: Text(
-                                      "Choose Ward",
+                                      tr('choosexa'),
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -255,7 +263,7 @@ class _AddAddressState extends State<AddAddress> {
                         maxLines: 10,
                         controller: addressController,
                         decoration: InputDecoration(
-                            hintText: "Address",
+                            hintText: tr('detailAddress'),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(
                               horizontal: 24.0,
@@ -269,7 +277,7 @@ class _AddAddressState extends State<AddAddress> {
                             EdgeInsets.symmetric(horizontal: 80, vertical: 20),
                         child: AnimatedButton(
                           color: Colors.red,
-                          text: "CONFIRM",
+                          text: tr('confirm'),
                           pressEvent: () {
                             Navigator.pop(
                                 context,

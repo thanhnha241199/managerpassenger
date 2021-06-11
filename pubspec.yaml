@@ -65,8 +65,8 @@ dependencies:
   flutter_rating_bar: ^3.2.0
   location: ^4.1.1
   loadmore: ^2.0.1
-  flutter_hl_vnpay: ^2.0.0
   crypto: ^3.0.1
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -99,7 +99,7 @@ flutter:
     - assets/images/small_icon/notification.png
     - assets/images/small_icon/success.png
     - assets/images/small_icon/banned.png
-    - assets/images/screen/9_Location Error.png
+    - assets/images/screen/9_Location_Error.png
     - assets/images/screen/car.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -113,13 +113,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
+  fonts:
+    - family: Graphie
+      fonts:
+        - asset: assets/fonts/Graphie-Regular.ttf
+          weight: 500
+        - asset: assets/fonts/Graphie-Bold.ttf
+          weight: 700
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf

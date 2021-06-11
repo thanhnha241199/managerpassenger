@@ -25,6 +25,48 @@ class AddEvent extends PaymentEvent {
       this.showBackView});
 }
 
+class SendNoti extends PaymentEvent {
+  final String title;
+  final String token;
+  final String body;
+
+  SendNoti({this.title, this.token, this.body});
+}
+
+class SendMail extends PaymentEvent {
+  final String name;
+  final String phone;
+  final String email;
+  final String idtour;
+  final String time;
+  final String locationstart;
+  final String quantyseat;
+  final String seat;
+  final String orderID;
+  final String price;
+  final String totalprice;
+
+  SendMail(
+      {this.name,
+      this.phone,
+      this.email,
+      this.orderID,
+      this.idtour,
+      this.time,
+      this.locationstart,
+      this.quantyseat,
+      this.seat,
+      this.price,
+      this.totalprice});
+}
+
+class AddNoti extends PaymentEvent {
+  final String id;
+  final String title;
+  final String description;
+  AddNoti({this.id, this.title, this.description});
+}
+
 class DeleteEvent extends PaymentEvent {
   final String id;
   DeleteEvent({this.id});
@@ -35,6 +77,8 @@ class OrderEvent extends PaymentEvent {
   final String name;
   final String phone;
   final String email;
+  final String qr;
+  final String paymentType;
   final String idtour;
   final String time;
   final String locationstart;
@@ -43,16 +87,19 @@ class OrderEvent extends PaymentEvent {
   final String price;
   final String totalprice;
 
-  OrderEvent(
-      {this.uid,
-      this.name,
-      this.phone,
-      this.email,
-      this.idtour,
-      this.time,
-      this.locationstart,
-      this.quantyseat,
-      this.seat,
-      this.price,
-      this.totalprice});
+  OrderEvent({
+    this.uid,
+    this.qr,
+    this.name,
+    this.phone,
+    this.email,
+    this.idtour,
+    this.time,
+    this.locationstart,
+    this.quantyseat,
+    this.seat,
+    this.price,
+    this.totalprice,
+    this.paymentType,
+  });
 }

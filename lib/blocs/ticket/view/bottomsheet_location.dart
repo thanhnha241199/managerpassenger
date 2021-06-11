@@ -28,7 +28,9 @@ class _BottomSheetAddress extends State<BottomSheetAddress> {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Container(
         decoration: new BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.black
+              : Colors.white,
           borderRadius: BorderRadius.circular(25),
         ),
         child: Container(

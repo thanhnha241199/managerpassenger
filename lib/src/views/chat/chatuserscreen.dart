@@ -82,7 +82,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
           );
         }
         if (state is SuccessState) {
-          list = state.user;
+          list = state.user.where((e) => e.type == "1").toList();
           return Container(
             color: Colors.white,
             alignment: Alignment.center,
@@ -100,9 +100,12 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
                     )),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: state.user.length,
+                    itemCount:
+                        state.user.where((e) => e.type == "0").toList().length,
                     itemBuilder: (_, index) {
-                      UserChat user = state.user[index];
+                      UserChat user = state.user
+                          .where((e) => e.type == "0")
+                          .toList()[index];
                       return _chatUsers.email != user.email
                           ? GestureDetector(
                               onTap: () {

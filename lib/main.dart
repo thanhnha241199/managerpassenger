@@ -8,6 +8,7 @@ import 'package:managepassengercar/blocs/notification/view/test_noti.dart';
 import 'package:managepassengercar/blocs/simple_bloc_observer.dart';
 import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/app.dart';
+import 'package:managepassengercar/themes/themes.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -44,14 +45,29 @@ void main() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  ;
   final userRepository = UserRepository();
   Bloc.observer = SimpleBlocObserver();
   // NotificationService();
   runApp(EasyLocalization(
-    child: MyApp(userRepository: userRepository),
+    child: BlocProvider(
+      create: (context) => ThemeCubit(),
+      child: BlocBuilder<ThemeCubit, ThemeData>(
+        builder: (context, state) {
+          return MaterialApp(
+            theme: state,
+            home: MyApp(
+              userRepository: userRepository,
+              themeData: state,
+            ),
+          );
+        },
+      ),
+    ),
     saveLocale: true,
-    startLocale: Locale('en', 'US'),
+    startLocale: Locale('vi', 'VN'),
     supportedLocales: [
       Locale('en', 'US'),
       Locale('vi', 'VN'),

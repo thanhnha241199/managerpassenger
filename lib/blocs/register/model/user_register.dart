@@ -7,10 +7,16 @@ String userRegisterToJson(UserRegister data) => json.encode(data.toJson());
 
 class UserRegister {
   UserRegister(
-      {this.username, this.password, this.name, this.phone, this.type});
+      {this.username,
+      this.password,
+      this.name,
+      this.phone,
+      this.type,
+      this.active});
 
   String username;
   String password;
+  String active;
   String name;
   String phone;
   String type;
@@ -20,6 +26,7 @@ class UserRegister {
         name: json["name"],
         phone: json["phone"],
         type: json["type"],
+        active: json["active"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -28,5 +35,6 @@ class UserRegister {
         "name": name,
         "phone": phone,
         "type": type,
+        "active": active,
       };
 }

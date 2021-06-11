@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:intl/intl.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:managepassengercar/src/views/widget/default_btn.dart';
+import 'package:managepassengercar/utils/app_style.dart';
 
 class MyLocation extends StatefulWidget {
   @override
@@ -54,9 +56,27 @@ class _MyLocationState extends State<MyLocation> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: _address == null ? Text("Can Tho") : Text("$_address"),
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
+        title: _address == null
+            ? Text(
+                "Cần Thơ",
+                style: AppTextStyles.textSize16(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
+              )
+            : Text(
+                "$_address",
+                style: AppTextStyles.textSize16(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
+              ),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
+        brightness: Theme.of(context).brightness == Brightness.dark
+            ? Brightness.dark
+            : Brightness.light,
         elevation: 0,
         actionsIconTheme: IconThemeData(color: Colors.black),
         iconTheme: IconThemeData(color: Colors.black),
@@ -64,7 +84,10 @@ class _MyLocationState extends State<MyLocation> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
         ),
       ),
       body: Container(
@@ -76,7 +99,6 @@ class _MyLocationState extends State<MyLocation> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: GoogleMap(
-                  
                   compassEnabled: true,
                   zoomControlsEnabled: true,
                   initialCameraPosition:
@@ -90,7 +112,7 @@ class _MyLocationState extends State<MyLocation> {
                   padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
                   child: AnimatedButton(
                     color: Colors.red,
-                    text: "CONFIRM",
+                    text: tr('confirm'),
                     pressEvent: () {
                       Navigator.pop(context, _address);
                     },

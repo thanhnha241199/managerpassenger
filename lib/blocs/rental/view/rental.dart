@@ -73,7 +73,6 @@ class _RentalScreenState extends State<RentalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         centerTitle: false,
         title: Text(
@@ -656,7 +655,7 @@ class _RentalScreenState extends State<RentalScreen> {
                             // userRepository: widget.userRepository,
                             ))),
                 (route) => false);
-          //  showNotification();
+            //  showNotification();
           }
           if (state is FailureState) {
             print("Order Failed");

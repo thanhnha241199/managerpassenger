@@ -16,9 +16,16 @@ class SuccessState extends EmployeeState {
   List<PickUp> pickup;
   List<Schedule> schedule;
   List<Seat> seat;
+
   ProfileUser profileUser;
+  List<ListOrder> listorder;
   SuccessState(
-      {this.toubus, this.pickup, this.schedule, this.seat, this.profileUser});
+      {this.toubus,
+      this.pickup,
+      this.schedule,
+      this.seat,
+      this.profileUser,
+      this.listorder});
 }
 
 class FailureState extends EmployeeState {

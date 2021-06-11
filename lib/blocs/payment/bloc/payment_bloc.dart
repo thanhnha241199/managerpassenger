@@ -26,6 +26,30 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         yield FailureState(msg: e.toString());
       }
     }
+    if (event is SendMail) {
+      try {
+        yield LoadingState();
+        var buyticket = await paymentRepository.sendMail(
+            event.name,
+            event.phone,
+            event.email,
+            event.idtour,
+            event.time,
+            event.locationstart,
+            event.quantyseat,
+            event.seat,
+            event.price,
+            event.orderID,
+            event.totalprice);
+        if (buyticket == "true") {
+          yield SuccessState();
+        } else {
+          yield FailureState(msg: "Sendmail failed");
+        }
+      } catch (e) {
+        yield FailureState(msg: e.toString());
+      }
+    }
     if (event is DeleteEvent) {
       yield LoadingState();
       try {
@@ -46,6 +70,34 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         }
       } catch (e) {
         print(e.toString());
+        yield FailureState(msg: e.toString());
+      }
+    }
+    if (event is AddNoti) {
+      try {
+        yield LoadingState();
+        var buyticket = await paymentRepository.addNoti(
+            event.id, event.title, event.description);
+        if (buyticket == "true") {
+          yield SuccessState();
+        } else {
+          yield FailureState(msg: "Noti failed");
+        }
+      } catch (e) {
+        yield FailureState(msg: e.toString());
+      }
+    }
+    if (event is SendNoti) {
+      try {
+        yield LoadingState();
+        var buyticket = await paymentRepository.sendNoti(
+            event.token, event.title, event.body);
+        if (buyticket == "true") {
+          yield SuccessState();
+        } else {
+          yield FailureState(msg: "Noti failed");
+        }
+      } catch (e) {
         yield FailureState(msg: e.toString());
       }
     }
@@ -87,6 +139,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
             event.name,
             event.phone,
             event.email,
+            event.qr,
             event.idtour,
             event.time,
             event.locationstart,
@@ -94,7 +147,12 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
             event.seat,
             event.price,
             event.totalprice);
-        if (buyticket == "true") {
+        if (buyticket.success == true) {
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          print(buyticket.id);
+          pref.setString("orderID", buyticket.id).whenComplete(() {
+            print("Save success");
+          });
           yield SuccessState();
         } else {
           yield FailureState(msg: "Order failed");

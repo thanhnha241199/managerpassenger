@@ -6,13 +6,14 @@ import 'package:managepassengercar/blocs/employee/view/employee.dart';
 import 'package:managepassengercar/blocs/login/bloc/login_bloc.dart';
 import 'package:managepassengercar/blocs/register/view/forget_password/forget_password.dart';
 import 'package:managepassengercar/blocs/register/view/register/register.dart';
+import 'package:managepassengercar/blocs/userprofile/blocs/profile_bloc.dart';
 import 'package:managepassengercar/common/widgets/stateless/custom_btn.dart';
 import 'package:managepassengercar/common/widgets/stateless/custom_input.dart';
 import 'package:managepassengercar/common/widgets/stateless/custom_input_password.dart';
 import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/utils/constants.dart';
-import 'package:managepassengercar/src/views/chat/global.dart';
 import 'package:managepassengercar/src/views/home/bottombar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   final UserRepository userRepository;
@@ -97,8 +98,9 @@ class _LoginFormState extends State<LoginForm> {
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
-          return SafeArea(
-            child: Container(
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -109,6 +111,9 @@ class _LoginFormState extends State<LoginForm> {
                       textAlign: TextAlign.center,
                       style: Constants.boldHeading,
                     ),
+                  ),
+                  SizedBox(
+                    height: 70,
                   ),
                   Container(
                     height: MediaQuery.of(context).size.height * 0.7,

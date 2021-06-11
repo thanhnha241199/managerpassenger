@@ -72,7 +72,9 @@ class _PaymentState extends State<Payment> {
                         ),
                       ],
                       borderRadius: BorderRadius.circular(25),
-                      color: Colors.white),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black
+                          : Colors.white),
                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +85,9 @@ class _PaymentState extends State<Payment> {
                         icon: Icon(
                           EvaIcons.creditCardOutline,
                           size: 40,
-                          color: Colors.black.withOpacity(0.6),
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black.withOpacity(0.6),
                         ),
                       ),
                       SizedBox(

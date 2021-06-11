@@ -23,7 +23,6 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       yield LoadingState();
       try {
         SharedPreferences pref = await SharedPreferences.getInstance();
-
         var address =
             await addressRepository.fetchAddress(pref.getString('id'));
         var addressmodel = await addressRepository.fetchAddressModel();
@@ -36,7 +35,6 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       yield LoadingState();
       try {
         SharedPreferences pref = await SharedPreferences.getInstance();
-
         var address =
             await addressRepository.fetchAddress(pref.getString('id'));
         yield SuccessState(address: address);

@@ -5,18 +5,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:managepassengercar/blocs/payment/view/choose_payment.dart';
-import 'package:managepassengercar/blocs/payment/view/pay.dart';
 import 'package:managepassengercar/blocs/ticket/blocs/ticket_bloc.dart';
 import 'package:managepassengercar/blocs/ticket/model/discount.dart';
-import 'package:managepassengercar/blocs/ticket/view/choose_payment.dart';
 import 'package:managepassengercar/blocs/ticket/view/voucher.dart';
 import 'package:managepassengercar/providers/api_provider.dart';
-
 import 'package:managepassengercar/repository/user_repository.dart';
-
-import 'package:managepassengercar/src/views/home/bottombar.dart';
 import 'package:managepassengercar/src/views/widget/default_btn.dart';
-import 'package:managepassengercar/src/views/widget/success.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +20,7 @@ class OrderTicket extends StatefulWidget {
   List<Discount> discount;
   TourBus tourBus;
   String time;
+  final UserRepository userRepository;
   bool dumplex;
   String title;
   String seat;
@@ -35,7 +31,6 @@ class OrderTicket extends StatefulWidget {
   String datestart;
   String dateback;
   int voucher;
-  final UserRepository userRepository;
 
   OrderTicket(
       {this.userRepository,
@@ -90,15 +85,7 @@ class _OrderTicketState extends State<OrderTicket> {
     return BlocListener<TicketBloc, TicketState>(
       listener: (context, state) {
         if (state is SuccessState) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Success(
-                      title: "Order Successfull",
-                      page: HomePage(
-                        userRepository: widget.userRepository,
-                      ))),
-              (route) => false);
+          print("Success");
         }
         if (state is FailureState) {
           print("Order Failed");
@@ -107,10 +94,20 @@ class _OrderTicketState extends State<OrderTicket> {
       child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: Text(tr('ordertick')),
+            title: Text(
+              tr('ordertick'),
+              style: TextStyle(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black),
+            ),
             centerTitle: true,
-            backgroundColor: Colors.white,
-            brightness: Brightness.light,
+            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Colors.white,
+            brightness: Theme.of(context).brightness == Brightness.dark
+                ? Brightness.dark
+                : Brightness.light,
             elevation: 0.0,
             actionsIconTheme: IconThemeData(color: Colors.black),
             iconTheme: IconThemeData(color: Colors.black),
@@ -118,7 +115,10 @@ class _OrderTicketState extends State<OrderTicket> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back_ios),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.blue,
+              ),
             ),
           ),
           body: SingleChildScrollView(
@@ -126,7 +126,9 @@ class _OrderTicketState extends State<OrderTicket> {
             child: Column(
               children: [
                 Container(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black
+                      : Colors.white,
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,7 +207,9 @@ class _OrderTicketState extends State<OrderTicket> {
                 ),
                 widget.dumplex == true
                     ? Container(
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black
+                            : Colors.white,
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: Column(
@@ -480,7 +484,9 @@ class _OrderTicketState extends State<OrderTicket> {
                         ),
                       )
                     : Container(
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black
+                            : Colors.white,
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: Column(
@@ -534,7 +540,8 @@ class _OrderTicketState extends State<OrderTicket> {
                                     ),
                                     Text(
                                       "${widget.title}: ${widget.address}",
-                                      style: TextStyle(fontSize: 18),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 14),
                                     )
                                   ],
                                 ),
@@ -657,7 +664,9 @@ class _OrderTicketState extends State<OrderTicket> {
             ),
             // height: 174,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Colors.white,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
@@ -714,7 +723,10 @@ class _OrderTicketState extends State<OrderTicket> {
                   ),
                   SizedBox(height: (20)),
                   DefaultButton(
-                    press: () {
+                    press: () async {
+                      ProgressDialog dialog = new ProgressDialog(context);
+                      dialog.style(message: 'Please wait...');
+                      await dialog.show();
                       screenshotController
                           .capture(delay: Duration(milliseconds: 10))
                           .then((Uint8List image) async {
@@ -722,12 +734,21 @@ class _OrderTicketState extends State<OrderTicket> {
                             FirebaseStorage.instance.ref().child('images/');
                         UploadTask uploadTask =
                             firebaseStorageRef.putData(image);
+                        var price = formatter
+                            .format(widget.seat.trim().split(' ').length *
+                                    int.parse("${widget.tourBus.price}") -
+                                (widget.voucher / 100) *
+                                    int.parse("${widget.tourBus.price}"))
+                            .toString();
                         TaskSnapshot taskSnapshot = await uploadTask;
+
                         taskSnapshot.ref.getDownloadURL().then((value) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ChoosePayment(
+                                        userRepository: widget.userRepository,
+                                        totlalPrice: price,
                                         tourBus: widget.tourBus,
                                         discount: widget.discount,
                                         dumplex: widget.dumplex,
@@ -739,10 +760,11 @@ class _OrderTicketState extends State<OrderTicket> {
                                         name: widget.email,
                                         dateback: widget.dateback,
                                         datestart: widget.datestart,
-                                        address: "address",
+                                        address: widget.address,
                                         seat: widget.seat,
                                       )));
                         });
+                        dialog.hide();
                         print("File Saved to Gallery");
                       }).catchError((onError) {
                         print(onError);

@@ -35,6 +35,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             password: loginEvent.password,
           );
           authenticationBloc.add(LoggedIn(user: user));
+          Future.delayed(Duration(milliseconds: 2000));
           if (user.type == "1") {
             yield LoginUserSuccess();
           } else if (user.type == "0") {

@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
 
-class ChooseTour extends StatefulWidget {
-  Set choose;
-  ChooseTour({this.choose});
-  @override
-  _ChooseTourState createState() => _ChooseTourState();
-}
-
-class _ChooseTourState extends State<ChooseTour> {
+class ChooseTour extends StatelessWidget {
+  final List tour;
+  ChooseTour({this.tour});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: Text(
-          "Chon tour",
+          'Chọn tuyến',
+          style: TextStyle(
+            color: Colors.black,
+          ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        brightness: Brightness.light,
         elevation: 0.0,
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.black),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, false);
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
       ),
-      body: ListView(
-        children: widget.choose.map((e) {
-          return ListTile(
-            onTap: () {
-              Navigator.pop(context, e.toString());
-            },
-            title: Text(e),
-          );
-        }).toList(),
-      ),
+      body: ListView.builder(
+          itemCount: tour.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              onTap: () {
+                Navigator.pop(context, tour[index]);
+              },
+              title: Text(tour[index]),
+            );
+          }),
     );
   }
 }

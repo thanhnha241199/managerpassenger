@@ -29,8 +29,9 @@ import 'package:managepassengercar/src/views/widget/loading.dart';
 
 class MyApp extends StatelessWidget {
   final UserRepository userRepository;
+  final ThemeData themeData;
 
-  MyApp({Key key, @required this.userRepository})
+  MyApp({Key key, @required this.userRepository, this.themeData})
       : assert(userRepository != null),
         super(key: key);
 
@@ -77,12 +78,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        theme: ThemeData(
-          textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(
-            body1: GoogleFonts.oswald(textStyle: textTheme.caption),
-          ),
-          primarySwatch: Colors.lightBlue,
-        ),
+        theme: themeData,
         debugShowCheckedModeBanner: false,
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {

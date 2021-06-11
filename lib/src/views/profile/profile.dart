@@ -12,6 +12,7 @@ import 'package:managepassengercar/blocs/userprofile/view/profile_user.dart';
 import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/views/banned/banned_driver.dart';
 import 'package:managepassengercar/src/views/changepassword.dart';
+import 'package:managepassengercar/utils/app_style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
@@ -24,7 +25,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  var check;
+  var check, checktoken;
 
   @override
   void initState() {
@@ -36,6 +37,9 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? Colors.black12
+          : Colors.white,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Stack(
@@ -52,10 +56,8 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
                     tr("title_acc"),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                    style: AppTextStyles.textSize20(
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
               ),
@@ -64,8 +66,13 @@ class _ProfileState extends State<Profile> {
               padding: EdgeInsets.only(top: 110.0),
               child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: Colors.white),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25)),
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.black
+                        : Colors.white),
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
                   children: [
                     check == null
@@ -309,7 +316,10 @@ class _ProfileState extends State<Profile> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            FormChangePassword()));
+                                            FormChangePassword(
+                                              userRepository:
+                                                  widget.userRepository,
+                                            )));
                               }
                             },
                           ),
@@ -337,11 +347,25 @@ class _ProfileState extends State<Profile> {
                                     final action = CupertinoActionSheet(
                                       message: Text(
                                         "Bạn có muốn đăng xuất ?",
-                                        style: TextStyle(fontSize: 15.0),
+                                        style: AppTextStyles.textSize16(
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black),
                                       ),
                                       actions: <Widget>[
                                         CupertinoActionSheetAction(
-                                          child: Text("Đăng xuất"),
+                                          child: Text(
+                                            "Đăng xuất",
+                                            style: AppTextStyles.textSize16(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
                                           isDestructiveAction: true,
                                           onPressed: () {
                                             logout();
@@ -351,7 +375,9 @@ class _ProfileState extends State<Profile> {
                                       cancelButton: CupertinoActionSheetAction(
                                         child: Text("Cancel"),
                                         onPressed: () {
-                                          Navigator.pop(context);
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop("Cancel");
                                         },
                                       ),
                                     );
@@ -362,7 +388,10 @@ class _ProfileState extends State<Profile> {
                               SizedBox(
                                 height: (10.0),
                                 child: Container(
-                                  color: Color(0xFFf5f6f7),
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.black12
+                                      : Color(0xFFf5f6f7),
                                 ),
                               ),
                             ]))
@@ -379,8 +408,11 @@ class _ProfileState extends State<Profile> {
   void checkUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var status = prefs.getString('name');
+    var token = prefs.getString('token');
     setState(() {
+      checktoken = token;
       check = status;
+      print(checktoken);
     });
   }
 
@@ -389,8 +421,10 @@ class _ProfileState extends State<Profile> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove("token");
     prefs.remove("name");
+    prefs.remove("id");
+    prefs.remove("email");
     checkUser();
-    Navigator.pop(context);
+    Navigator.of(context, rootNavigator: true).pop("Cancel");
     Scaffold.of(context).showSnackBar(
       SnackBar(
         content: Text("Logout Successfull!!"),

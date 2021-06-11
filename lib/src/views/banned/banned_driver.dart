@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:managepassengercar/utils/app_style.dart';
 
 class BannedDriver extends StatefulWidget {
   @override
@@ -13,13 +14,19 @@ class _BannedDriverState extends State<BannedDriver> {
       appBar: AppBar(
         centerTitle: false,
         title: Text(
-          "Banned Driver",
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
+            tr(
+              "BannedDriver",
+            ),
+            style: AppTextStyles.textSize16(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black)),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
+        brightness: Theme.of(context).brightness == Brightness.dark
+            ? Brightness.dark
+            : Brightness.light,
         elevation: 0,
         actionsIconTheme: IconThemeData(color: Colors.black),
         iconTheme: IconThemeData(color: Colors.black),
@@ -27,7 +34,10 @@ class _BannedDriverState extends State<BannedDriver> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
         ),
       ),
       body: Center(
@@ -41,9 +51,11 @@ class _BannedDriverState extends State<BannedDriver> {
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: MediaQuery.of(context).size.width * 0.8,
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Text(
-                tr("Banned car"),
+                tr("BannedDriver"),
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 20,

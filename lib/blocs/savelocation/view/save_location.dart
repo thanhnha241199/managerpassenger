@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,13 +22,18 @@ class _SaveLocationState extends State<SaveLocation> {
       appBar: AppBar(
         centerTitle: false,
         title: Text(
-          "Địa điểm đã lưu",
+          tr('savelocation'),
           style: TextStyle(
-            color: Colors.black,
-          ),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black),
         ),
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
+        brightness: Theme.of(context).brightness == Brightness.dark
+            ? Brightness.dark
+            : Brightness.light,
         elevation: 0,
         actionsIconTheme: IconThemeData(color: Colors.black),
         iconTheme: IconThemeData(color: Colors.black),
@@ -35,7 +41,10 @@ class _SaveLocationState extends State<SaveLocation> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
         ),
         actions: [
           IconButton(
@@ -43,7 +52,10 @@ class _SaveLocationState extends State<SaveLocation> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => FormLocation()));
             },
-            icon: Icon(EvaIcons.plusOutline),
+            icon: Icon(
+              EvaIcons.plusOutline,
+              color: Colors.blue,
+            ),
           )
         ],
       ),
@@ -91,17 +103,19 @@ class _SaveLocationState extends State<SaveLocation> {
                       ],
                     )
                   : Container(
-                      color: Colors.white,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black12
+                          : Colors.white,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Image.asset(
-                            "assets/images/screen/9_Location Error.png",
+                            "assets/images/screen/9_Location_Error.png",
                             fit: BoxFit.cover,
                           ),
                           Text(
-                            "Chua co dia chi",
+                            tr('notaddress'),
                             style: TextStyle(fontSize: 22),
                           )
                         ],
@@ -122,14 +136,19 @@ class _SaveLocationState extends State<SaveLocation> {
       child: Container(
           alignment: Alignment.center,
           height: MediaQuery.of(context).size.height * 0.13,
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ], color: Colors.white, borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black
+                  : Colors.white,
+              borderRadius: BorderRadius.circular(12)),
           child: ListTile(
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -148,7 +167,9 @@ class _SaveLocationState extends State<SaveLocation> {
                         right: BorderSide(width: 1.0, color: Colors.black))),
                 child: Icon(
                   Icons.turned_in,
-                  color: Colors.black,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
                   size: 35,
                 ),
               ),
@@ -165,7 +186,10 @@ class _SaveLocationState extends State<SaveLocation> {
                                 )));
                   },
                   child: Icon(Icons.keyboard_arrow_right,
-                      color: Colors.black, size: 30.0)))),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                      size: 30.0)))),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:managepassengercar/blocs/setting/view/choose_language.dart';
 import 'package:managepassengercar/src/views/widget/switch.dart';
+import 'package:managepassengercar/themes/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingApp extends StatefulWidget {
@@ -48,12 +50,18 @@ class _SettingAppState extends State<SettingApp> {
           title: Text(
             tr("title_setting"),
             style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black),
           ),
-          backgroundColor: Colors.white,
-          brightness: Brightness.light,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.black
+              : Colors.white,
+          brightness: Theme.of(context).brightness == Brightness.dark
+              ? Brightness.dark
+              : Brightness.light,
           elevation: 0,
           actionsIconTheme: IconThemeData(color: Colors.black),
           iconTheme: IconThemeData(color: Colors.black),
@@ -61,11 +69,13 @@ class _SettingAppState extends State<SettingApp> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.blue,
+            ),
           ),
         ),
         body: Container(
-          color: Colors.white,
           child: Column(
             children: [
               Container(
@@ -99,10 +109,14 @@ class _SettingAppState extends State<SettingApp> {
                               if (ontap == true) {
                                 setState(() {
                                   ontap = false;
+                                  BlocProvider.of<ThemeCubit>(context)
+                                      .toggleTheme();
                                 });
                               } else {
                                 setState(() {
                                   ontap = true;
+                                  BlocProvider.of<ThemeCubit>(context)
+                                      .toggleTheme();
                                 });
                               }
                               //   context.read<ThemeCubit>().toggleTheme();
@@ -117,7 +131,6 @@ class _SettingAppState extends State<SettingApp> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                color: Colors.white,
                 height: MediaQuery.of(context).size.height * 0.28,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -17,7 +17,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       try {
         yield LoadingState();
         var notification = await notificationRepository.fetchNotification();
-        print(notification);
+        notification.sort((b, a) => a.time.compareTo(b.time));
         yield SuccessState(notification: notification);
       } catch (e) {
         yield FailureState(msg: e.toString());

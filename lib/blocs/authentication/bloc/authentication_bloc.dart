@@ -34,7 +34,6 @@ class AuthenticationBloc
       }
       if (seen) {
         yield AuthenticationUninitialized();
-        await Future.delayed(Duration(milliseconds: 3000));
         final bool hasToken = await userRepository.hasToken();
         final bool checktype = await userRepository.checkType();
         if (hasToken) {

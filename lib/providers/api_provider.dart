@@ -19,6 +19,11 @@ class TourBus {
     this.createdAt,
     this.sale,
     this.updatedAt,
+    this.review,
+    this.driverid,
+    this.shuttle,
+    this.supportid,
+    this.carid,
   });
 
   String id;
@@ -30,6 +35,11 @@ class TourBus {
   DateTime createdAt;
   String sale;
   DateTime updatedAt;
+  List<Review> review;
+  String driverid;
+  String shuttle;
+  String supportid;
+  String carid;
 
   factory TourBus.fromJson(Map<String, dynamic> json) => TourBus(
         id: json["_id"],
@@ -41,6 +51,12 @@ class TourBus {
         createdAt: DateTime.parse(json["createdAt"]),
         sale: json["sale"],
         updatedAt: DateTime.parse(json["updatedAt"]),
+        review:
+            List<Review>.from(json["review"].map((x) => Review.fromJson(x))),
+        driverid: json["driverid"],
+        shuttle: json["shuttle"],
+        supportid: json["supportid"],
+        carid: json["carid"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +69,34 @@ class TourBus {
         "createdAt": createdAt.toIso8601String(),
         "sale": sale,
         "updatedAt": updatedAt.toIso8601String(),
+        "review": List<dynamic>.from(review.map((x) => x.toJson())),
+        "driverid": driverid,
+        "shuttle": shuttle,
+        "supportid": supportid,
+        "carid": carid,
+      };
+}
+
+class Review {
+  Review({
+    this.id,
+    this.rating,
+    this.description,
+  });
+
+  String id;
+  String rating;
+  String description;
+
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
+        id: json["_id"],
+        rating: json["rating"],
+        description: json["description"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "rating": rating,
+        "description": description,
       };
 }

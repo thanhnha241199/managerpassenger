@@ -1,10 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:managepassengercar/blocs/login/view/login.dart';
 import 'package:managepassengercar/blocs/ticket/view/buy_ticket.dart';
+import 'package:managepassengercar/blocs/userprofile/blocs/profile_bloc.dart';
 import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/views/chat/chatuserscreen.dart';
 import 'package:managepassengercar/src/views/chat/global.dart';
@@ -39,6 +41,10 @@ class _HomeState extends State<Home> {
   void checkUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var status = prefs.getString('email');
+    var token = prefs.getString('token');
+    setState(() {
+      check = token;
+    });
     G.initDummyUsers();
     UserChat userA = new UserChat(
         id: prefs.getString('id'),
@@ -49,6 +55,8 @@ class _HomeState extends State<Home> {
       check = status;
     });
   }
+
+  var token;
 
   @override
   void initState() {
@@ -95,7 +103,9 @@ class _HomeState extends State<Home> {
             ),
             Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black
+                      : Colors.white,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.5),
@@ -119,24 +129,44 @@ class _HomeState extends State<Home> {
                       crossAxisCount: 3,
                       childAspectRatio: 1.1,
                       children: [
-                        IconMenu(Colors.white, "assets/icons/menu/tickets.png",
-                            tr("menu1"), Ticket(), context),
                         IconMenu(
-                            Colors.white,
+                            Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey
+                                : Colors.white,
+                            "assets/icons/menu/tickets.png",
+                            tr("menu1"),
+                            Ticket(
+                              userRepository: widget.userRepository,
+                            ),
+                            context),
+                        IconMenu(
+                            Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey
+                                : Colors.white,
                             "assets/icons/menu/school-bus.png",
                             tr("menu5"),
                             RentalScreen(),
                             context),
                         IconMenu(
-                            Colors.white,
+                            Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey
+                                : Colors.white,
                             "assets/icons/menu/car-rental.png",
                             tr("menu3"),
                             RentalScreen(),
                             context),
-                        IconMenu(Colors.white, "assets/icons/menu/taxi.png",
-                            tr("menu4"), RentalScreen(), context),
                         IconMenu(
-                            Colors.white,
+                            Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey
+                                : Colors.white,
+                            "assets/icons/menu/taxi.png",
+                            tr("menu4"),
+                            RentalScreen(),
+                            context),
+                        IconMenu(
+                            Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey
+                                : Colors.white,
                             "assets/icons/menu/delivery-man.png",
                             tr("menu2"),
                             MyLocation(),
@@ -147,7 +177,9 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 10.0,
                     child: Container(
-                      color: Color(0xFFf5f6f7),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey
+                          : Color(0xFFf5f6f7),
                     ),
                   ),
                   Padding(
@@ -326,7 +358,7 @@ class _HomeState extends State<Home> {
                                       fit: BoxFit.cover,
                                       height:
                                           MediaQuery.of(context).size.height /
-                                              3.4,
+                                              3.6,
                                       width: double.infinity,
                                     ),
                                   ),

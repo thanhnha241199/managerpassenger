@@ -16,7 +16,10 @@ class _VoucherState extends State<Voucher> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Voucher"),
+        title: Text(
+          "Voucher",
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
         brightness: Brightness.light,
@@ -27,7 +30,10 @@ class _VoucherState extends State<Voucher> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
         ),
       ),
       body: Container(

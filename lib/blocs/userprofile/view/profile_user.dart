@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:managepassengercar/blocs/userprofile/blocs/profile_bloc.dart';
+import 'package:managepassengercar/utils/app_style.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,11 +53,16 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
           title: Text(
             tr("detail profile"),
             style: TextStyle(
-              color: Colors.black,
-            ),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black),
           ),
-          backgroundColor: Colors.white,
-          brightness: Brightness.light,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.black
+              : Colors.white,
+          brightness: Theme.of(context).brightness == Brightness.dark
+              ? Brightness.dark
+              : Brightness.light,
           elevation: 0,
           actionsIconTheme: IconThemeData(color: Colors.black),
           iconTheme: IconThemeData(color: Colors.black),
@@ -64,7 +70,10 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.blue,
+            ),
           ),
         ),
         body: BlocBuilder<ProfileBloc, ProfileState>(
@@ -96,7 +105,9 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.black12
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(12)),
                 child: ListView(
                   physics: BouncingScrollPhysics(),
@@ -180,8 +191,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                             ],
                           ),
                         ),
-                        new Container(
-                          color: Color(0xffFFFFFF),
+                        Container(
                           child: Padding(
                             padding: EdgeInsets.only(bottom: 25.0),
                             child: new Column(
@@ -203,9 +213,12 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                           children: <Widget>[
                                             new Text(
                                               tr("persion info"),
-                                              style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  fontWeight: FontWeight.bold),
+                                              style: AppTextStyles.textSize20(
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : Colors.black),
                                             ),
                                           ],
                                         ),
@@ -234,9 +247,12 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                           children: <Widget>[
                                             new Text(
                                               tr("name"),
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold),
+                                              style: AppTextStyles.textSize16(
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : Colors.black),
                                             ),
                                           ],
                                         ),
@@ -256,7 +272,10 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                         horizontal: 24.0,
                                       ),
                                       decoration: BoxDecoration(
-                                          color: Color(0xFFF2F2F2),
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.black
+                                              : Color(0xFFF2F2F2),
                                           borderRadius:
                                               BorderRadius.circular(12.0)),
                                       child: new TextField(
@@ -283,12 +302,13 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                               MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            new Text(
-                                              tr("email"),
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                            new Text(tr("email"),
+                                                style: AppTextStyles.textSize16(
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black)),
                                           ],
                                         ),
                                       ],
@@ -307,7 +327,10 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                         horizontal: 24.0,
                                       ),
                                       decoration: BoxDecoration(
-                                          color: Color(0xFFF2F2F2),
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.black
+                                              : Color(0xFFF2F2F2),
                                           borderRadius:
                                               BorderRadius.circular(12.0)),
                                       child: new TextField(
@@ -333,12 +356,13 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                               MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            new Text(
-                                              tr("UID"),
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                            new Text(tr("UID"),
+                                                style: AppTextStyles.textSize16(
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black)),
                                           ],
                                         ),
                                       ],
@@ -357,7 +381,10 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                         horizontal: 24.0,
                                       ),
                                       decoration: BoxDecoration(
-                                          color: Color(0xFFF2F2F2),
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.black
+                                              : Color(0xFFF2F2F2),
                                           borderRadius:
                                               BorderRadius.circular(12.0)),
                                       child: new TextField(
@@ -396,7 +423,10 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                                       horizontal: 24.0,
                                     ),
                                     decoration: BoxDecoration(
-                                        color: Color(0xFFF2F2F2),
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.black
+                                            : Color(0xFFF2F2F2),
                                         borderRadius:
                                             BorderRadius.circular(12.0)),
                                     child: new TextField(

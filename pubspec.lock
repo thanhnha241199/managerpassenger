@@ -272,13 +272,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.0"
-  flutter_hl_vnpay:
-    dependency: "direct main"
-    description:
-      name: flutter_hl_vnpay
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   flutter_local_notifications:
     dependency: "direct main"
     description:
@@ -655,6 +648,13 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  shimmer:
+    dependency: "direct main"
+    description:
+      name: shimmer
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"

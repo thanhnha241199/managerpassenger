@@ -140,9 +140,6 @@ class _ScanState extends State<ScanScreen> {
                                 Text(
                                   "ID Tour: ",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
                                   width: 20,
@@ -150,9 +147,6 @@ class _ScanState extends State<ScanScreen> {
                                 Text(
                                   "${barcode}",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
                                 ),
                               ],
                             ),
@@ -163,9 +157,6 @@ class _ScanState extends State<ScanScreen> {
                                 Text(
                                   "Seat: ",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
                                   width: 20,

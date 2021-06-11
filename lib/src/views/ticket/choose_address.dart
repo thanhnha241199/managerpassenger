@@ -116,6 +116,7 @@ class _BottomSheetChooseAddress extends State<BottomSheetChooseAddress> {
                                           0, 3), // changes position of shadow
                                     ),
                                   ],
+                                  border: Border.all(color: Colors.black),
                                   color: Colors.white),
                               child: ListTile(
                                 leading: Container(

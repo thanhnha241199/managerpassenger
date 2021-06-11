@@ -279,46 +279,19 @@ class _DetailOrderState extends State<DetailOrder> {
               SizedBox(
                 height: 40,
               ),
-              if (widget.order.status != "complete" &&
-                  widget.order.status != "failed")
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 50.0),
-                  child: AnimatedButton(
-                    pressEvent: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Review(
-                                    id: tourBus.id,
-                                    orderid: widget.order.id,
-                                    userRepository: widget.userRepository,
-                                  )));
-                      print(tourBus.id);
-                    },
-                    text: "Đánh giá",
-                  ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 50.0),
+                child: AnimatedButton(
+                  pressEvent: () {
+                    BlocProvider.of<TicketBloc>(context).add(
+                        ChangeOrder(id: widget.order.id, status: "complete"));
+                    Navigator.pop(context);
+                    BlocProvider.of<TicketBloc>(context).add(DoFetchEvent());
+                    print(tourBus.id);
+                  },
+                  text: "Thanh toán",
                 ),
-              SizedBox(
-                height: 10,
-              ),
-              if (widget.order.status != "complete" &&
-                  widget.order.status != "failed")
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 50.0),
-                  child: AnimatedButton(
-                    pressEvent: () {
-                      BlocProvider.of<TicketBloc>(context).add(
-                          ChangeOrder(id: widget.order.id, status: "failed"));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Ticket(
-                                  userRepository: widget.userRepository)));
-                      print(tourBus.id);
-                    },
-                    text: "Đổi vé",
-                  ),
-                )
+              )
             ]);
           }
           return Container();

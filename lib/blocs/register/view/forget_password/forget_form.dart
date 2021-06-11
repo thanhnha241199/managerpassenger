@@ -58,76 +58,81 @@ class _ForgetPassState extends State<ForgetPass> {
           return SafeArea(
             child: Container(
               width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(
-                      top: 60.0,
-                    ),
-                    child: Text(
-                      "Welcome User,\nYour Forget Password",
-                      textAlign: TextAlign.center,
-                      //  style: Constants.boldHeading,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 40),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: 60.0,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0, -15),
-                          blurRadius: 20,
-                          color: Color(0xFFDADADA).withOpacity(0.15),
-                        )
-                      ],
+                      child: Text(
+                        "Welcome User,\nYour Forget Password",
+                        textAlign: TextAlign.center,
+                        //  style: Constants.boldHeading,
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        Column(
-                          children: [
-                            CustomInput(
-                              controller: emailController,
-                              hintText: "Email...",
+                    SizedBox(
+                      height: 200,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 40),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0, -15),
+                            blurRadius: 20,
+                            color: Color(0xFFDADADA).withOpacity(0.15),
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Column(
+                            children: [
+                              CustomInput(
+                                controller: emailController,
+                                hintText: "Email...",
+                              ),
+                              state is LoginLoading
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : CustomBtn(
+                                      text: "Send",
+                                      onPressed: () {
+                                        BlocProvider.of<LoginBloc>(context).add(
+                                            ForgetButtonPressed(
+                                                email: emailController.text));
+                                      },
+                                    )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 100,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 16.0,
                             ),
-                            state is LoginLoading
-                                ? Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : CustomBtn(
-                                    text: "Send",
-                                    onPressed: () {
-                                      BlocProvider.of<LoginBloc>(context).add(
-                                          ForgetButtonPressed(
-                                              email: emailController.text));
-                                    },
-                                  )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 16.0,
+                            child: CustomBtn(
+                              text: "Back To Login",
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              outlineBtn: true,
+                            ),
                           ),
-                          child: CustomBtn(
-                            text: "Back To Login",
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            outlineBtn: true,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

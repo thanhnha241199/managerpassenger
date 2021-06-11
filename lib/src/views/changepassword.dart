@@ -5,31 +5,36 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:managepassengercar/common/widgets/stateless/custom_btn.dart';
 import 'package:managepassengercar/common/widgets/stateless/custom_input.dart';
+import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/views/home/bottombar.dart';
 
 import 'package:managepassengercar/src/views/widget/loading.dart';
 import 'package:managepassengercar/src/views/widget/success.dart';
 import 'package:http/http.dart' as http;
 import 'package:managepassengercar/utils/config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FormChangePassword extends StatefulWidget {
   String email;
-  FormChangePassword({this.email});
+  final UserRepository userRepository;
+  FormChangePassword({this.email, this.userRepository});
   @override
   _FormChangePasswordState createState() => _FormChangePasswordState();
 }
 
 class _FormChangePasswordState extends State<FormChangePassword> {
   bool _isLoading = false;
-  changepass(String oldpassword, String newpassword) async {
+  changepass(String email, String oldpassword, String newpassword) async {
     Map data = {
-      'email': "nha@gmail.com",
+      'email': email,
       'oldpassword': oldpassword,
       'newpassword': newpassword,
     };
+    print(data);
     var jsonResponse = null;
-    var response = await http
-        .post(Uri.parse("${ServerAddress.serveraddress}changepassword"), body: data);
+    var response = await http.post(
+        Uri.parse("${ServerAddress.serveraddress}changepassword"),
+        body: data);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print(jsonResponse);
@@ -48,7 +53,7 @@ class _FormChangePasswordState extends State<FormChangePassword> {
             MaterialPageRoute(
                 builder: (BuildContext context) => Success(
                       title: "ChangePass Successfull!!!",
-                      page: HomePage(),
+                      page: HomePage(userRepository: widget.userRepository,),
                     )),
             (Route<dynamic> route) => false);
       }
@@ -96,7 +101,6 @@ class _FormChangePasswordState extends State<FormChangePassword> {
   Widget build(BuildContext context) {
     print(widget.email);
     return Scaffold(
-
       body: _isLoading
           ? Loading()
           : SafeArea(
@@ -156,16 +160,20 @@ class _FormChangePasswordState extends State<FormChangePassword> {
                               ),
                               CustomBtn(
                                 text: "Confirm",
-                                onPressed: () {
+                                onPressed: () async {
                                   setState(() {
                                     _isLoading = true;
                                   });
                                   print(oldpasswordController.text);
                                   print(newpasswordController.text);
+                                  SharedPreferences pref =
+                                      await SharedPreferences.getInstance();
                                   newpasswordController.text.compareTo(
                                               confirmpasswordController.text) ==
                                           0
-                                      ? changepass(oldpasswordController.text,
+                                      ? changepass(
+                                          pref.getString("email"),
+                                          oldpasswordController.text,
                                           newpasswordController.text)
                                       : print("AAA");
                                 },

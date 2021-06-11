@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
@@ -8,6 +9,7 @@ import 'package:managepassengercar/blocs/ticket/model/discount.dart';
 import 'package:managepassengercar/providers/api_provider.dart';
 import 'package:managepassengercar/providers/service_stripe.dart';
 import 'package:managepassengercar/repository/user_repository.dart';
+import 'package:managepassengercar/src/views/home/bottombar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stripe_payment/stripe_payment.dart';
@@ -19,8 +21,10 @@ class ExistingCardsPage extends StatefulWidget {
   bool dumplex;
   String title;
   String seat;
+  String uid;
   String address;
   String name;
+  String qr;
   String phone;
   String email;
   String datestart;
@@ -34,6 +38,8 @@ class ExistingCardsPage extends StatefulWidget {
       this.time,
       this.title,
       this.address,
+      this.uid,
+      this.qr,
       this.seat,
       this.name,
       this.email,
@@ -49,18 +55,6 @@ class ExistingCardsPage extends StatefulWidget {
 class ExistingCardsPageState extends State<ExistingCardsPage> {
   String name, email, phone, id;
 
-  Future<void> getInfor() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      name = widget.name.isEmpty ? preferences.getString('name') : widget.name;
-      phone =
-          widget.phone.isEmpty ? preferences.getString('phone') : widget.phone;
-      email =
-          widget.email.isEmpty ? preferences.getString('email') : widget.email;
-      id = preferences.getString('id');
-    });
-  }
-
   payViaExistingCard(BuildContext context, CardModel card) async {
     ProgressDialog dialog = new ProgressDialog(context);
     dialog.style(message: 'Please wait...');
@@ -74,28 +68,51 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
     var response = await StripeService.payViaExistingCard(
         amount: '2500', currency: 'USD', card: stripeCard);
     await dialog.hide();
-    BlocProvider.of<PaymentBloc>(context).add(OrderEvent(
-        idtour: widget.tourBus.id,
-        email: email,
-        name: name,
-        phone: phone,
-        locationstart: widget.address,
-        quantyseat: widget.seat.trim().split(' ').length.toString(),
-        seat: widget.seat.trim(),
-        time: widget.time,
-        price: widget.tourBus.price,
-        totalprice:
-            "${widget.seat.trim().split(' ').length * int.parse("${widget.tourBus.price}")} VND",
-        uid: id));
-    Scaffold.of(context)
-        .showSnackBar(SnackBar(
-          content: Text(response.message),
-          duration: new Duration(milliseconds: 3200),
-        ))
-        .closed
-        .then((_) {
-      Navigator.pop(context);
-    });
+    if (response.success == true) {
+      BlocProvider.of<PaymentBloc>(context).add(OrderEvent(
+          idtour: widget.tourBus.id,
+          email: widget.email,
+          name: widget.name,
+          phone: widget.phone,
+          qr: widget.qr,
+          locationstart: widget.address,
+          quantyseat: widget.seat.trim().split(' ').length.toString(),
+          seat: widget.seat.trim(),
+          time: widget.time,
+          price: widget.tourBus.price,
+          totalprice:
+              "${widget.seat.trim().split(' ').length * int.parse("${widget.tourBus.price}")} VND",
+          uid: widget.uid));
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      BlocProvider.of<PaymentBloc>(context).add(AddNoti(
+          title: pref.getString("orderID"),
+          description: "Đặt vé thành công!",
+          id: widget.uid));
+      String token = await FirebaseMessaging.instance.getToken();
+      BlocProvider.of<PaymentBloc>(context).add(SendNoti(
+          title: "Đặt vé thành công!",
+          body: "Đơn hàng ${pref.getString("orderID")} đã được tạo",
+          token: token));
+      BlocProvider.of<PaymentBloc>(context).add(SendMail(
+          idtour: widget.tourBus.id,
+          email: widget.email,
+          name: widget.name,
+          phone: widget.phone,
+          locationstart: widget.address,
+          quantyseat: widget.seat.trim().split(' ').length.toString(),
+          seat: widget.seat.trim(),
+          time: widget.time,
+          price: widget.tourBus.price,
+          orderID: pref.getString("orderID"),
+          totalprice:
+              "${widget.seat.trim().split(' ').length * int.parse("${widget.tourBus.price}")} VND"));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  HomePage(userRepository: widget.userRepository)),
+          (route) => false);
+    }
   }
 
   @override

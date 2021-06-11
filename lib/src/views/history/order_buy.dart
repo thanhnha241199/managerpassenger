@@ -1,10 +1,15 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:managepassengercar/blocs/ticket/model/order.dart';
+import 'package:managepassengercar/repository/user_repository.dart';
 import 'package:managepassengercar/src/views/history/detail_order.dart';
+import 'package:managepassengercar/src/views/history/ticket_view.dart';
+import 'package:managepassengercar/utils/app_style.dart';
 
 class OrderBuy extends StatefulWidget {
   List<Order> order;
-  OrderBuy({this.order});
+  final UserRepository userRepository;
+  OrderBuy({this.order, @required this.userRepository});
   @override
   _OrderBuyState createState() => _OrderBuyState();
 }
@@ -12,7 +17,7 @@ class OrderBuy extends StatefulWidget {
 class _OrderBuyState extends State<OrderBuy>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-
+  final f = new DateFormat('dd-MM-yyyy');
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -30,16 +35,25 @@ class _OrderBuyState extends State<OrderBuy>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Danh sach ve",
+          tr('danhsachve'),
+          style: AppTextStyles.textSize16(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
         elevation: 0.0,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.blue,
+          ),
         ),
       ),
       body: Padding(
@@ -62,19 +76,19 @@ class _OrderBuyState extends State<OrderBuy>
                   borderRadius: BorderRadius.circular(
                     25.0,
                   ),
-                  color: Colors.green,
+                  color: Colors.blue,
                 ),
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.black,
                 tabs: [
                   // first tab [you can add an icon using the icon property]
                   Tab(
-                    text: 'Lich su ve',
+                    text: tr('lichsuve'),
                   ),
 
                   // second tab [you can add an icon using the icon property]
                   Tab(
-                    text: 'Sap khoi hanh',
+                    text: tr('vedasudung'),
                   ),
                 ],
               ),
@@ -94,197 +108,29 @@ class _OrderBuyState extends State<OrderBuy>
                           .toList()
                           .length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailOrder(
-                                        order: widget.order[index])));
-                          },
-                          child: Card(
-                              child: Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 10),
-                                width: MediaQuery.of(context).size.width / 6,
-                                height: MediaQuery.of(context).size.width / 6,
-                                decoration: BoxDecoration(
-                                    color: Colors.blue.withOpacity(0.7),
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Icon(
-                                  Icons.receipt_long_outlined,
-                                  size: 35,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "ID: ${widget.order[index].id}",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "ID Tour: ${widget.order[index].tour}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "Seat:${widget.order[index].seat}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "Location: ${widget.order[index].location}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "Total: ${widget.order[index].totalprice}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )),
+                        return TicketView(
+                          order: widget.order
+                              .where((element) => element.status == "order")
+                              .toList()[index],
+                          userRepository: widget.userRepository,
                         );
                       },
                     ),
                   ),
-
-                  // second tab bar view widget
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: ListView.builder(
                       physics: BouncingScrollPhysics(),
                       itemCount: widget.order
-                          .where((element) => element.status == "complete")
+                          .where((element) => element.status != "order")
                           .toList()
                           .length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailOrder(
-                                        order: widget.order[index])));
-                          },
-                          child: Card(
-                              child: Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 10),
-                                width: MediaQuery.of(context).size.width / 6,
-                                height: MediaQuery.of(context).size.width / 6,
-                                decoration: BoxDecoration(
-                                    color: Colors.blue.withOpacity(0.7),
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Icon(
-                                  Icons.receipt_long_outlined,
-                                  size: 35,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "ID: ${widget.order[index].id}",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "ID Tour: ${widget.order[index].tour}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "Seat:${widget.order[index].seat}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "Location: ${widget.order[index].location}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "Total: ${widget.order[index].totalprice}",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Raleway'),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )),
+                        return TicketView(
+                          order: widget.order
+                              .where((element) => element.status != "order")
+                              .toList()[index],
+                          userRepository: widget.userRepository,
                         );
                       },
                     ),

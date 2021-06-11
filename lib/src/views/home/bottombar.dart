@@ -59,7 +59,9 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavyBar(
         selectedIndex: _currentIndex,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black12
+            : Colors.white,
         showElevation: true,
         itemCornerRadius: 24,
         curve: Curves.easeIn,

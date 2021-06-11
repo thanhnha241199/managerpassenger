@@ -79,7 +79,9 @@ class _BottomSheetTime extends State<BottomSheetTime> {
             child: SingleChildScrollView(
               child: Container(
                 decoration: new BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.black
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(25)),
                 child: Container(
                   margin: EdgeInsets.only(right: 5.0, left: 5.0, top: 10.0),
@@ -111,7 +113,10 @@ class _BottomSheetTime extends State<BottomSheetTime> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.black12
+                                          : Colors.white,
                                       borderRadius: BorderRadius.circular(12)),
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
@@ -127,17 +132,17 @@ class _BottomSheetTime extends State<BottomSheetTime> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(15),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.5),
-                                                spreadRadius: 5,
-                                                blurRadius: 7,
-                                                offset: Offset(0,
-                                                    3), // changes position of shadow
-                                              ),
-                                            ],
-                                            color: Colors.white),
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.black12
+                                                    : Colors.white),
                                         child: ListTile(
                                           leading: Container(
                                             height: 75,

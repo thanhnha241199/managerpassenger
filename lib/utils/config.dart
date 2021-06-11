@@ -1,3 +1,3 @@
 class ServerAddress {
-  static const serveraddress = "http://192.168.1.15:3000/";
+  static const serveraddress = "http://172.20.10.8:3000/";
 }
